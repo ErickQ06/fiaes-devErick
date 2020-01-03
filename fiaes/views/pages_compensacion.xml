@@ -1,0 +1,2333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo> 
+
+
+
+<record id="compensacion_menu" model="website.menu">
+    <field name="name">Compensacion</field>
+    <field name="url">/compensacion</field>
+    <field name="parent_id" ref="website.main_menu" />
+    <field name="sequence" type="int">300</field>
+</record>
+
+
+
+<template id="compensacion_menu1" > 
+    <t t-call="website.layout">
+    <div id="wrap" class="oe_structure oe_empty">
+      <section class="s_features_grid pt48 pb24">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 s_col_no_bgcolor pb24">
+              <div class="row">
+                <div class="col-lg-12 pb24" data-name="Box">
+                  <h2>COMPENSACIONES</h2>
+                  <h5 class="text-primary">&amp;nbsp;</h5>
+                </div>
+                <div class="col-lg-12 pt16 pb16" data-name="Box">
+                  <i class="fa fa-2x fa-font-awesome rounded-circle bg-primary s_features_grid_icon"/>
+                  <div class="s_features_grid_content">
+                    <h4><a href="/compensacion/new_registro" >Nuevo Usuario</a></h4>
+                    <p>Permite solicitar un nuevo usuario</p>
+                  </div>
+                </div>
+                <t t-if="request.uid != %(base.public_user)d">
+                    <div class="col-lg-12 pt16 pb16" data-name="Box">
+                    <i class="fa fa-2x fa-files-o rounded-circle bg-primary s_features_grid_icon"/>
+                    <div class="s_features_grid_content">
+                        <h4><a href="/compensacion/new_proceso" >Nueva Solicitud</a></h4>
+                        <p>Permite ingresar una nueva solicitud de un proceso de compensación, Se solicitaran los datos del Titular, Poryecto, y Documentos legales necesarios para el proceso</p>
+                    </div>
+                    </div>
+                    <div class="col-lg-12 pt16 pb16" data-name="Box">
+                    <i class="fa fa-2x fa-trash rounded-circle bg-primary s_features_grid_icon"/>
+                    <div class="s_features_grid_content">
+                        <h4><a href="/compensacion/solicitudes" >Solicitudes pendientes</a></h4>
+                        <p>Muestra y perite editar las solicitudes que aun no han sido enviadas. Al enviarla ya será un proceso</p>
+                    </div>
+                    </div>
+                    <div class="col-lg-12 pt16 pb16" data-name="Box">
+                    <i class="fa fa-2x fa-trash rounded-circle bg-primary s_features_grid_icon"/>
+                    <div class="s_features_grid_content">
+                        <h4><a href="/compensacion/procesos" >Procesos de compensación</a></h4>
+                        <p>Muestra el listado de los proceso... y permite ver el estado de cada uno de ellos</p>
+                    </div>
+                    </div>
+                    
+
+                </t>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </t>
+</template>
+
+
+
+
+  <template id="success" 
+            name="success"> 
+             <t t-call="website.layout">  
+    <h1>Su solicitud ha sido enviada, Pronto nos pondremos en contacto con Ud.</h1> 
+      </t>
+  </template>
+
+
+<template id="apply">
+  <t t-call="website.layout">
+    <div id="wrap" class="oe_structure oe_empty">
+      <form action="/website_form/" method="post" class="s_website_form container-fluid mt32" enctype="multipart/form-data" data-model_name="fiaes.compensacion.registro" data-success_page="/compensacion/success">
+        <div class="container">
+          <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="name">
+                    Nombre
+                </label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control o_website_form_input" name="name"/>
+            </div>
+          </div>
+          <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="email">
+                    Email
+                </label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control o_website_form_input" name="email"/>
+            </div>
+          </div>
+
+          <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="telefono">
+                    Telefono
+                </label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control o_website_form_input" name="telefono"/>
+            </div>
+          </div>
+
+            <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="nit">
+                    NIT
+                </label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control o_website_form_input" name="nit"/>
+            </div>
+          </div>
+            <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="tipo">
+                    Tipo
+                </label>
+            </div>
+            <div class="col-md-8">
+              <select class="form-control o_website_form_input" name="tipo">
+                <option value="Titular" selected="True">Titular</option>
+                <option value="Prestador">Prestador de servicios</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
+              <button class="btn btn-primary btn-lg o_website_form_send o_default_snippet_text">Send</button>
+              <span id="o_website_form_result"/>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </t>
+
+</template>
+<!--record id="compensacion_registro" model="website.menu">
+    <field name="name">Solicutd de usuario</field>
+    <field name="url">/compensacion/new_registro</field>
+    <field name="parent_id" ref="fiaes.compensacion_menu" />
+    <field name="sequence" type="int">200</field>
+</record-->
+
+
+
+
+
+
+
+
+
+
+<!--TEMPLATE PARA LOS TITTULAES -->
+
+    <template id="solicitudes" > 
+    <t t-call="website.layout">
+    <div id="wrap" class="oe_structure oe_empty">
+      <section class="pt32 pb32">
+        <div class="container">
+          <div class="row s_nb_column_fixed">
+            <div class="col-lg-12 s_title pt16 pb16" style="text-align: center;">
+              <h1 class="s_title_default">
+                <font style="font-size: 62px;">Solicitudes sin enviar</font>
+              </h1>
+              <div class="s_card card bg-white w-100">
+                <h4 class="card-header">Solicitudes</h4>
+                <div class="card-body">
+                  <p class="card-text">
+                    <br/>
+                  </p>
+                  <table class="table table-sm o_main_table">
+                    <tr style="background-color:gray">
+                        <td>Proyecto</td>
+                        <td>Razón social</td>
+                        <td>Nombre comercial</td>
+                        <td>Contacto</td>
+                        <td>Email</td>
+                        <td>Enviado</td>
+                    </tr>
+                    <t t-foreach="docs" t-as="doc"> 
+                        <tr > 
+                        <td>
+                            <t t-if="doc.procesar!=True">
+                                <a t-attf-href="/compensacion/edit_proceso?id={{doc.id}}" ><span t-field="doc.proyecto_name"  /></a> 
+                            </t>
+                            <t t-if="doc.procesar==True">
+                                <span t-field="doc.proyecto_name"  />
+                            </t>
+                        </td>
+                        <td><span t-field="doc.name"  /> </td>
+                        <td><span t-field="doc.nombre_comercial"  /> </td>
+                        <td><span t-field="doc.contacto"  /> </td>
+                        <td><span t-field="doc.contacto_email"  /> </td>
+                        <td><span t-field="doc.procesar"/> </td>
+                        </tr> 
+                    </t> 
+                    </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+
+
+     
+    </t> 
+    </template>
+<!--record id="compensacion_titulares_solicitud" model="website.menu">
+    <field name="name">Solicutes</field>
+    <field name="url">/compensacion/solicitudes</field>
+    <field name="parent_id" ref="fiaes.compensacion_menu" />
+    <field name="sequence" type="int">300</field>
+</record-->
+
+
+
+
+
+<template id="apply_titular">
+  <t t-call="website.layout">
+    <div id="wrap" class="oe_structure oe_empty">
+    <script>
+
+
+
+                        function setvalues(){
+                            try{
+                                $("input[name='name']").val($("#sol_name").html());
+                                $("input[name='nombre_comercial']").val($("#sol_nombre_comercial").html());
+                                $("input[name='representante_legal']").val($("#sol_representante_legal").html());
+                                $("input[name='empresa_nit']").val($("#sol_empresa_nit").html());
+                                $("input[name='representante_nit']").val($("#sol_representante_nit").html());
+                                $("input[name='representante_dui']").val($("#sol_representante_dui").html());
+                                $("input[name='apoderado']").val($("#sol_apoderado").html());
+                                $("input[name='apoderado_nit']").val($("#sol_apoderado_nit").html());
+                                $("input[name='apoderado_dui']").val($("#sol_apoderado_dui").html());
+                               
+                                $("input[name='poder_filename']").val($("#sol_poder_filename").html());
+                                $("#departamento_id").val($("#sol_departamento_id").html());
+
+                                updatemunicipio();
+                                $("input[name='municipio_id']").val($("#sol_municipio_id").html());
+                                $("#representante_nacionalidad").val($("#sol_representante_nacionalidad").html());
+                                $("input[name='representante_profesion']").val($("#sol_representante_profesion").html());
+                                $("input[name='representante_nacimeinto']").val($("#sol_representante_nacimeinto").html());
+                                $("input[name='contacto']").val($("#sol_contacto").html());
+                                $("input[name='contacto_email']").val($("#sol_contacto_email").html());
+                                $("input[name='usuario_id']").val($("#sol_usuario_id").html());
+                                $("input[name='tipo']").val($("#sol_tipo").html());
+                                $("input[name='proyecto_name']").val($("#sol_proyecto_name").html());
+                                $("input[name='proyecto_descripcion']").val($("#sol_proyecto_descripcion").html());
+                                $("input[name='proyecto_resolucion']").val($("#sol_proyecto_resolucion").html());
+                                $("input[name='proyecto_resolucion_nfa']").val($("#sol_proyecto_resolucion_nfa").html());
+                                $("input[name='proyecto_resolucion_fecha']").val($("#sol_proyecto_resolucion_fecha").html());
+                                $("input[name='proyecto_direccion']").val($("#sol_proyecto_direccion").html());
+                                $("#proyecto_departamento_id").val($("#sol_proyecto_departamento_id").html());
+                                updatemunicipio2();
+                                $("input[name='proyecto_municipio_id']").val($("#sol_proyecto_municipio_id").html());
+                                $("input[name='proyecto_afectacion']").val($("#sol_proyecto_afectacion").html());
+                                $("input[name='proyecto_vencimiento']").val($("#sol_proyecto_vencimiento").html());
+                                $("input[name='proyecto_valor']").val($("#sol_proyecto_valor").html().replace(',',''));
+                                $("input[name='proceso_uuid']").val($("#sol_proceso_uuid").html());
+                            }catch(err){
+                                
+                            }
+                        }
+
+                        function update_departamento() {
+                              $.ajax({url: "/fiaes/select/departamentos?field=departamento_id&amp;label=Departamento%20de%20la%20empresa", success: function(result){
+                                  $("#departamento_container").html(result);
+                                  
+                                  }});
+                        }
+
+                        function update_country() {
+                              $.ajax({url: "/fiaes/select/countries", success: function(result){
+                                  $("#country_container").html(result);
+                                  }});
+                        }
+
+                        function updatemunicipio() {
+                              $.ajax({url: "/fiaes/select/municipios?field=municipio_id&amp;label=Municipio%20de%20la%20empresa&amp;departamentoid=" + $("#departamento_id").val(), success: function(result){
+                                  $("#municipio_container").html(result);
+                                  
+                              }});
+                        }
+
+                        function update_departamento2() {
+                              $.ajax({url: "/fiaes/select/departamentos?field=proyecto_departamento_id&amp;label=Departamento%20del%20proyecto", success: function(result){
+                                  $("#departamentoproyecto_container").html(result);
+                                  }});
+                        }
+
+                        function updatemunicipio2() {                              
+                              $.ajax({url: "/fiaes/select/municipios?field=proyecto_municipio_id&amp;label=Departamento%20del%20proyecto&amp;departamentoid=" + $("#proyecto_departamento_id").val(), success: function(result){
+                                  $("#municipioproyecto_container").html(result);
+                              }});
+                        }
+
+
+                      $(document).ready(function() {
+                        update_country();
+                        update_departamento();
+                        update_departamento2();
+                        setTimeout('setvalues();', 5000);
+
+                        $(document).on('change',"#departamento_id", function(){
+                              updatemunicipio();
+                        });
+
+                        $(document).on('change',"#tipo", function(){
+                              $('.fiaes-persona').css( "display", "none" );
+                              $('.fiaes-sociedad').css( "display", "none" );
+                              $('.fiaes-ong').css( "display", "none" );
+                              $('.fiaes-gobierno').css( "display", "none" );
+                              if ($("#tipo").val()=='Sociedad'){
+                                  $('.fiaes-sociedad').css( "display", "flex" );
+                              }
+                              if ($("#tipo").val()=='Persona'){
+                                  $('.fiaes-persona').css( "display", "flex" );
+                              }
+                              if ($("#tipo").val()=='ONG'){
+                                  $('.fiaes-ong').css( "display", "flex" );
+                              }
+                              if ($("#tipo").val()=='Gobierno'){
+                                  $('.fiaes-gobierno').css( "display", "flex" );
+                              }
+                        });
+
+
+                        $(document).on('change',"#proyecto_departamento_id", function(){
+                              updatemunicipio2();
+                        });
+
+                        function marcar() {
+                            document.getElementById("procesar").checked = true;
+                        }
+
+
+         });
+
+      </script>
+      
+
+
+      <form action="/website_form/" method="post" class="s_website_form container-fluid mt32" enctype="multipart/form-data" data-model_name="fiaes.compensacion.solicitud" t-att-data-form_field_usuario_id="request.env.context.get('uid')" data-success_page="/compensacion/success">
+        <div class="container">
+        <t t-if="doc">
+        <div style="display:none">
+            <span id="sol_name"  t-field="doc.name"  />
+            <span id="sol_nombre_comercial"  t-field="doc.nombre_comercial"  />
+            <span id="sol_representante_legal"  t-field="doc.representante_legal"  />
+            <span id="sol_empresa_nit"  t-field="doc.empresa_nit"  />
+            <span id="sol_representante_nit"  t-field="doc.representante_nit"  />
+            <span id="sol_representante_dui"  t-field="doc.representante_dui"  />
+            <span id="sol_apoderado"  t-field="doc.apoderado"  />
+            <span id="sol_apoderado_nit"  t-field="doc.apoderado_nit"  />
+            <span id="sol_apoderado_dui"  t-field="doc.apoderado_dui"  />
+            <span id="sol_poder"  t-field="doc.poder"  />
+            <span id="sol_poder_filename"  t-field="doc.poder_filename"  />
+            <span id="sol_departamento_id"  t-field="doc.departamento_id.id"  />
+            <span id="sol_municipio_id"  t-field="doc.municipio_id.id"  />
+            <span id="sol_representante_nacionalidad"  t-field="doc.representante_nacionalidad.id"  />
+            <span id="sol_representante_profesion"  t-field="doc.representante_profesion"  />
+            <span id="sol_representante_nacimeinto"  t-field="doc.representante_nacimeinto"  />
+            <span id="sol_contacto"  t-field="doc.contacto"  />
+            <span id="sol_contacto_email"  t-field="doc.contacto_email"  />
+            <span id="sol_usuario_id"  t-field="doc.usuario_id.id"  />
+            <span id="sol_tipo"  t-field="doc.tipo"  />
+            <span id="sol_proyecto_name"  t-field="doc.proyecto_name"  />
+            <span id="sol_proyecto_descripcion"  t-field="doc.proyecto_descripcion"  />
+            <span id="sol_proyecto_resolucion"  t-field="doc.proyecto_resolucion"  />
+            <span id="sol_proyecto_resolucion_nfa"  t-field="doc.proyecto_resolucion_nfa"  />
+            <span id="sol_proyecto_resolucion_fecha"  t-field="doc.proyecto_resolucion_fecha"  />
+            <span id="sol_proyecto_direccion"  t-field="doc.proyecto_direccion"  />
+            <span id="sol_proyecto_departamento_id"  t-field="doc.proyecto_departamento_id.id"  />
+            <span id="sol_proyecto_municipio_id"  t-field="doc.proyecto_municipio_id.id"  />
+            <span id="sol_proyecto_afectacion"  t-field="doc.proyecto_afectacion"  />
+            <span id="sol_proyecto_vencimiento"  t-field="doc.proyecto_vencimiento"  />
+            <span id="sol_proyecto_valor"  t-field="doc.proyecto_valor"  />
+            <span id="sol_proyecto_resolucion_file"  t-field="doc.proyecto_resolucion_file"  />
+            <span id="sol_legal_escritura"  t-field="doc.legal_escritura"  />
+            <span id="sol_legal_modificacion"  t-field="doc.legal_modificacion"  />
+            <span id="sol_legal_credencial"  t-field="doc.legal_credencial"  />
+            <span id="sol_legal_renovacion"  t-field="doc.legal_renovacion"  />
+            <span id="sol_legal_representante_dui"  t-field="doc.legal_representante_dui"  />
+            <span id="sol_legal_representante_nit"  t-field="doc.legal_representante_nit"  />
+            <span id="sol_legal_sociedad_nit"  t-field="doc.legal_sociedad_nit"  />
+            <span id="sol_legal_iva"  t-field="doc.legal_iva"  />
+            <span id="sol_legal_certificacion"  t-field="doc.legal_certificacion"  />
+            <span id="sol_legal_poder"  t-field="doc.legal_poder"  />
+            <span id="sol_legal_apoderado_dui"  t-field="doc.legal_apoderado_dui"  />
+            <span id="sol_legal_apoderado_nit"  t-field="doc.legal_apoderado_nit"  />
+            <span id="sol_legal_ley_creacion"  t-field="doc.legal_ley_creacion"  />
+            <span id="sol_legal_representante_diario"  t-field="doc.legal_representante_diario"  />
+            <span id="sol_legal_persona_dui"  t-field="doc.legal_persona_dui"  />
+            <span id="sol_legal_persona_nit"  t-field="doc.legal_persona_nit"  />
+            <span id="sol_proceso_uuid"  t-field="doc.proceso_uuid"  />
+            <span id="sol_procesar"  t-field="doc.procesar"  />
+        </div>
+      </t>
+         <h1>Solicitudes de inscripcion de titular</h1> 
+         <h2>DATOS DEL TITULAR</h2>
+
+          <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="name">
+                    Razón social
+            </label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control o_website_form_input" name="name"/>
+              <input type="hidden" name="proceso_uuid"/>
+            </div>
+          </div>
+
+          <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="nombre_comercial">
+                    Nombre comercial o abreviatura
+                </label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control o_website_form_input" name="nombre_comercial"/>
+            </div>
+          </div>
+
+        <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="tipo">
+                    Tipo
+                </label>
+            </div>
+            <div class="col-md-8">
+              <select class="form-control o_website_form_input" id="tipo" name="tipo">
+                <option value="Sociedad" selected="True">Sociedad</option>
+                <option value="ONG">ONG, Adesco, Microregione y Cooperativa</option>
+                <option value="Gobierno">Entidad Pública</option>
+                <option value="Persona">Persona Natural</option>
+              </select>
+            </div>
+        </div>
+
+          <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="representante_legal">
+                    Representante legal
+                </label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control o_website_form_input" name="representante_legal"/>
+            </div>
+          </div>
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="empresa_nit">
+                        NIT de la empresa
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control o_website_form_input" name="empresa_nit"/>
+                </div>
+            </div>
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="representante_nit">
+                        NIT del representante legal
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control o_website_form_input" name="representante_nit"/>
+                </div>
+            </div>
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="representante_dui">
+                        DUI del representante legal
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control o_website_form_input" name="representante_dui"/>
+                </div>
+            </div>            
+
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="apoderado_nit">
+                        NIT del apoderado
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control o_website_form_input" name="apoderado_nit"/>
+                </div>
+            </div>
+
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="apoderado">
+                        Apoderado
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control o_website_form_input" name="apoderado"/>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="apoderado_dui">
+                        DUI del apoderado
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control o_website_form_input" name="apoderado_dui"/>
+                </div>
+            </div>
+
+
+            <!--div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="poder">
+                        Poder General Administrativo o equivalente
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="file" class="form-control o_website_form_input" name="poder"/>
+                </div>
+            </div-->
+
+
+            <div class="row form-group form-field" id="departamento_container">
+
+            </div>
+
+
+
+            <div class="row form-group form-field" id="municipio_container">
+
+            </div>
+
+
+
+            <div class="row form-group form-field" id="country_container">
+
+            </div>
+
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="representante_profesion">
+                        Profesion del representante
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control o_website_form_input" name="representante_profesion"/>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="representante_nacimeinto">
+                        Nacimiento del representante
+                    </label>
+                </div>
+                <div class="col-md-8">
+                <input type="text" class="form-control o_website_form_input o_website_form_date" name="representante_nacimeinto"/>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="contacto">
+                        Contacto
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control o_website_form_input" name="contacto"/>
+                </div>
+            </div>
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="contacto_email">
+                        Email de contacto
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control o_website_form_input" name="contacto_email"/>
+                </div>
+            </div>
+
+            <h2>DATOS DEL PROYECTO</h2>
+
+            <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="proyecto_name">
+                    Proyecto
+                </label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control o_website_form_input" name="proyecto_name"/>
+            </div>
+          </div>
+
+
+          <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="proyecto_descripcion">
+                    Descripcion
+                </label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control o_website_form_input" name="proyecto_descripcion"/>
+            </div>
+          </div>
+
+          <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="proyecto_resolucion">
+                    Número de resolución
+                </label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control o_website_form_input" name="proyecto_resolucion"/>
+            </div>
+          </div>
+
+          <div class="row form-group form-field">
+            <div class="col-md-4 text-md-right">
+              <label class="col-form-label" for="proyecto_resolucion_nfa">
+                    NFA correlativo
+                </label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control o_website_form_input" name="proyecto_resolucion_nfa"/>
+            </div>
+          </div>
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="proyecto_resolucion_fecha">
+                        Fecha de reslución
+                    </label>
+                </div>
+                <div class="col-md-8">
+                <input type="text" class="form-control o_website_form_input o_website_form_date" name="proyecto_resolucion_fecha"/>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field " >
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_persona_dui">
+                        Resolución
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="proyecto_resolucion_file"/>
+                </div>
+                 <div class="col-md-4">
+                    <t t-if="doc and doc.proyecto_resolucion_file">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=proyecto_resolucion_file&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="proyecto_direccion">
+                        Dirección
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control o_website_form_input" name="proyecto_direccion"/>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field" id="departamentoproyecto_container">
+
+            </div>
+
+
+
+            <div class="row form-group form-field" id="municipioproyecto_container">
+
+            </div>
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="proyecto_afectacion">
+                        Descripción de la afectación
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control o_website_form_input" name="proyecto_afectacion"/>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="proyecto_vencimiento">
+                        Vencimiento de la resolución
+                    </label>
+                </div>
+                <div class="col-md-8">
+                <input type="text" class="form-control o_website_form_input o_website_form_date" name="proyecto_vencimiento"/>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="proyecto_valor">
+                        Valor de la compensación
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control o_website_form_input" name="proyecto_valor"/>
+                </div>
+            </div>
+
+
+
+
+            <h2>DOCUMENTOS LEGALES</h2>
+
+
+            <div class="row form-group form-field fiaes-persona" >
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_persona_dui">
+                        DUI/Pasaporte/Carnet de residente de la persona natural
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_persona_dui"/>
+                </div>
+                 <div class="col-md-4">
+                    <t t-if="doc and doc.legal_persona_dui">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_persona_dui&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+
+            <div class="row form-group form-field fiaes-persona">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_persona_nit">
+                        NIT de la persona natural
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_persona_nit"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_persona_nit">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_persona_nit&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field fiaes-sociedad fiaes-ong fiaes-gobierno" >
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_escritura">
+                        Escritura Pública de constitución
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_escritura"/>
+                </div>
+                <div class="col-md-4">
+                    <t t-if="doc and doc.legal_escritura">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_escritura&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+            <div class="row form-group form-field  fiaes-sociedad fiaes-ong fiaes-gobierno">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_modificacion">
+                        Documento de modificación, rectificación, transformación o fusión de la entidad
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_modificacion"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_modificacion">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_modificacion&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field fiaes-gobierno">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_ley_creacion">
+                        Ley de creación de la entidad
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_ley_creacion"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_ley_creacion">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_ley_creacion&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field fiaes-gobierno">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_representante_diario">
+                        Publicación del Diario Oficial del Acuerdo de nombramiento del Representante Legal
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_representante_diario"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_representante_diario">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_representante_diario&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field fiaes-sociedad fiaes-ong fiaes-gobierno">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_credencial">
+                        Credencial de Junta Directiva o del Representante Legal
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_credencial"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_credencial">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_credencial&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+
+            <div class="row form-group form-field  fiaes-ong">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_estatutos">
+                        Copia de la parte completa de los Estatutos vigentes publicados en el Diario Oficial
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_estatutos"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_estatutos">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_estatutos&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+
+            <div class="row form-group form-field  fiaes-sociedad fiaes-ong fiaes-gobierno">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_renovacion">
+                        Constancia de renovación de matrícula de empresa vigente
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_renovacion"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_renovacion">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_renovacion&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field fiaes-sociedad fiaes-ong fiaes-gobierno" >
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_representante_dui">
+                        DUI/Pasaporte/Carnet de residente del Representante Legal
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_representante_dui"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_representante_dui">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_representante_dui&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field fiaes-sociedad fiaes-ong fiaes-gobierno">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_representante_nit">
+                        NIT del Representante Legal
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_representante_nit"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_representante_nit">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_representante_nit&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+
+            <div class="row form-group form-field  fiaes-sociedad fiaes-ong fiaes-gobierno">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_sociedad_nit">
+                        NIT de la sociedad
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_sociedad_nit"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_sociedad_nit">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_sociedad_nit&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_iva">
+                        IVA - Registro de contribuyente
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_iva"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_iva">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_iva&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field  fiaes-sociedad fiaes-ong fiaes-gobierno">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_certificacion">
+                        Certificación del punto de acta de autorización del Representante Legal
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_certificacion"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_certificacion">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_certificacion&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_poder">
+                        Poder a nombre de la persona natural que se faculta para la firma y representación
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_poder"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_poder">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_poder&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_apoderado_dui">
+                        DUI/Pasaporte/Carnet de residente del Apoderado
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_apoderado_dui"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_apoderado_dui">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_apoderado_dui&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_apoderado_nit">
+                        NIT del apoderado
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" class="form-control o_website_form_input" name="legal_apoderado_nit"/>
+                </div>
+                <div class="col-md-4">
+                <t t-if="doc and doc.legal_apoderado_nit">
+                    <a t-attf-href="/web/content?model=fiaes.compensacion.solicitud&amp;field=legal_apoderado_nit&amp;id={{ doc.id }}">Descargar</a>
+                    </t>
+                </div>
+            </div>
+
+
+            <div class="row form-group form-field">
+                <div class="col-md-4 text-md-right">
+                    <label class="col-form-label" for="legal_apoderado_nit">
+                        Procesar esta solicitud, si no se marca solo se guardar
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="checkbox" value="Yes" class="o_website_form_input" name="procesar" id="procesar"/>
+                </div>
+            </div>
+
+
+          <div class="form-group row">
+            <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
+              <button class="btn btn-primary btn-lg o_website_form_send o_default_snippet_text">Guardar</button>
+              <button class="btn btn-primary btn-lg o_website_form_send o_default_snippet_text" onclick="marcar();">Enviar</button>
+              <span id="o_website_form_result"/>
+            </div>
+          </div>
+
+
+        </div>
+      </form>
+    </div>
+  </t>
+
+</template>
+
+
+<!--record id="compensacion_new_proceso" model="website.menu">
+    <field name="name">Nueva solicitud</field>
+    <field name="url">/compensacion/new_proceso</field>
+    <field name="parent_id" ref="fiaes.compensacion_menu" />
+    <field name="sequence" type="int">500</field>
+</record-->
+
+   <!--record id="compensacion_edit_proceso" model="website.menu">
+    <field name="name">Editar Solicitud</field>
+    <field name="url">/compensacion/edit_proceso</field>
+    <field name="parent_id" ref="fiaes.compensacion_menu" />
+    <field name="sequence" type="int">550</field>
+</record-->
+
+
+
+
+
+
+
+<!--TEMPLATE PARA LOS proyectos -->
+
+    <template id="procesos2"> 
+    <t t-call="website.layout"> 
+    <div id="wrap" class="oe_structure oe_empty">
+      <section class="pt32 pb32">
+        <div class="container">
+          <div class="row s_nb_column_fixed">
+            <div class="col-lg-12 s_title pt16 pb16" style="text-align: center;">
+              <h1 class="s_title_default">
+                <font style="font-size: 62px;">Procesos de Compensación</font>
+              </h1>
+              <div class="s_card card bg-white w-100">
+                <h4 class="card-header">Solicitudes</h4>
+                <div class="card-body">
+                  <p class="card-text">
+                    <br/>
+                  </p>
+
+                    <table class="table table-sm o_main_table">
+                        <tr style="background-color:gray">
+                            <td>Proyecto</td>
+                            <td>Titular</td>
+                            <td>Resolución</td>
+                            <td>Dirección</td>
+                            <td>Valor</td>
+                            <td>Estado</td>
+                        </tr>
+                        <t t-foreach="docs" t-as="doc"> 
+                            <tr > 
+                            <td>
+                                <a t-attf-href="/compensacion/view_proceso?id={{doc.id}}" ><span t-field="doc.proyecto_name"  /></a> 
+                            </td>
+                            <td><span t-field="doc.name"  /> </td>
+                            <td><span t-field="doc.proyecto_resolucion"  /> </td>
+                            <td><span t-field="doc.proyecto_direccion"  /> </td>
+                            <td><span t-field="doc.proyecto_valor"  /> </td>
+                            <td><span t-field="doc.state"/> </td>
+                            </tr> 
+                        </t> 
+                    </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+
+
+
+    </t> 
+    </template>
+
+
+
+
+
+
+
+
+<template id="view_proceso">
+<t t-call="website.layout">
+    <div id="wrap" class="oe_structure oe_empty">
+      <section class="s_text_block pt32 pb32">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-10 offset-lg-1 pt32 pb32">
+              <t t-if="doc">
+                <p class="lead o_default_snippet_text">
+                    <h2><span t-field="doc.proyecto_name"/></h2>
+                    <br/>
+                    <h2><span t-field="doc.name"/></h2>
+                    <br/>
+                    <span id="solstate"  t-field="doc.state_avance"  />
+                </p>
+              </t>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="s_features pb0 pt0">
+        <div class="container">
+          <div class="row">
+
+            <div class="col-lg-4 pt16 text-center pb0">
+                <t t-if="(doc.state!='Firmado') and (doc.state!='Rechazado')">
+                    <i class="fa fa-2x fa-gear rounded-leaf bg-primary m-3"/>
+                </t>
+                <t t-if="(doc.state=='Firmado') or (doc.state=='Rechazado')">
+                    <i class="fa fa-2x fa-gear rounded-leaf bg-epsilon m-3"/>
+                </t>
+              <h3>Solicitado</h3>
+            </div>
+
+            <div class="col-lg-4 pt16 text-center  pb0">
+                <t t-if="(doc.state=='Rechazado')">
+                    <i class="fa fa-2x fa-gear rounded-leaf bg-primary m-3"/>
+                </t>
+                <t t-if="(doc.state!='Rechazado')">
+                    <i class="fa fa-2x fa-gear rounded-leaf bg-epsilon m-3"/>
+                </t>
+              <h3>Rechazado</h3>
+            </div>
+
+            <div class="col-lg-4 pt16 text-center pb0">
+                <t t-if="(doc.state=='Firmado')">
+                    <i class="fa fa-2x fa-gear rounded-leaf bg-primary m-3"/>
+                </t>
+                <t t-if="(doc.state!='Firmado')">
+                    <i class="fa fa-2x fa-gear rounded-leaf bg-epsilon m-3"/>
+                </t>
+              <h3>En Curso</h3>
+            </div>
+
+
+          </div>
+        </div>
+      </section>
+
+    
+
+      <section class="s_features pt16 pb16">
+        <div class="container">
+            <t t-set="style1" t-value="'background-color:white;color:black'" />
+            <t t-set="style2" t-value="'background-color:white;color:black'" />
+            <t t-set="style3" t-value="'background-color:white;color:black'" />
+            <t t-set="style4" t-value="'background-color:white;color:black'" />
+            <t t-set="style5" t-value="'background-color:white;color:black'" />
+            <t t-set="style6" t-value="'background-color:white;color:black'" />
+            <t t-set="style7" t-value="'background-color:white;color:black'" />
+            <t t-set="style8" t-value="'background-color:white;color:black'" />
+            <t t-set="style9" t-value="'background-color:white;color:black'" />
+            <t t-set="style10" t-value="'background-color:white;color:black'" />
+            <t t-set="style11" t-value="'background-color:white;color:black'" />
+            <t t-set="style12" t-value="'background-color:white;color:black'" />
+            <t t-set="style13" t-value="'background-color:white;color:black'" />
+            <t t-set="style14" t-value="'background-color:white;color:black'" />
+            <t t-set="style15" t-value="'background-color:white;color:black'" />
+            <t t-set="style16" t-value="'background-color:white;color:black'" />
+            <t t-set="style17" t-value="'background-color:white;color:black'" />
+            <t t-set="style1" t-value="'background-color:blue;color:white'" />
+            <t t-if="(doc.state_avance>=2)"><t t-set="style2" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=3)"><t t-set="style3" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=4)"><t t-set="style4" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=5)"><t t-set="style5" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=6)"><t t-set="style6" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=7)"><t t-set="style7" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=8)"><t t-set="style8" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=9)"><t t-set="style9" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=10)"><t t-set="style10" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=11)"><t t-set="style11" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=12)"><t t-set="style12" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=13)"><t t-set="style13" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=14)"><t t-set="style14" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=15)"><t t-set="style15" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=16)"><t t-set="style16" t-value="'background-color:blue;color:white'" /></t>
+            <t t-if="(doc.state_avance>=17)"><t t-set="style17" t-value="'background-color:blue;color:white'" /></t>
+
+
+        <div class="row">
+            <div class="pt16 pb16 text-center  col-lg-2"  t-att-style="style1" >                
+                <h4>1. Solicitud de convenio</h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style2" >
+                <h4>2. Solicitud enviada</h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style3" >              
+                <h4>3. Solicitud en Revision </h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style6" >               
+                <h4>4. Solicitud Aprobada</h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style7" >                
+                <h4>5. Plan de pago y fianzas en elaboracion</h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style8" >
+                <h4>6. Aprobar/Observar plan de pago y fianzas</h4>
+            </div>
+            
+        </div>
+
+
+        <div class="row">
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style9" >
+                <h4>7. Plan de pago y fianzas aprobado</h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style10" >              
+                <h4>8. Convenio en elaboracion 7</h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style11" >               
+                <h4>9. Aprobar/Observar convenio</h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style12" >                
+                <h4>10. Convenio aprobado por el titular</h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style13" >
+                <h4>11. Convenio en revision MARN</h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style14" >              
+                <h4>12. Convenio aprobado por el MARN</h4>
+            </div>
+            
+        </div>
+        <div class="row">
+            
+            
+        </div>
+        <div class="row">
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style15" >               
+                <h4>13. Remitir comprobante de pago y fianza para revision</h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style15" >                
+                <h4>13.1. Comprobante de pago y fianza en revision.</h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style16" >                
+                <h4>14. Programacion de firma de convenio</h4>
+            </div>
+            <div class="pt16 pb16 text-center  col-lg-2" t-att-style="style17" >
+                <h4>15. Convenio Firmado</h4>
+            </div>
+        </div>
+
+
+        </div>
+      </section>
+      <section>
+        <form action="/website_form/" method="post" class="s_website_form container-fluid mt32" enctype="multipart/form-data" data-model_name="fiaes.compensacion.action"  data-success_page="/compensacion/procesos">
+            <input type="hidden" name="state"/>
+            <input type="hidden" name="proceso_id"/>
+            <span id="val_proceso_id"  t-field="doc.id"  />
+            <script>
+                function sendValoresObservar(){
+                    $("input[name='proceso_id']").val($("#val_proceso_id").html());
+                    $("input[name='state']").val('Plan');
+                }
+                function sendValoresAprobar(){
+                    $("input[name='proceso_id']").val($("#val_proceso_id").html());
+                    $("input[name='state']").val('PlanAprobadoTitular');
+                }
+                function sendValoresObservarConvenio(){
+                    $("input[name='proceso_id']").val($("#val_proceso_id").html());
+                    $("input[name='state']").val('Plan');
+                }
+                function sendValoresAprobarConvenio(){
+                    $("input[name='proceso_id']").val($("#val_proceso_id").html());
+                    $("input[name='state']").val('ConvenioAprobadoTitular');
+                }
+            </script>
+           
+            <t t-if="doc.state=='PlanTitular'">
+                                <div class="form-group row">
+                                    <input type="text" name="comentario"/>
+                                </div>
+                                <input type="hidden" name="proceso_id"/>
+                                <div class="form-group row">
+                                    <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
+                                        <button class="btn btn-primary btn-lg o_website_form_send o_default_snippet_text" onclick="sendValoresAprobar();">Aprobar</button>
+                                        <button class="btn btn-primary btn-lg o_website_form_send o_default_snippet_text" onclick="sendValoresObservar();" >Observar</button>
+                                    </div>
+                                </div>
+                            </t>
+
+            <t t-if="doc.state=='ConvenioTitular'">
+                                <div class="form-group row">
+                                    <input type="text" name="comentario"/>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
+                                        <button class="btn btn-primary btn-lg o_website_form_send o_default_snippet_text" onclick="sendValoresObservarConvenio();">Aprobar</button>
+                                        <button class="btn btn-primary btn-lg o_website_form_send o_default_snippet_text" onclick="sendValoresAprobarConvenio();" >Observar</button>
+                                    </div>
+                                </div>
+                            </t>
+            
+        </form>
+      </section>
+
+
+      <section class="s_tabs">
+        <div class="container">
+          <div class="row s_col_no_bgcolor">
+            <div class="pt48 pb48 col-lg-12">
+              <div class="card bg-white">
+                <div class="card-header">
+                  <ul class="nav nav-tabs card-header-tabs" role="tablist">
+
+                    <li class="nav-item">
+                      <a class="nav-link o_default_snippet_text active show" id="nav_tabs_link_1573085967110_6" data-toggle="tab" href="#nav_tabs_content_1573085967110_6" role="tab" aria-controls="nav_tabs_content_1573085967110_6" aria-selected="true" data-original-title="" title="" aria-describedby="tooltip349613">Datos generales</a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a class="nav-link o_default_snippet_text" id="nav_tabs_link_1573085967111_7" data-toggle="tab" href="#nav_tabs_content_1573085967111_7" role="tab" aria-controls="nav_tabs_content_1573085967111_7" aria-selected="false" data-original-title="" title="" aria-describedby="tooltip641319">Documentos legales</a>
+                    </li>
+
+                    <!--li class="nav-item">
+                      <a class="nav-link o_default_snippet_text" id="nav_tabs_link_1573085967111_8" data-toggle="tab" href="#nav_tabs_content_1573085967111_8" role="tab" aria-controls="nav_tabs_content_1573085967111_8" aria-selected="false" data-original-title="" title="" aria-describedby="tooltip205389">Titular</a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a class="nav-link o_default_snippet_text" id="nav_tabs_link_1573085967111_9" data-toggle="tab" href="#nav_tabs_content_1573085967111_9" role="tab" aria-controls="nav_tabs_content_1573085967111_9" aria-selected="false" data-original-title="" title="" aria-describedby="tooltip205389">Proyecto</a>
+                    </li-->
+                    <t t-if="(doc.state_avance>=7)">
+                        <li class="nav-item">
+                            <a class="nav-link o_default_snippet_text" id="nav_tabs_link_1573085967111_10" data-toggle="tab" href="#nav_tabs_content_1573085967111_10" role="tab" aria-controls="nav_tabs_content_1573085967111_10" aria-selected="false" data-original-title="" title="" aria-describedby="tooltip205389">Plan de desembolsos</a>
+                        </li>
+                    </t>
+                    
+                    <t t-if="(doc.state_avance>=10)">
+                        <li class="nav-item">
+                            <a class="nav-link o_default_snippet_text" id="nav_tabs_link_1573085967111_11" data-toggle="tab" href="#nav_tabs_content_1573085967111_11" role="tab" aria-controls="nav_tabs_content_1573085967111_11" aria-selected="false" data-original-title="" title="" aria-describedby="tooltip205389">Convenio</a>
+                        </li>
+                    </t>
+
+                  </ul>
+                </div>
+                <div class="card-body tab-content">
+                  <div class="tab-pane fade active show" id="nav_tabs_content_1573085967110_6" role="tabpanel" aria-labelledby="nav_tabs_link_1573085967110_6">
+                    
+                    <t t-if="doc">
+                        <h3>Datos del Titutlar</h3>
+                        <p><span>Razon social:</span><span id="sol_name"  t-field="doc.name"  /></p>
+                        <p><span>Nombre comercial o abreviatura:</span><span id="sol_nombre_comercial"  t-field="doc.nombre_comercial"  /></p>
+                        <p><span>Tipo:</span><span id="sol_tipo"  t-field="doc.tipo"  /></p>
+                        <p><span>Representante legal:</span><span id="sol_representante_legal"  t-field="doc.representante_legal"  /></p>
+                        <p><span>NIT de la empresa:</span><span id="sol_empresa_nit"  t-field="doc.empresa_nit"  /></p>
+                        <p><span>NIT del representante legal:</span><span id="sol_representante_nit"  t-field="doc.representante_nit"  /></p>
+                        <p><span>DUI del representante legal:</span><span id="sol_representante_dui"  t-field="doc.representante_dui"  /></p>
+                        <p><span>Apoderado:</span><span id="sol_apoderado"  t-field="doc.apoderado"  /></p>
+                        <p><span>NIT del apoderado:</span><span id="sol_apoderado_nit"  t-field="doc.apoderado_nit"  /></p>
+                        <p><span>DUI del apoderado:</span><span id="sol_apoderado_dui"  t-field="doc.apoderado_dui"  /></p>
+                        <p><span>Departamento donde esta la empresa:</span><span id="sol_departamento_id"  t-field="doc.departamento_id"  /></p>
+                        <p><span>Municipio donde esta la empresa:</span><span id="sol_municipio_id"  t-field="doc.municipio_id"  /></p>
+                        <p><span>Nacionalidad del representante:</span><span id="sol_representante_nacionalidad"  t-field="doc.representante_nacionalidad"  /></p>
+                        <p><span>Profesion del representante:</span><span id="sol_representante_profesion"  t-field="doc.representante_profesion"  /></p>
+                        <p><span>Fecha de nacimiento del representante legal:</span><span id="sol_representante_nacimeinto"  t-field="doc.representante_nacimeinto"  /></p>
+                        <p><span>Contacto de la empresa:</span><span id="sol_contacto"  t-field="doc.contacto"  /></p>
+                        <p><span>Email del contacto:</span><span id="sol_contacto_email"  t-field="doc.contacto_email"  /></p>
+                        
+                        <h3>Datos del Proyecto</h3>
+                        <p><span>Proyecto:</span><span id="sol_proyecto_name"  t-field="doc.proyecto_name"  /></p>
+                        <p><span>Descripcion:</span><span id="sol_proyecto_descripcion"  t-field="doc.proyecto_descripcion"  /></p>
+                        <p><span>Numero de resolucion:</span><span id="sol_proyecto_resolucion"  t-field="doc.proyecto_resolucion"  /></p>
+                        <p><span>NFA Correlativo:</span><span id="sol_proyecto_resolucion_nfa"  t-field="doc.proyecto_resolucion_nfa"  /></p>
+                        <p><span>Fecha de resolucion:</span><span id="sol_proyecto_resolucion_fecha"  t-field="doc.proyecto_resolucion_fecha"  /></p>
+                        <p><span>Direccion del proyecto:</span><span id="sol_proyecto_direccion"  t-field="doc.proyecto_direccion"  /></p>
+                        <p><span>Departamento donde esta el proyecto:</span><span id="sol_proyecto_departamento_id"  t-field="doc.proyecto_departamento_id.id"  /></p>
+                        <p><span>Municipio donde esta el proyecto:</span><span id="sol_proyecto_municipio_id"  t-field="doc.proyecto_municipio_id.id"  /></p>
+                        <p><span>Descripción de la afectación del proyecto:</span><span id="sol_proyecto_afectacion"  t-field="doc.proyecto_afectacion"  /></p>
+                        <p><span>Vencimiento de la resolución:</span><span id="sol_proyecto_vencimiento"  t-field="doc.proyecto_vencimiento"  /></p>
+                        <p><span>Valor de la compensación:</span><span id="sol_proyecto_valor"  t-field="doc.proyecto_valor"  /></p>
+                        
+                </t>
+
+
+
+                  </div>
+                  <div class="tab-pane fade" id="nav_tabs_content_1573085967111_7" role="tabpanel" aria-labelledby="nav_tabs_link_1573085967111_7">
+                    
+
+                    <t t-if="doc">
+                        <p><span>Escritura Pública de constitución</span>
+                            <t t-if="doc and doc.legal_escritura">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_escritura&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>Documento de modificación, rectificación, transformación o fusión de la entidad</span>
+                            <t t-if="doc and doc.legal_modificacion">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_modificacion&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>Credencial de Junta Directiva o del Representante Legal</span>
+                            <t t-if="doc and doc.legal_credencial">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_credencial&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>Constancia de renovación de matrícula de empresa vigente</span>
+                            <t t-if="doc and doc.legal_renovacion">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_renovacion&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>DUI/Pasaporte/Carnet de residente del Representante Legal</span>
+                            <t t-if="doc and doc.legal_representante_dui">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_representante_dui&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>NIT del Representante Legal</span>
+                            <t t-if="doc and doc.legal_representante_nit">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_representante_nit&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>NIT de la sociedad</span>
+                            <t t-if="doc and doc.legal_sociedad_nit">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_sociedad_nit&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>IVA - Registro de contribuyente</span>
+                            <t t-if="doc and doc.legal_iva">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_iva&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>Certificación del punto de acta de autorización del Representante Legal</span>
+                            <t t-if="doc and doc.legal_certificacion">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_certificacion&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>Poder a nombre de la persona natural que se faculta para la firma y representación</span>
+                            <t t-if="doc and doc.legal_poder">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_poder&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>DUI/Pasaporte/Carnet de residente del Apoderado</span>
+                            <t t-if="doc and doc.legal_apoderado_dui">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_apoderado_dui&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>NIT del apoderado</span>
+                            <t t-if="doc and doc.legal_apoderado_nit">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_apoderado_nit&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>Ley de creación de la entidad</span>
+                            <t t-if="doc and doc.legal_ley_creacion">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_ley_creacion&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>Publicación del Diario Oficial del Acuerdo de nombramiento del Representante Legal</span>
+                            <t t-if="doc and doc.legal_representante_diario">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_representante_diario&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>DUI/Pasaporte/Carnet de residente de la persona natural</span>
+                            <t t-if="doc and doc.legal_persona_dui">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_persona_dui&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                        <p><span>NIT de la persona natural</span>
+                            <t t-if="doc and doc.legal_persona_nit">
+                                <a t-attf-href="/web/content?model=fiaes.compensacion.proceso&amp;field=legal_persona_nit&amp;id={{ doc.id }}">Descargar</a>
+                            </t>
+                        </p>
+                    </t>
+                  </div>
+                  <div class="tab-pane fade" id="nav_tabs_content_1573085967111_8" role="tabpanel" aria-labelledby="nav_tabs_link_1573085967111_8">
+                    
+                  </div>
+                  
+                  <div class="tab-pane fade" id="nav_tabs_content_1573085967111_9" role="tabpanel" aria-labelledby="nav_tabs_link_1573085967111_9">
+                    
+                  </div>
+
+                  <div class="tab-pane fade" id="nav_tabs_content_1573085967111_10" role="tabpanel" aria-labelledby="nav_tabs_link_1573085967111_10">
+                        <t t-if="plan">
+                             
+
+                            <p><span>Monto:</span><span t-field="plan.monto"  /></p>
+                            <t t-foreach="plan.fase_ids" t-as="fase"> 
+                                <h2><span>Fase:</span><span t-field="fase.name"  /></h2>
+                                <p><span>Monto:</span><span t-field="fase.monto"  /></p>
+                                <p><span>Plazo (meses):</span><span t-field="fase.plazo"  /></p>
+                                <p><span>Frecuencia (meses):</span><span t-field="fase.frecuencia"  /></p>
+                                <p><span>Fecha primer pago:</span><span t-field="fase.fecha1"  /></p>
+                                <p><span>Monto primer pago:</span><span t-field="fase.monto1"  /></p>
+                                <table class="table table-sm o_main_table">
+                                <tr style="background-color:gray">
+                                    <td>Cuota</td>
+                                    <td>Fecha</td>
+                                    <td>Fecha pago</td>
+                                    <td>Monto</td>
+                                    <td>Estado</td>
+                                    <td>Fianza-Monto</td>
+                                    <td>Fianza-Plazo</td>
+                                    <td>Fianza-Vencimiento</td>
+                                </tr>
+                                <t t-foreach="fase.desembolso_ids" t-as="pago"> 
+                                    <tr > 
+                                    <td><span t-field="pago.name"  /> </td>
+                                    <td><span t-field="pago.fecha"  /> </td>
+                                    <td><span t-field="pago.fechapago"  /> </td>
+                                    <td><span t-field="pago.monto"  /> </td>
+                                    <td><span t-field="pago.state"  /> </td>
+                                    <td><span t-field="pago.fianza_monto"  /> </td>
+                                    <td><span t-field="pago.fianza_plazo"  /> </td>
+                                    <td><span t-field="pago.fianza_vencimiento"  /> </td>
+                                    </tr> 
+                                </t> 
+                                </table>
+
+                            </t>
+
+
+                            
+                    </t>
+
+
+
+
+                  </div>
+
+                  <div class="tab-pane fade" id="nav_tabs_content_1573085967111_11" role="tabpanel" aria-labelledby="nav_tabs_link_1573085967111_11">
+                            
+                                <t t-call="fiaes.report_template_convenio_document" t-lang="lang"/>
+                         
+                    
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </t> 
+</template>
+
+
+
+<template id ="report_template_convenio_document" >
+
+    <div class="page">
+        <body lang="es-SV" link="#0000ff" vlink="#800000" dir="ltr" ><p lang="es-ES" class="western" style="margin-right: -0.16in; line-height: 115%">
+            
+            <font face="Arial, serif"><font size="2" align="justify" style="font-size: 10pt;font-weight: bold;magin-left:auto;margin-right:auto;justify-content:center"><u>CONVENIO
+                PARA EL CUMPLIMIENTO DE LA COMPENSACIÓN</u></font></font><font face="Arial, serif"><font size="2" style="font-size: 9pt"><u>
+                </u></font></font><font face="Arial, serif"><font size="2" align="justify"  style="font-size: 10pt;font-weight: bold;magin-left:auto;margin-right:auto;margin-right:auto;justify-content:center"><u>AMBIENTAL ENTRE
+                    EL FONDO DE LA INICIATIVA PARA LAS AMÉRICAS (FIAES) Y
+                    <span t-field="doc.tipo"/>
+                    <span t-field="doc.nombre_comercial"/>
+                </u></font></font>
+                </p>   
+    
+                    
+    
+        <p lang="es-ES" class="western" align="justify" style="margin-right: -0.16in; line-height: 115%">
+                <br/>
+                </p> 
+                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                        <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span lang="es-ES"><b>NOSOTROS:
+                        JORGE ALBERTO OVIEDO MACHUCA,</b></span></font><font face="Arial, serif"><span lang="es-ES">
+                        mayor de edad, ingeniero agrónomo, del domicilio de Santa Tecla,
+                        departamento de La Libertad, con Documento Único de Identidad número
+                        cero cero dos cero tres uno cinco nueve- cuatro y Número de
+                        Identificación Tributaria cero seis uno cuatro- dos tres cero uno
+                        seis nueve- uno cero tres- cuatro; actuando en calidad de Apoderado
+                        General Administrativo con Cláusulas Especiales del </span></font><font face="Arial, serif"><span lang="es-ES"><b>FONDO
+                        DE LA INICIATIVA PARA LAS AMÉRICAS</b></span></font><font face="Arial, serif"><span lang="es-ES">,
+                        que se abrevia </span></font><font face="Arial, serif"><span lang="es-ES"><b>“FIAES”,</b></span></font><font face="Arial, serif"><span lang="es-ES">
+                        con sede y domicilio en la ciudad de Santa Tecla, departamento de La
+                        Libertad, con Número de Identificación Tributaria cero seis uno
+                        cuatro- tres cero cero seis nueve tres- uno cero seis- dos; que en
+                        adelante mi representado se denominará: </span></font><font face="Arial, serif"><span lang="es-ES"><b>“FIAES”</b></span></font><font face="Arial, serif"><span lang="es-ES">
+                        y/o </span></font><font face="Arial, serif"><span lang="es-ES"><b>“El
+                        Fondo”</b></span></font><font face="Arial, serif"><span lang="es-ES">;
+                        y por otra parte, </span></font><font face="Arial, serif"><b>
+                        <span t-field="doc.representante_legal"/>
+                        </b></font><font face="Arial, serif"> mayor
+                        de edad, <span t-field="doc.representante_profesion"/>
+                        del domicilio de <span t-field="doc.municipio_id"/>
+                        departamento de <span t-field="doc.departamento_id"/>, con Documento Único de Identidad
+                        número <span t-field="doc.apoderado_dui_letras"/> y Número de
+                        Identificación Tributaria <span t-field="doc.apoderado_nit_letras"/>; </font><font face="Arial, serif">actuando
+                        en calidad de Apoderada Especial de la  <span t-field="doc.tipo"/>  </font><font face="Arial, serif"><b><span t-field="doc.nombre_comercial"/>
+                       <span t-field="doc.tipo"/> </b></font><font face="Arial, serif">que
+                        se puede abreviar</font><font face="Arial, serif"><b> <span t-field="doc.nombre_comercial"/> </b></font><font face="Arial, serif">del domicilio de la
+                        ciudad de <span t-field="doc.proyecto_municipio_id"/>, departamento de <span t-field="doc.proyecto_departamento_id"/>, de
+                        nacionalidad <span t-field="doc.representante_nacionalidad"/>, con Número de Identificación Tributaria
+                        <span t-field="doc.empresa_nit_letras"/>
+                        tres- uno</font><font face="Arial, serif">; que en adelante mi
+                        representada se denominará: </font><font face="Arial, serif"><b><span t-field="doc.proyecto_name"/></b></font><font face="Arial, serif"> y/o </font><font face="Arial, serif"><b>“El
+                        Titular”;</b></font><font face="Arial, serif"> y en el transcurso
+                        del presente Convenio cuando se haga referencia en común, se nos
+                        denominará </font><font face="Arial, serif"><b>“las Partes”,</b></font><font face="Arial, serif">
+                        acordamos suscribir el presente Convenio así:</font><font face="Arial, serif">
+                        </font></font></font>
+                        
+                        </p>
+                   
+                        <p>
+                            <strong>Considerando:</strong>   
+                        </p>
+                        <ol type="I">
+                                <p class="western" align="justify" style="margin-right: -0.16in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"> <strong>I. </strong>Que
+                                por Decreto Legislativo Nº 233 de fecha 2 de marzo de 1998,
+                                publicado en Diario Oficial número 79, Tomo número 339, de fecha 4
+                                de mayo del mismo año, se emitió la Ley del Medio Ambiente, que en
+                                su artículo 18 determina que la evaluación del impacto ambiental
+                                es un conjunto de acciones y procedimientos que aseguran que las
+                                actividades, obras o proyectos que tengan un impacto potencial
+                                negativo en el ambiente o en la calidad de vida de la población, se
+                                sometan desde la fase de pre-inversión a los procedimientos que
+                                identifiquen y cuantifiquen dichos impactos y se recomienden las
+                                medidas que los prevengan, atenúen, compensen o potencien, según
+                                sea el caso, seleccionando la alternativa que mejor garantice la
+                                protección del medio ambiente.</font></font></font></p>  
+                            </ol>
+                            <p class="western" align="justify" style="margin-left: 0.5in; margin-right: -0.16in; margin-top: 0.17in; font-weight: normal; line-height: 115%">
+                                    <br/>
+                                    
+                                    </p>
+                                    <ol type="I" start="2">
+                                        <p class="western" align="justify" style="margin-right: -0.16in; font-weight: normal; line-height: 115%">
+                                        <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">
+                                        <strong>II. </strong> Que la mencionada ley en su artículo 5, define como compensación
+                                        ambiental al </font><font face="Arial, serif"><i>“conjunto de
+                                        mecanismos que el Estado y la población puede adoptar conforme a la
+                                        Ley para reponer o compensar los impactos inevitables que cause su
+                                        presencia en el medio ambiente. Las compensaciones pueden ser
+                                        efectuadas en forma directa o a través de agentes especializados,
+                                        en el sitio del impacto, en zonas aledañas o en zonas más
+                                        propicias para su reposición o recuperación.”</i></font></font></font></p>
+                                    </ol>
+    
+                <p class="western" align="justify" style="margin-left: 0.49in; margin-right: -0.16in; margin-top: 0.17in; font-weight: normal; line-height: 115%">
+                        <br/>
+                        
+                        </p>
+                        <ol type="I" start="3">
+                            <p class="western" align="justify" style="margin-right: -0.16in; font-weight: normal; line-height: 115%">
+                            <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">
+                            <strong>III. </strong> Que el Ministerio de Medio Ambiente y Recursos Naturales (MARN) y el
+                            Fondo de la Iniciativa para las Américas, (FIAES), han suscrito un
+                            Convenio de Cooperación, en adelante el “Convenio MARN-FIAES”,
+                            mediante el cual se establecen los mecanismos necesarios para
+                            articular el cumplimiento de las medidas de compensación ambiental
+                            establecidas dentro de los procesos de evaluación ambiental
+                            llevados a cabo por el MARN. </font></font></font>
+                            </p>
+    
+                        </ol>
+                        <p class="western" align="justify" style="margin-left: 0.49in; margin-right: -0.16in; margin-top: 0.17in; font-weight: normal; line-height: 115%">
+                        <br/>
+                        
+                        </p>
+                        <ol type="I" start="4">
+                            <p class="western" align="justify" style="margin-right: -0.16in; font-weight: normal; line-height: 115%">
+                            <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">
+                            <strong>IV. </strong> Que conforme el referido Convenio MARN-FIAES, el MARN es la institución
+                            encargada de identificar las actividades, obras o proyectos en los
+                            que se requiere el desarrollo de actividades de compensación
+                            ambiental, correspondiéndole además, tanto la obligación de
+                            determinar las medidas de compensación, como asegurar que los
+                            titulares de las actividades, obras o proyectos dentro del Proceso
+                            de Evaluación Ambiental, en lo que respecta al cumplimiento de la
+                            medida de compensación ambiental y de acuerdo al monto y plazo
+                            establecido por el Ministerio, suscriban Convenio con el FIAES, y
+                            den cumplimiento a las demás obligaciones que la citada cartera
+                            ministerial le imponga en cumplimiento de las atribuciones que le
+                            confiere la ley.</font></font></font></p>
+                        </ol>
+    
+    
+                        
+                        <p align="justify" style="margin-left: 0.5in; margin-bottom: 0.11in; font-weight: normal; line-height: 108%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <ol type="I" start="5">
+                                    <p class="western" align="justify" style="margin-right: -0.16in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">
+                                    <strong>V. </strong> Que conforme a las facultades legales que corresponden al MARN y en
+                                    virtud de las obligaciones adquiridas por el FIAES en el marco del
+                                    Convenio MARN-FIAES, es necesario suscribir el presente Convenio a
+                                    fin de regular las condiciones vinculadas con la transferencia de
+                                    aquellos recursos que, conforme a los lineamientos del MARN, deban
+                                    destinarse para la compensación ambiental.</font></font></font></p>
+                                </ol>
+                                <p class="western" align="justify" style="margin-right: -0.16in; font-weight: normal; line-height: 115%">
+                                <br/>
+                                
+                                </p>
+                                <ol type="I" start="6">
+                                    <p align="justify" style="margin-right: -0.16in; margin-bottom: 0.11in; font-weight: normal; line-height: 108%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span lang="es-ES"><strong>VI. </strong> Que
+                                    la <span t-field="doc.tipo"/> </span></font><font face="Arial, serif"><b><span style="font-weight:bold" t-field="doc.nombre_comercial"/> </b></font><font face="Arial, serif"><span lang="es-ES">Titular
+                                    del proyecto denominado:<span style="font-weight:bold" t-field="doc.proyecto_name"/> </span></font><font face="Arial, serif"><span lang="es-ES"><b>“</b></span></font><font face="Arial, serif"><b>
+                                    </b></font><font face="Arial, serif"><span lang="es-ES"><b>”,</b></span></font><font face="Arial, serif"><span lang="es-ES">
+                                    </span></font><font face="Arial, serif"> </font><font face="Arial, serif"><span lang="es-ES">
+                                     </span></font><sup><font face="Arial, serif"><span lang="es-ES">1</span></font></sup><font face="Arial, serif"><span lang="es-ES">/</span></font><sub><font face="Arial, serif"><span lang="es-ES">2</span></font></sub><font face="Arial, serif"><span lang="es-ES">
+                                    <span t-field="doc.proyecto_municipio_id"/> departamento de <span t-field="doc.proyecto_departamento_id"/></span></font><font face="Arial, serif"><span lang="es-ES"><b>NFA183-2017;</b></span></font><font face="Arial, serif"><span lang="es-ES">
+                                    debe celebrar el presente Convenio a fin de dar cumplimiento a la
+                                    medida de compensación ambiental, establecida en el Proceso de
+                                    Evaluación Ambiental del referido proyecto. </span></font></font></font>
+                                    </p>
+                                </ol>
+                                <p lang="es-ES" align="justify" style="margin-left: 0.39in; margin-right: -0.16in; text-indent: -0.1in; margin-bottom: 0.11in; font-weight: normal; line-height: 108%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <ol type="I" start="7">
+                                    <p class="western" align="justify" style="margin-right: -0.16in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span lang="es-ES"><strong>VII. </strong>Que,
+                                    para cumplir con la medida de compensación ambiental de acuerdo a
+                                    los romanos anteriores, el Titular del Proyecto suscribe el presente
+                                    Convenio con el FIAES en el que se fijan las condiciones y
+                                    responsabilidades de las partes.</span></font></font></font></p>
+                                </ol>
+                                <p lang="es-ES" class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; line-height: 115%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p lang="es-ES" class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; line-height: 115%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span lang="es-ES"><b>POR
+                                TANTO:</b></span></font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">En
+                                uso de sus facultades, las Partes acordamos suscribir el presente
+                                </font><font face="Arial, serif"><b>“</b></font><font face="Arial, serif"><span lang="es-ES"><b>CONVENIO
+                                PARA EL CUMPLIMIENTO DE LA COMPENSACIÓN AMBIENTAL”</b></span></font><font face="Arial, serif"><span lang="es-ES">,
+                                </span></font><font face="Arial, serif">el cual se regirá por las
+                                Cláusulas siguientes:</font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span lang="es-ES"><b>PRIMERA:
+                                OBJETO DEL CONVENIO</b></span></font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span lang="es-ES">Establecer
+                                las condiciones para cumplir con la medida de compensación ambiental
+                                requerida por el Ministerio de Medio Ambiente y Recursos Naturales,
+                                en adelante “MARN” y establecida en el Proceso de Evaluación
+                                Ambiental, correspondiente al proyecto denominado: <span style="font-weight:bold" t-field="doc.proyecto_name"/> </span></font><font face="Arial, serif"><span lang="es-ES"><b><span style="font-weight:bold" t-field="doc.nombre_comercial"/></b></span></font><font face="Arial, serif"><b> </b></font><font face="Arial, serif"><span lang="es-ES"><b>”,</b></span></font><font face="Arial, serif"><span lang="es-ES">
+                                cuyo Titular es la Sociedad </span></font><font face="Arial, serif"><b>
+                                </b></font><font face="Arial, serif"><span lang="es-ES"><b>,
+                                </b></span></font><font face="Arial, serif"><span lang="es-ES">la
+                                cual tiene un costo de </span></font><font face="Arial, serif"><span lang="es-ES"><b>
+                                <span t-field="doc.proyecto_valor_letras"/>
+                                </b></span></font><font face="Arial, serif"><span lang="es-ES">
+                                </span></font><font face="Arial, serif"><span lang="es-ES"><b>DE LOS
+                                ESTADOS UNIDOS DE AMÉRICA</b></span></font><font face="Arial, serif"><span lang="es-ES">
+                                </span></font><font face="Arial, serif"><span lang="es-ES"><b>(US$<span style="font-weight:bold" t-field="doc.proyecto_valor"/>).</b></span></font><font face="Arial, serif"><b>
+                                </b></font></font></font>
+                                </p>
+                                <p lang="es-ES" class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; line-height: 115%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span lang="es-ES"><b>SEGUNDA:
+                                RESPONSABILIDAD DE LAS PARTES</b></span></font></font></font></p>
+                                <ol type="A">
+                                    <p class="western" align="left" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span lang="es-ES"><b> <strong>A. </strong> DEL
+                                    FIAES</b></span></font></font></font></p>
+                                </ol>
+                                <ol>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span>1. </span>Ingresar
+                                    los fondos correspondientes a la medida de compensación ambiental
+                                    en la cuenta corriente a nombre de: FIAES/FONDO DE COMPENSACIÓN
+                                    AMBIENTAL.</font></font></font></p>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span>2. </span>Remitir
+                                    al MARN en los primeros ocho (8) días hábiles después de su
+                                    firma, copia del presente Convenio y sus anexos.</font></font></font></p>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span>3. </span>Cumplir
+                                    con sus atribuciones relacionadas con la administración de la
+                                    cuenta corriente a nombre de: FIAES/FONDO DE COMPENSACIÓN
+                                    AMBIENTAL.</font></font></font></p>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span>4. </span>Destinar
+                                    el monto de la medida de compensación ambiental que reciba de la
+                                    <span t-field="doc.tipo"/> </font><font face="Arial, serif"><span t-field="doc.nombre_comercial"/></font><font face="Arial, serif">,</font><font face="Arial, serif"><span lang="es-ES"><b>
+                                    </b></span></font><font face="Arial, serif">estrictamente en los
+                                    programas, presupuesto operativo y administrativo de FIAES y demás
+                                    actividades vinculadas con el cumplimiento de su mandato legal.</font></font></font></p>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span>5. </span>Mientras
+                                    los fondos no sean utilizados en la ejecución del programa, FIAES
+                                    podrá invertir los fondos de este Convenio en instrumentos
+                                    financieros que generen rentabilidad de acuerdo a sus políticas de
+                                    inversión. La rentabilidad obtenida por este medio se usará de
+                                    conformidad a lo expresado en la cláusula segunda, literal A,
+                                    numeral cuatro de este Convenio.</font></font></font></p>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span>6. </span>Ejecutar
+                                    la medida de compensación ambiental objeto del Convenio de
+                                    conformidad a lo establecido en el mismo.</font></font></font></p>
+                                </ol>
+                                <ol type="A" start="2">
+                                    <p align="justify" style="margin-right: -0.16in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><span lang="es-ES"><b>DE
+                                    </b></span></font><font face="Arial, serif"><b><span style="font-weight:bold" t-field="doc.proyecto_name"/></b></font><font face="Arial, serif"><b>
+                                    </b></font></font></font>
+                                    </p>
+                                </ol>
+                                <p align="justify" style="margin-right: -0.16in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Aportar
+                                para la ejecución de la compensación ambiental del proyecto
+                                denominado </font><font face="Arial, serif"><span lang="es-ES"><b>“</b></span></font><font face="Arial, serif"><b><span t-field="doc.proyecto_name"/></b></font><font face="Arial, serif"><span lang="es-ES"><b>”,</b></span></font><font face="Arial, serif"><span lang="es-ES">
+                                cuyo Titular es la </span></font><font face="Arial, serif"><b><span style="font-weight:bold" t-field="doc.proyecto_name"/>
+                                </b></font><font face="Arial, serif"><span lang="es-ES"><b>,</b></span></font><font face="Arial, serif"><span lang="es-ES">
+                                la cantidad de</span></font><font face="Arial, serif"><span lang="es-ES"><b>
+                                <span t-field="doc.proyecto_valor_letras"/>
+                                </b></span></font><font face="Arial, serif"><span lang="es-ES">
+                                </span></font><font face="Arial, serif"><span lang="es-ES"><b>DE LOS
+                                ESTADOS UNIDOS DE AMÉRICA</b></span></font><font face="Arial, serif"><span lang="es-ES">
+                                </span></font><font face="Arial, serif"><span lang="es-ES"><b>(US$<span style="font-weight:bold" t-field="doc.proyecto_valor"/>),
+                                </b></span></font><font face="Arial, serif">con los cuales queda
+                                cubierta la parte de compensación ambiental a favor del FIAES y que
+                                aparece descrita en la nota del Ministerio de Medio Ambiente y
+                                Recursos Naturales con referencia:
+                                </font><font face="Arial, serif"><span lang="es-ES"><b>MARN-DEC-GEA-NFA183-2017-1530-2019,
+                                </b></span></font><font face="Arial, serif">de fecha<span t-field="doc.x_letras"/></font><font face="Arial, serif"><b>
+                                </b></font><font face="Arial, serif"></font><font face="Arial, serif"><span lang="es-ES">Este
+                                monto es entregado por el Titular mediante un solo desembolso por
+                                medio de cheque certificado a nombre de FIAES/FONDO DE COMPENSACIÓN
+                                AMBIENTAL a la firma de este convenio.</span></font></font></font></p>
+                                <p lang="es-ES" align="justify" style="margin-left: 0.5in; margin-right: -0.16in; font-weight: normal; line-height: 115%">
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><b>TERCERA:
+                                ÁREAS TEMÁTICAS</b></font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Los
+                                fondos de compensación ambiental recibidos del Titular se invertirán
+                                en las siguientes áreas temáticas en forma congruente con la
+                                Política Nacional de Medio Ambiente, su Estrategia y Plan de Acción
+                                vigentes:</font></font></font></p>
+                                <ol>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Restauración
+                                    de ecosistemas y paisajes, incorporando la adaptación al cambio
+                                    climático.</font></font></font></p>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Protección,
+                                    conservación, mejoramiento, restauración y el uso racional de los
+                                    recursos naturales y el medio ambiente.</font></font></font></p>
+                                </ol>
+                                <p class="western" align="justify" style="margin-left: 0.5in; margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><b>CUARTA:
+                                COMUNICACIÓN ENTRE LAS PARTES</b></font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Toda
+                                comunicación en el marco del presente Convenio debe ser por escrito
+                                y notificada oficialmente a las partes que suscriben el presente
+                                Convenio. </font></font></font>
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; line-height: 115%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><b>QUINTA:
+                                ENLACES</b></font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Para
+                                todos los efectos de planificación, seguimiento, evaluación y
+                                revisión de las acciones y compromisos derivados del presente
+                                Convenio, la coordinación se hará a través de los siguientes
+                                enlaces:</font></font></font></p>
+                                <ol type="A">
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><b><strong>A. </strong>DEL
+                                    FIAES: JORGE ALBERTO OVIEDO MACHUCA</b></font></font></font></p>
+                                </ol>
+                                <ul>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Dirección:
+                                        12 Calle Ote., entre 9ª y 11 Av. Sur, No. 27-A, Colonia Utila,
+                                    Santa Tecla, La Libertad.</font></font></font></p>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Teléfonos:
+                                            2249-2900 Ext. 103 o 2249-2903</font></font></font></p>
+                                    <p class="western" align="left" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Correo
+                                    electrónico: 	</font><font color="#0000ff"><u><a class="western" href="mailto:jorge.oviedo@fiaes.org.sv"><font face="Arial, serif">jorge.oviedo@fiaes.org.sv</font></a></u></font><font color="#0000ff"><u><font color="#000000"><font face="Arial, serif">
+                                    </font></font></u></font><font face="Arial, serif">  </font></font></font>
+                                    </p>
+                                </ul>
+                                <ol type="A" start="2">
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><b><strong>B. </strong>DEL
+                                    TITULAR</b></font><font face="Arial, serif"><b>: </b></font><font face="Arial, serif"><b>RICARDO
+                                    GUITÉRREZ OLMEDO</b></font></font></font></p>
+                                </ol>
+                                <ul>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Dirección:	Residencial
+                                    Bosques de Santa Teresa, Calle El Amate, Block 9, #15, Santa Tecla,
+                                    La Libertad.</font></font></font></p>
+                                </ul>
+                                <ul>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.08in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Teléfono:
+                                                2525-3400</font></font></font></p>
+                                    <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Correo
+                                    electrónico: 	</font><font color="#0000ff"><u><a class="western" href="mailto:ricardo.gutierrez@sabores.com.sv"><font face="Arial, serif">ricardo.gutierrez@sabores.com.sv</font></a></u></font><font face="Arial, serif">
+                                    </font></font></font>
+                                    </p>
+                                </ul>
+                                <p class="western" align="justify" style="margin-left: 1.24in; margin-right: -0.16in; margin-bottom: 0.14in; line-height: 115%"><a name="_GoBack"></a>
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><b>SEXTA:
+                                INCUMPLIMIENTO</b></font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">El
+                                incumplimiento a las responsabilidades establecidas en el presente
+                                Convenio por parte </font><font face="Arial, serif">de </font><font face="Arial, serif"><span lang="es-ES">la
+                                    <span t-field="doc.tipo"/></span></font><font face="Arial, serif"><b><span style="font-weight:bold" t-field="doc.nombre_comercial"/></b></font><font face="Arial, serif"><span lang="es-ES"><b>, </b></span></font><font face="Arial, serif">dará
+                                derecho al FIAES a seguir el proceso administrativo y judicial que
+                                corresponda a fin de que el Titular cumpla con lo pactado en este
+                                Convenio; asimismo,</font><font face="Arial, serif"> se considerará
+                                como infracción a la medida de compensación ambiental establecida
+                                en el Proceso de Evaluación Ambiental del Proyecto denominado:</font><font face="Arial, serif"><b>
+                                </b></font><font face="Arial, serif"><span lang="es-ES"><b>“</b></span></font><font face="Arial, serif"><b><span style="font-weight:bold" t-field="doc.nombre_comercial"/>
+                                </b></font><font face="Arial, serif"><span lang="es-ES"><b>”,</b></span></font><font face="Arial, serif"><span lang="es-ES">
+                                </span></font><font face="Arial, serif">con los efectos
+                                sancionatorios que determine la Ley del Medio Ambiente.</font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><b>SÉPTIMA:
+                                TERMINACIÓN Y MODIFICACIÓN. </b></font></font></font>
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">El
+                                presente Convenio terminará por haber cumplido el Titular con la
+                                medida de compensación ambiental establecida en el mismo. </font></font></font>
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">El
+                                FIAES puede solicitar la terminación del presente Convenio por
+                                incumplimiento de las condiciones pactadas en el presente por parte
+                                del Titular.</font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">El
+                                presente Convenio podrá modificarse:</font><font face="Arial, serif"><b>
+                                </b></font><font face="Arial, serif">i) previo informe del MARN al
+                                FIAES; y en los casos que proceda ii) por mutuo acuerdo entre las
+                                partes, en cualquiera de los casos las modificaciones deberán
+                                hacerse mediante Adenda </font><font face="Arial, serif">al presente
+                                Convenio, formando parte integral del mismo. Las adendas que se
+                                realizaren </font><font face="Arial, serif">tendrán efecto a partir
+                                de la fecha de firma de las mismas.</font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; line-height: 115%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><b>OCTAVA:
+                                SOLUCIÓN DE CONFLICTOS</b></font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">Cualquier
+                                controversia en cuanto a la interpretación de los compromisos
+                                adquiridos en el presente Convenio, será resuelta por las partes
+                                conforme a la vía del arreglo directo y sobre la base de la buena
+                                fe, y de común acuerdo, en cuyo caso las partes contarán con un
+                                plazo máximo de quince días para llegar a un arreglo, el cual
+                                constituirá una Adenda del presente Convenio, formando parte
+                                integral del mismo. </font></font></font>
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">En
+                                caso de no poder resolverse por el medio antes mencionado, se hará
+                                uso de la vía judicial, para lo cual las Partes señalamos como
+                                domicilio especial el de la ciudad de San Salvador, a la jurisdicción
+                                de cuyos Tribunales nos sometemos de forma expresa en caso de acción
+                                judicial.</font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><b>NOVENA:
+                                VIGENCIA</b></font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">El
+                                presente Convenio tendrá una vigencia de treinta días, contados a
+                                partir de la fecha de firma del presente Convenio y podrá darse por
+                                finalizado siempre que el Titular no tenga obligaciones pendientes
+                                con el MARN vinculadas con el presente Convenio.</font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif">En
+                                fe de lo cual, el </font><font face="Arial, serif"><b>“FIAES”</b></font><font face="Arial, serif">
+                                y </font><font face="Arial, serif"><b>“</b></font><font face="Arial, serif"><b><span style="font-weight:bold" t-field="doc.nombre_comercial"/>
+                                </b></font><font face="Arial, serif"><b>”, </b></font><font face="Arial, serif">estando
+                                conformes con las cláusulas del presente Convenio, ratifican su
+                                contenido, en dos ejemplares de igual tenor, en la ciudad de Santa
+                                Tecla, departamento de La Libertad, a los veintitrés días del mes
+                                de octubre de dos mil diecinueve.</font></font></font></p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-right: -0.16in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-left: 0.1in; margin-right: -0.16in; text-indent: -0.1in">
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-left: 0.1in; margin-right: -0.16in; text-indent: -0.1in">
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="left" style="margin-left: 0.1in; margin-right: -0.16in; text-indent: -0.1in; font-weight: normal">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>Ing.
+                                Jorge Alberto Oviedo Machuca		             Inga. Karina Rocío Santos
+                                Landaverde</b></font></font></font></font></p>
+                                <p class="western" align="left" style="margin-left: 0.49in; margin-right: -0.16in; text-indent: 0.39in; font-weight: normal">
+                                    <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>FIAES
+                                                                                                        
+                                </b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b><span style="font-weight:bold" t-field="doc.nombre_comercial"/>
+                        </b></font></font></font></font></p>
+                                <p class="western" align="left" style="margin-right: -0.16in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                                                                                        
+                                                    
+                                </p>
+                                <p class="western" align="left" style="margin-right: -0.16in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                                                    
+                                </p>
+                                <p class="western" align="justify" style="margin-left: -0.1in; margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal; line-height: 115%">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><font size="2" style="font-size: 10pt">En
+                                la ciudad de Santa Tecla, departamento de La Libertad, a <span t-field="doc.x_letras"/>. Ante mí,
+                                </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>JESSICA
+                                MARLENY MELARA PÉREZ,</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                Notaria, del domicilio de San Salvador, comparece el Ingeniero </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>JORGE
+                                ALBERTO OVIEDO MACHUCA, </b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">de
+                                cincuenta años de edad, Ingeniero Agrónomo, del domicilio de Santa
+                                Tecla, departamento de La Libertad, a quien conozco e identifico por
+                                medio de su Documento Único de Identidad número cero cero dos cero
+                                tres uno cinco nueve- cuatro, con Número de Identificación
+                                Tributaria cero seis uno cuatro- dos tres cero uno seis nueve- uno
+                                cero tres- cuatro</font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">,
+                                actuando en su calidad de Apoderado General Administrativo con
+                                Cláusulas Especiales del </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>FONDO
+                                DE LA INICIATIVA PARA LAS AMÉRICAS, </b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">que
+                                se abrevia </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>“FIAES”,</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                con sede y domicilio en la ciudad de Santa Tecla, departamento de La
+                                Libertad, con Número de Identificación Tributaria cero seis uno
+                                cuatro- tres cero cero seis nueve tres- uno cero seis- dos;
+                                personería que DOY FE de ser legítima y suficiente por haber tenido
+                                a la vista: </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>a)</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                El Acuerdo suscrito entre el Gobierno de la República de El Salvador
+                                y el Gobierno de los Estados Unidos de América de fecha dieciocho de
+                                junio de mil novecientos noventa y tres, ratificado por Decreto
+                                Legislativo número Quinientos Ochenta y Cinco, de fecha treinta de
+                                Junio del mismo año citado, publicados en el Diario Oficial Número
+                                Ciento Noventa y Nueve, Tomo Trescientos Veintiuno, del día
+                                veintiséis de octubre de mil novecientos noventa y tres, de los
+                                cuales consta que se constituyó el FONDO DE LA INICIATIVA PARA LAS
+                                AMÉRICAS y se estableció su Consejo Administrativo; y </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>b)
+                                </b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">Testimonio
+                                de Escritura Pública de Poder General Administrativo con Cláusulas
+                                Especiales, otorgado por el Doctor Ángel María Ibarra Turcios,
+                                Presidente del Consejo Administrativo y Representante Legal del Fondo
+                                de la Iniciativa para las Américas que se abrevia FIAES, en la
+                                ciudad de San Salvador, a las once horas del día veinte de octubre
+                                de dos mil dieciséis, ante los oficios de la Notario Ada Cecilia
+                                Lazo Gutiérrez, a favor del Ingeniero Jorge Alberto Oviedo Machuca,
+                                en donde consta que se le han conferido diversas facultades entre
+                                ellas para que en nombre y representación de FIAES, pueda firmar los
+                                Convenios de Compensación Ambiental y cualquier otra clase de
+                                documentación relacionada con los referidos Convenios. Asimismo, en
+                                el referido poder consta que la Notario autorizante dio fe de la
+                                existencia legal del FIAES y de la personería del Doctor Ibarra
+                                Turcios, representante legal del Fondo; por lo que se encuentra
+                                facultado para otorgar el presente acto; que en adelante a su
+                                representado se le denominará: </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>“FIAES”</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                y/o </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>“El
+                                Fondo”;</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                y la segunda por el señor </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>KARINA
+                                ROCÍO SANTOS LANDAVERDE,</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                mayor de edad, ingeniera en alimentos, del domicilio de la ciudad y
+                                departamento de San Salvador, a quien no conozco pero identifico por
+                                medio de su Documento Único de Identidad número cero uno uno seis
+                                siete dos siete cero- cinco y Número de Identificación Tributaria
+                                nueve cuatro uno uno- cero cinco cero seis ocho cero- uno cero uno-
+                                ocho; actuando en calidad de Apoderada Especial de la Sociedad
+                                </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b> 
+                                SOCIEDAD ANÓNIMA DE CAPITAL VARIABLE, </b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">que
+                                se puede abreviar</font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>
+                                <span style="font-weight:bold" t-field="doc.nombre_comercial"/> </b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">del
+                                domicilio de la ciudad de Nuevo Cuscatlán, departamento de La
+                                Libertad, de nacionalidad salvadoreña, con Número de Identificación
+                                Tributaria cero seis uno cuatro- dos cuatro cero nueve siete seis-
+                                cero cero tres- uno; personería que DOY FE de ser legítima y
+                                suficiente por haber tenido a la vista: El Testimonio de Escritura
+                                Pública de Poder Especial, otorgado en la ciudad de San Salvador,
+                                departamento de San Salvador, a las quince horas con cuarenta y cinco
+                                minutos del día uno de agosto de dos mil diecinueve, ante los
+                                oficios del Notario Benedicto Neftalí Duarte Medrano, en el que
+                                consta que el ingeniero Ricardo Gutiérrez Olmedo, en su carácter de
+                                Administrador Único Propietario y por lo tanto representante legal
+                                de la referida Sociedad, faculto a la compareciente a la firma del
+                                presente documento. Asimismo, en el referido poder consta que el
+                                Notario autorizante dio fe de la existencia legal de la Sociedad y de
+                                la personería del ingeniero Ricardo Gutiérrez Olmedo, representante
+                                legal de la misma; por lo que se encuentra facultado para otorgar el
+                                presente acto; y en adelante a su representada se le denominará:
+                                </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>“</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>COSCO,
+                                S.A. DE C.V.</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>”</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                y/o </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>“El
+                                Titular”;</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                y en el carácter en que ambos comparecen </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>ME
+                                DICEN:</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                Que las firmas puestas al pie del anterior documento y que en su
+                                orden se leen “J A Oviedo” y “K S P”, son suyas por haberlo
+                                reconocido así los comparecientes, así como los conceptos y
+                                obligaciones vertidas en el referido documento, fechado en esta
+                                ciudad, el día de hoy, por medio del cual las partes acordaron
+                                celebrar un </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>“CONVENIO
+                                PARA EL CUMPLIMIENTO DE LA COMPENSACIÓN AMBIENTAL”,</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                a fin de dar cumplimiento a la nota emitida por el Ministerio de
+                                Medio Ambiente y Recursos Naturales con referencia: </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><span lang="es-ES">MARN-DEC-GEA-NFA
+                                UNO OCHO TRES- DOS MIL DIECISIETE- UNO CINCO TRES CERO- DOS MIL
+                                DIECINUEVE</span></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">,
+                                de fecha quince de octubre de dos mil diecinueve, del cual sus
+                                principales cláusulas son las siguientes: </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>I)</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                OBJETO DEL CONVENIO. </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><span lang="es-ES">Establecer
+                                las condiciones para cumplir con la medida de compensación ambiental
+                                requerida por el Ministerio de Medio Ambiente y Recursos Naturales,
+                                en adelante “MARN” y establecida en el Proceso de Evaluación
+                                Ambiental, correspondiente al proyecto denominado: <span style="font-weight:bold" t-field="doc.nombre_comercial"/>, cuyo Titular es la Sociedad
+                                <span t-field="doc.nombre_comercial"/>, la cual tiene un costo de  <span t-field="doc.proyecto_valor_letras"/>   DE DÓLAR DE LOS
+                                ESTADOS UNIDOS DE AMÉRICA. </span></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>II)</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                RESPONSABILIDADES DE LAS PARTES. A) DEL FIAES: a) Ingresar los fondos
+                                correspondientes a la medida de compensación ambiental en la cuenta
+                                corriente a nombre de: FIAES/FONDO DE COMPENSACIÓN AMBIENTAL; b)
+                                Remitir al MARN en los primeros ocho días hábiles después de su
+                                firma, copia del Convenio y sus anexos; c) Cumplir con sus
+                                atribuciones relacionadas con la administración de la cuenta
+                                corriente a nombre de: FIAES/FONDO DE COMPENSACIÓN AMBIENTAL; d)
+                                Destinar el monto de la medida de compensación ambiental que reciba
+                                de la Sociedad </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><span t-field="doc.nombre_comercial"/> </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">estrictamente
+                                en los programas, presupuesto operativo y administrativo de FIAES y
+                                demás actividades vinculadas con el cumplimiento de su mandato
+                                legal; e) Mientras los fondos no sean utilizados en la ejecución del
+                                programa, FIAES podrá invertir los fondos del Convenio en
+                                instrumentos financieros que generen rentabilidad de acuerdo a sus
+                                políticas de inversión. La rentabilidad obtenida por este medio se
+                                usará de conformidad a lo expresado en la cláusula segunda, literal
+                                A, numeral cuatro del Convenio; f) Ejecutar la medida de compensación
+                                ambiental objeto del Convenio de conformidad a lo establecido en el
+                                mismo. B) DE </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">COSCO,
+                                S.A. DE C.V.</font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">:
+                                Aportar para la ejecución de la compensación ambiental del proyecto
+                                denominado <span  t-field="doc.nombre_comercial"/>, cuyo
+                                Titular es la Sociedad <span t-field="doc.nombre_comercial"/>, la cantidad de <span t-field="doc.proyecto_valor_letras"/>
+                                DE LOS ESTADOS UNIDOS DE AMÉRICA, con los cuales queda cubierta la
+                                parte de compensación ambiental a favor del FIAES y que aparece
+                                descrita en la nota del Ministerio de Medio Ambiente y Recursos
+                                Naturales con referencia: MARN-DEC-GEA-NFA UNO OCHO TRES- DOS MIL
+                                DIECISIETE- UNO CINCO TRES CERO- DOS MIL DIECINUEVE, de fecha quince
+                                de octubre de dos mil diecinueve. Este monto es entregado por el
+                                Titular mediante un solo desembolso por medio de cheque certificado a
+                                nombre de FIAES/FONDO DE COMPENSACIÓN AMBIENTAL a la firma del
+                                convenio antes relacionado. Los comparecientes en el carácter en que
+                                actúan reconocen además de estas cláusulas como derechos y
+                                obligaciones del FIAES y la Sociedad </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><span t-field="doc.nombre_comercial"/></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">,
+                                 </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>todas
+                                las demás cláusulas contenidas en el Convenio antes relacionado.</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">
+                                Así se expresaron los otorgantes en la calidad en que actúan a
+                                quienes expliqué los efectos legales de la presente Acta Notarial
+                                que consta de dos folios útiles; y leído que les hube todo lo
+                                escrito íntegramente, en un solo acto, ratificaron su contenido y
+                                firmamos la presente en dos originales de igual tenor. </font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt"><b>DOY
+                                FE</b></font></font><font face="Arial, serif"><font size="2" style="font-size: 10pt">.</font></font></font></font></p>
+                                <p class="western" align="justify" style="margin-left: -0.1in; margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-left: -0.1in; margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="justify" style="margin-left: -0.1in; margin-right: -0.16in; margin-top: 0.17in; margin-bottom: 0.17in; font-weight: normal">
+                                <br/>
+                                <br/>
+                                
+                                </p>
+                                <p class="western" align="left" style="margin-left: 0.1in; margin-right: -0.16in; text-indent: -0.1in; font-weight: normal">
+                                <font face="Calibri, serif"><font size="2" style="font-size: 11pt"><font face="Arial, serif"><font size="2" style="font-size: 9pt"><b>Ing.
+                                Jorge Alberto Oviedo Machuca             			Inga. Karina Rocío
+                                Santos Landaverde  	          FIAES                                  
+                                <span style="font-weight:bold" t-field="doc.nombre_comercial"/></b></font></font></font></font></p>
+                                                   
+    
+                    </body>      
+                </div>
+     
+   </template>
+
+
+
+
+
+
+
+
+
+</odoo> 

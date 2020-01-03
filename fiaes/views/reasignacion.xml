@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+     
+            <record model="ir.ui.view" id="fiaes_reasignacion_plaunidad">
+                    <field name="name">fiaes_reasignacion_planunidad</field>
+                    <field name="model">fiaes.reasignacion.planunidad</field>
+                    <field name="arch" type="xml">
+                        <form string="Reasignacion">
+                            <header>
+                            <button name="proceso" states="Borrador" string="Proceso" type="object" class="oe_highlight"/>
+                            <button name="validar" states="Proceso" string="Validar" type="object" class="oe_highlight"/>
+                            <field name="state" widget="statusbar"/>
+                            </header>
+                            <sheet>
+                           
+                                <group>
+                                    <field name="name" />
+                                    <field name="descripcion" />
+                                    <field name="planunidad_id" attrs = "{'readonly':['|',('state', '=', 'Proceso'),('state', '=', 'Validar')]}"/>
+                               
+                                </group>
+                            <notebook>
+                     
+                            <page string="Actividad">
+                                    <field name="actividad_line">
+                                        <tree >
+                                            
+                                                <field name="name" />
+                                                <field name="descripcion" />
+                                                <field name="proyecto" />
+                                                <field name="objetivopoa_id" />
+                                                <field name="planunidad_id" />
+                                                <field name="prioridad" />
+                                                <field name="fecha_inicial" />
+                                                <field name="fecha_final" />
+                                                <field name="state" />
+                                                <field name="state1" invisible="1" />
+                                                <!--field name="extemp" />
+                                                <field name="deshabili" /-->
+                                                <button name="deshabilitar" states="Copiado" string="deshabilitar" type="object" class="oe_highlight"/>
+                                                <button name="habilitar" states="Deshabilitado" string="habilitar" type="object" class="oe_highlight"/>
+                          
+                                        </tree>
+                                        <form string="Reasignacion">
+                                            <sheet>
+                                                <group>
+
+                                                        <field name="name"  attrs = "{'readonly':[('state', '!=', 'Nuevo')]}"/>
+                                                        <field name="descripcion"  attrs = "{'readonly':[('state', '!=', 'Nuevo')]}"/>
+                                                        <field name="proyecto"  attrs = "{'readonly':[('state', '!=', 'Nuevo')]}"/>
+                                                        <field name="objetivopoa_id"  attrs = "{'readonly':[('state', '!=', 'Nuevo')]}"/>
+                                                        <field name="planunidad_id"  attrs = "{'readonly':[('state', '!=', 'Nuevo')]}"/>
+                                                        <field name="prioridad"  attrs = "{'readonly':[('state', '!=', 'Nuevo')]}"/>
+                                                        <field name="fecha_inicial"  attrs = "{'readonly':[('state', '!=', 'Nuevo')]}"/>
+                                                        <field name="fecha_final"  attrs = "{'readonly':[('state', '!=', 'Nuevo')]}"/>
+                                                        <field name="state"  attrs = "{'readonly':[('state', '!=', 'Nuevo')]}"/>
+                                                        <field name="reasignacion_id" invisible="1"/>
+                                                </group>
+
+                                                <field name="insumo_line" context="{'default_actividad_id': id,'default_reasignacion_id':reasignacion_id}">
+                                                <tree editable="bottom"  attrs = "{'readonly':[('state', '=', 'Validar')]}">
+
+                                                <field name="name" attrs = "{'readonly':[('state', '!=', 'Nuevo'),('total','=',0.00)]}"/>
+                                                <field name="categoria" attrs = "{'readonly':[('state', '!=', 'Nuevo'),('total','=',0.00)]}"/>
+                                                <field name="actividad_id" attrs = "{'readonly':[('state', '!=', 'Nuevo',('total','=',0.00))]}"/>
+                                                <field name="preciouni"  attrs = "{'readonly':[('state', '!=', 'Nuevo'),('total','=',0.00)]}"/>
+                                                <field name="cantidad" attrs = "{'readonly':[('state', '!=', 'Nuevo'),('total','=',0.00)]}"/>
+                                                <field name="total"  attrs = "{'readonly':[('state', '!=', 'Nuevo'),('total','=',0.00)]}"/>
+                                                <field name="mes"  attrs = "{'readonly':[('state', '!=', 'Nuevo'),('total','=',0.00)]}"/>
+                                                <field name="fuente"  attrs = "{'readonly':[('state', '!=', 'Nuevo'),('total','=',0.00)]}"/>
+                                                <field name="cuenta_id"  attrs = "{'readonly':[('state', '!=', 'Nuevo'),('total','=',0.00)]}"/>
+                                                <field name="state" readonly="1"/>
+                                                <field name="state1" invisible="1"/>
+                                                 <field name="reasignacion_id" invisible="0"/>
+                                                  <field name="actividad_id" invisible="0"/>
+                                                <field name="ejecutado" invisible="1" />
+                                                <!--field name="extemp"  />
+                                                <field name="deshabili"  /-->
+                                                <button name="deshabilitar" attrs = "{'invisible':['|',('ejecutado', '=', True),('state', '!=', 'Copiado')]}" string="deshabilitar" type="object" class="oe_highlight"/>
+                                                <button name="habilitar"  attrs = "{'invisible':['|',('ejecutado', '=', True),('state', '!=', 'Deshabilitado')]}" string="habilitar" type="object" class="oe_highlight"/>
+                                                    </tree>
+                                                    
+
+                                            </field>
+                                            </sheet>
+                                        </form>
+                                    </field>
+    
+                                </page>
+
+                            
+
+
+
+
+
+                            <page string="Disponible">
+                                    <field name="disponible_line" >
+                                        <tree create="false">
+                                            <!--field name="state" invisible="1" /-->
+                                            <field name="proyecto_id" />
+                                            <field name="fuente_id" />
+                                            <field name="monto" />
+                                            <field name="monto_ajustado" />
+                                        </tree>
+                                    </field>
+    
+                                </page>
+                            </notebook>
+                            </sheet>
+                            <div class="oe_chatter">
+                                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                                <field name="message_ids" widget="mail_thread"/>
+                            </div>
+                        </form>
+                    </field>
+                 </record>
+
+
+<!--tree del pei-->
+<record model="ir.ui.view" id="reasignacion_tree">
+        <field name="name">reasignacion_tree</field>
+        <field name="model">fiaes.reasignacion.planunidad</field>
+        <field name="arch" type="xml">
+            <tree>
+                    <field name="descripcion" />
+                    <field name="planunidad_id" />
+            </tree>
+        </field>
+     </record>
+                
+
+                 <!--action del objetivo-->
+      <record model="ir.actions.act_window" id="reasignacion_action">
+        <field name="name">Reasignacion</field>
+        <field name="res_model">fiaes.reasignacion.planunidad</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Reasignacion
+            </p>
+        </field>
+    </record>
+
+<!--menu del objetivo-->
+<menuitem 
+id="fiaes_objpoa_menu_reasignacion" 
+parent="fiaes.presupuesto"
+name="Reasignacion"
+action="reasignacion_action"
+sequence="81"
+/>  
+
+
+<record model="ir.ui.view" id="fiaes_insumo_pivot1">
+    <field name="name">fiaes_insumo_pivot1</field>
+    <field name="model">fiaes.insumo</field>
+    <field name="arch" type="xml">
+     <pivot string="Habilitado/Extemporaneo">
+        <field name="unidad" type="row"/>
+        <field name="actividad_id" type="row"/>
+        <field name="state" type="row"/>
+        <field name="extemp" type="row"/>
+        <field name="deshabili" type="row"/>
+        <field name="total" type="measure"/>
+     </pivot>
+     </field>
+     </record>
+       
+
+     <record model="ir.actions.act_window" id="fiaes.inr_insumos_action1">
+        <field name="name">Habilitado/Extemporaneo</field>
+        <field name="res_model">fiaes.insumo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">pivot</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">Habilitado/Extemporaneo</p>
+        </field>
+      </record>
+     
+
+
+   <menuitem name="Habilitado/Extemporaneo "
+   parent="fiaes.presupuesto"
+   id="fiaes.inr_inversion1"
+   sequence="52"
+   action="fiaes.inr_insumos_action1"
+   /> 
+
+        </data>
+    </odoo>

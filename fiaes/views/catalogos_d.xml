@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <!--Modificacion del formulario de Cuenta contable-->
+    <record id="fiaes_account_form" model="ir.ui.view">
+      <field name="name">fiaes account form</field>
+      <field name="model">account.account</field>
+      <field name="inherit_id" ref="account.view_account_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='group_id']" position="attributes">
+          <attribute name="required">1</attribute>
+          <attribute name="String">Cuenta de acumulacion</attribute>
+        </xpath>
+      </field>
+    </record>
+
+    <!--Modificacion del formulario de proyecto-->
+    <record id="fiaes_project_form" model="ir.ui.view">
+      <field name="name">fiaes project form</field>
+      <field name="model">project.project</field>
+      <field name="inherit_id" ref="project.edit_project" />
+      <field name="arch" type="xml">
+        <xpath expr="//header" position="inside">
+         <button name="abrir" states="Enproceso,Cerrado" string="Abrir" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+         <button name="cerrar" states="Enproceso,Abierto" string="Cerrar" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+        </xpath>
+        <xpath expr="//div[@name='options_active']" position="after">
+          <div name="options_active">
+            <div>
+              <label for="tipo" class="oe_inline" string="Tipo de proyecto"/>
+              <field name="tipo" class="oe_inline oe_input_align"/>
+            </div>
+          </div>
+        </xpath>
+        <xpath expr="//page[@name='settings']" position="after">
+          <page string="Proyectos FIAES" name="institucional" >
+              <group>
+                <field name="codigo" />
+                <field name="territorio_ids" />
+                <field name="fuente_ids"/>
+                <field name="contacto_ids" />
+                <field name="responsable_ids" />
+                <field name="cordenada_ids" context="{'default_proyecto_id': id}">
+                  <tree string="Cordenadas" editable="bottom">
+                    <field name="name" />
+                    <field name="coordenadas_latitud" />
+                    <field name="coordenadas_longitud" />
+                  </tree>
+                </field>
+              </group>
+          </page>
+
+
+          <page string="Objetivos"  attrs="{'invisible':[('tipo', '=', 'Institucional')]}">
+              <group>
+                <field name="objetivo" />
+                <field name="objetivo_ids" context="{'default_proyecto_id': id}">
+                  <tree string="Objetivos especificos" editable="bottom">
+                    <field name="name" />
+                  </tree>
+                </field>
+              </group>
+          </page>
+
+
+        </xpath>
+      </field>
+    </record>
+
+
+    <record id="fiaes_task_form" model="ir.ui.view">
+      <field name="name">fiaes task form</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project.view_task_form2" />
+      <field name="arch" type="xml">
+
+        <xpath expr="//page[@name='extra_info']" position="after">
+          <page string="Actividades FIAES"  >
+              <group>
+                <field name="tipo" invisible="1"/>
+                <field name="has_childs" />
+                <field name="codigo"  attrs="{'invisible':[('tipo', '=', 'Institucional')],'required':[('tipo', '!=', 'Institucional')] }"/>
+                <field name="objetivo_id"   attrs="{'invisible':[('tipo', '=', 'Institucional')],'required':[('tipo', '!=', 'Institucional')] }"/>
+                <field name="inicio" required="0"/>
+                <field name="fin"  required="0"/>
+                <field name="responsable_ids"  required="1"/>
+                <field name="cordinacion_ids"  required="1"/>
+                <field name="territorio_ids" />
+                <field name="cordenada_ids"  required="1" context="{'default_task_id': id}">
+                  <tree string="Cordenadas" editable="bottom">
+                    <field name="name" />
+                    <field name="coordenadas_latitud" />
+                    <field name="coordenadas_longitud" />
+                  </tree>
+                </field>
+              </group>
+          </page>
+          <xpath expr="//page[@name='institucional']" position="attributes">
+            <attribute name="String">Actividades administradas</attribute>
+          </xpath>
+
+          <page string="Recursos institucionales" >
+                <field name="recurso_ids" attrs="{'invisible':[('has_childs', '=', True)] }"  required="1" context="{'default_task_id': id}">
+                  <tree string="Cordenadas" editable="bottom">
+                    <field name="name" />
+                    <field name="tipo" invisible="1" />
+                    <field name="descripcion" />
+                    <field name="cantidad"  attrs="{'invisible':[('tipo', '!=', 'Institucional')]}"/>
+                    <field name="account_id" />
+                    <field name="valor" />
+                  </tree>
+                </field>
+                <field name="recurso_child_ids" attrs="{'invisible':[('has_childs', '=', False)] }" readonly="1"  required="1" context="{'default_task_id': id}">
+                  <tree string="Cordenadas" >
+                    <field name="name" />
+                    <field name="tipo" invisible="1" />
+                    <field name="descripcion" />
+                    <field name="cantidad"  attrs="{'invisible':[('tipo', '!=', 'Institucional')]}"/>
+                    <field name="account_id" />
+                    <field name="valor" />
+                  </tree>
+                </field>
+          </page>
+
+        </xpath>
+      </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="fiaes.proyecto_institucional_action">
+    <field name="name">Proyectos institucionales</field>
+    <field name="res_model">project.project</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('tipo','=','Institucional')]</field>
+    <field name="help" type="html">
+    
+      <p class="oe_view_nocontent_create">Territorios de interención</p>
+    </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="fiaes.proyecto_administrado_action">
+    <field name="name">Proyectos institucionales</field>
+    <field name="res_model">project.project</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('tipo','=','Administrado')]</field>
+    <field name="help" type="html">
+      <p class="oe_view_nocontent_create">Territorios de interención</p>
+    </field>
+    </record>
+
+
+    
+
+    <menuitem name="Proyectos institucionales"
+    parent="fiaes.configuracion"
+    id="fiaes.institucionales"
+     action="fiaes.proyecto_institucional_action"
+    sequence="31"
+    groups="base.group_user"/>
+
+    <menuitem name="Proyectos administrados"
+    parent="fiaes.configuracion"
+    id="fiaes.administrados"
+     action="fiaes.proyecto_administrado_action"
+    sequence="32"
+    groups="base.group_user"/>
+
+
+
+
+
+
+  </data>
+</odoo>

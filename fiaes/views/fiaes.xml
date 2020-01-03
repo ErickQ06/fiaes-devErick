@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <!-- Modificaciones a la pantalla de empleado -->
+      <template id="assets_backend" inherit_id="web.assets_backend">
+     <xpath expr="." position="inside">
+         <link rel="stylesheet" href="/fiaes/static/src/css/fiaes.css"/>
+     </xpath>
+    </template>
+
+  <record  model="res.groups" id="fiaes.autoriza_proyectos">
+    <field name="name">FIAES/Autoriza POA</field>
+  </record>
+  <record  model="res.groups" id="fiaes.monitoreo">
+    <field name="name">FIAES/Monitoreo PEI</field>
+  </record>
+  <record  model="res.groups" id="fiaes.poa_writer">
+    <field name="name">FIAES/Empleado POA</field>
+  </record>
+
+
+
+<record  model="res.groups" id="fiaes.configuracion">
+    <field name="name">FIAES/Configuracion planes</field>
+  </record>
+
+
+    <menuitem name="Fiaes"
+    id="fiaes.fiaes"
+    web_icon="fiaes,static/src/img/logo.png"
+    sequence="30"
+    groups="fiaes.configuracion"/>
+
+    <menuitem id="fiaes.pei"
+    name="FIAES PEI"
+    web_icon="fiaes,static/src/img/logo.png"
+    groups="fiaes.monitoreo"
+/>
+
+<menuitem id="fiaes.presupuesto"
+    name="FIAES Presupuesto"
+    web_icon="fiaes,static/src/img/logo.png"
+    groups="fiaes.monitoreo"/>
+
+     <menuitem name="Fiaes POA"
+    web_icon="fiaes,static/src/img/logo.png"
+    id="fiaes.planificacion"
+    sequence="29"
+    groups="base.group_user"/>
+
+
+    <menuitem name="Fiaes Compensacion"
+    web_icon="fiaes,static/src/img/logo.png"
+    id="fiaes.compensacion"
+    sequence="30"
+    groups="base.group_user"/>
+
+    <menuitem name="En Proceso"
+    parent="fiaes.compensacion"
+    id="fiaes.compensacion_proceso"
+    sequence="32"
+    groups="base.group_user"/>
+    <menuitem name="Compensaciones"
+    parent="fiaes.compensacion"
+    id="fiaes.compensacion_compensacion"
+    sequence="34"
+    groups="base.group_user"/>
+    <menuitem name="Ejecutoras"
+
+    parent="fiaes.compensacion"
+    id="fiaes.compensacion_ejecutora"
+    sequence="36"
+    groups="base.group_user"/>
+
+        <menuitem name="Reportes"
+    parent="fiaes.compensacion"
+    id="fiaes.compensacion_reportes"
+    sequence="38"
+    groups="base.group_user"/>
+
+
+
+
+
+
+  <menuitem 
+   id="fiaes.planificacion_finanzas" 
+   parent="fiaes.planificacion"
+   name="Finanzas"
+   groups="fiaes.autoriza_proyectos"
+   sequence="20"
+   /> 
+
+   <menuitem 
+   id="fiaes.planificacion_tecnico" 
+   parent="fiaes.planificacion"
+   name="Formulación de Plan"
+   sequence="21"
+   />
+
+    <menuitem 
+   id="fiaes.planificacion_inversion" 
+   parent="fiaes.planificacion"
+   name="Componentes"
+   sequence="22"
+   /> 
+
+   <menuitem 
+   id="fiaes.planificacion_reportes" 
+   parent="fiaes.planificacion"
+   name="Reportes"
+   sequence="21"
+   /> 
+
+  </data>
+</odoo>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+                <!-- report-->
+        <report
+        id="fiaes_avance_report"
+        string="Reporte Avance"
+        model="fiaes.reporte.avance"
+        report_type="qweb-pdf"
+        file="fiaes.report_template_avance"
+        name="fiaes.report_template_avance"
+        menu="True"/>
+
+        <template id="report_template_avance">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div align="center" class="page">
+                            <style type="text/css">
+                                table, tbody {
+                                  border-color: black;
+                                  height: 100%;
+                                  width: 100%;
+                                  border-collapse: collapse;
+                                  text-align: center;
+                                  vertical-align: middle;
+                                  border-spacing: 0px;
+                                  padding: 0;
+                                }
+                                th {
+                                  text-align: center;
+                                  vertical-align: middle;
+                                  border-collapse: collapse;
+                                  padding: 0px;
+                                  border-spacing: 0px;
+                                }
+                                td {
+                                  text-align: left;
+                                  vertical-align: middle;
+                                  border-collapse: collapse;
+                                  padding: 0px;
+                                  border-spacing: 0px;
+                                }
+                                .pagenumber:before {
+                                  content: counter(page);
+                                }
+                                .pagecount:before {
+                                  content: counter(pages);
+                                }
+                                @page {
+                                  size: A4;
+                                  margin: 10mm 10mm 10mm 10mm;
+                                  @bottom-left{
+                                    content: "Pag. " counter(page) " de " counter(pages);
+                                  }
+                                }
+                                .spacing-line{
+                                  line-height: 10pt
+                                }
+                                .center-middle-title{
+                                  font-size: 15px;
+                                  text-transform: uppercase;
+                                  line-height: 10pt;
+                                }
+                                .center-middle{
+                                  text-align: center;
+                                  vertical-align: middle !important;
+                                  padding:0.5px !important;
+                                  width:100%;
+                                }
+                                .center-middle-o{
+                                  text-align: center;
+                                  vertical-align: middle !important;
+                                  white-space: nowrap !important;
+                                }
+                                .tr-color{
+                                  background-color:lightgray;
+                                  width:100%;
+                                }
+                                .table-content{
+                                  text-align: right;
+                                  vertical-align: middle;
+                                  height: auto;
+                                  width: 100%;
+                                  padding: 0px;
+                                  border-collapse: collapse;
+                                }
+                                table{
+                                  width:100%;
+                                }
+                                table td{
+                                  padding:0.5px;
+                                  white-space: nowrap;
+                                }
+                                table td:last-child{
+                                  padding: 0.5px;
+                                  width:100%;
+                                }
+                              </style>
+
+                            <!-- Declaracion de variables -->
+                            <t t-set="calculo" t-value="float(0.00)"/>
+                            <t t-set="actividad" t-value="null"/>
+                            <t t-set="proyecto" t-value="null"/>
+                            <t t-set="peso" t-value="float(0.00)"/>
+                            <t t-set="porcentaje" t-value="float(0.00)"/>
+                            <t t-set="calculoInd" t-value="float(0.00)"/>
+                            <t t-set="totalPeso" t-value="float(0.00)"/>
+                            <t t-set="progreso" t-value="float(0.00)"/>
+                            <t t-set="objetivo" t-value="null"/>
+                            <t t-set="totalPesoObj" t-value="float(0.00)"/>
+                            <t t-set="totalPesoObjPro" t-value="float(0.00)"/>
+                            <t t-set="porcentajeObj" t-value="float(0.00)"/>
+                            <!-- fin de las declaraciones -->
+
+                            <h1 style="text-align: center;">
+                                <b>Reporte avance de unidades</b>
+                            </h1>
+                                <br></br>
+                                <div style="width:100%;border-bottom:thin solid black">
+                                    <h3 style="text-align: left;">Información general</h3>
+                                </div>
+                                <div style="text-align: left;">
+                                    <strong>Plan de unidad: </strong><span t-field="o.planunidad_id"/>
+                                    <br></br>
+                                    <strong>Fecha:  </strong><span t-field="o.fecha"/>
+                                </div>
+                                <br></br>
+                                <br></br>
+                                <table class="table table-bordered" style="border: 1px solid black;text-align: right;vertical-align: middle;height: auto;width: 100%;padding: 0px;border-collapse: collapse;">
+
+                                    <tr class="tr-color">
+                                        <td class="center-middle-o">Nombre de la actividad</td>
+                                        <td class="center-middle-o">Proyecto</td>
+                                        <td class="center-middle-o">Peso</td>
+                                        <td class="center-middle-o">Porcentaje de progreso (%)</td>
+                                        <td class="center-middle-o">Peso del progreso</td>
+                                    </tr>
+                                    <t t-foreach="o.actividad_ids" t-as="a">
+
+                                        <!-- calculos de totales-->
+                                        <t t-set="calculo" t-value="calculo + ((a.porcentaje/(100.00))*(a.peso))"/>
+                                        <t t-set="calculoInd" t-value=" ((a.porcentaje/(100.00))*(a.peso))"/>
+                                        <t t-set="totalPeso" t-value="totalPeso + a.peso"/>
+                                        <t t-set="progreso" t-value="(calculo + ((a.porcentaje/(100.00))*(a.peso)))/(totalPeso + a.peso)*100.00"/>
+                                        
+                                        
+
+                                        <!-- fin de calculos -->
+                                        
+                                    <tr class="text-align:right;vertical-align:middle;height: auto;width: 100%;padding: 0px;border-collapse:collapse;">
+                                        <td class="center-middle-o"><span t-esc="a.name_actividad.name"/> </td>
+                                        <td class="center-middle-o"><span t-esc="a.proyecto.name" /> </td>
+                                        <td class="center-middle-o"><span t-esc="a.peso"/></td>
+                                        <td class="center-middle-o"><span t-esc="a.porcentaje" /></td>
+                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(calculoInd)"/></td>
+                                    </tr>
+
+
+                                    </t>
+                                </table>
+                                <!--<br></br>
+                                <br></br>
+
+                               <div style="width:100%;border-bottom:thin solid black">
+                                    <h3 style="text-align: left;">Resumen de operaciones por objetivos</h3>
+                                </div>  
+                                <br></br>
+                                <br></br>
+                                <table class="table table-bordered" style="border: 1px solid black;text-align: right;vertical-align: middle;height: auto;width: 100%;padding: 0px;border-collapse: collapse;">
+
+                                    <tr class="tr-color">
+                                        <td class="center-middle-o">Objetivo</td>
+                                        <td class="center-middle-o">Peso total del objetivo</td>
+                                        <td class="center-middle-o">Peso del progreso</td>
+                                        <td class="center-middle-o">Porcentaje de progreso (%)</td>
+                                    </tr>
+                                    <t t-foreach="o.actividad_ids" t-as="b">
+                                    <tr class="text-align:right;vertical-align:middle;height: auto;width: 100%;padding: 0px;border-collapse:collapse;">
+                                        <td class="center-middle-o"><span t-esc="b.objetivopoa_id.name"/> </td>
+                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(totalPeso)"/></td>
+                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(calculo)"/></td>
+                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(progreso)"/></td>
+                                    </tr>
+                                    </t>
+                                </table> -->
+                               <div style="width:100%;border-bottom:thin solid black">
+                                    <h3 style="text-align: left;">Resumen de operaciones por plan de unidad</h3>
+                                </div>  
+                                <br></br>
+                                <br></br>
+                                <table class="table table-bordered" style="border: 1px solid black;text-align: right;vertical-align: middle;height: auto;width: 100%;padding: 0px;border-collapse: collapse;">
+
+                                    <tr class="tr-color">
+                                        <td class="center-middle-o">Plan de unidad</td>
+                                        <td class="center-middle-o">Peso total del plan</td>
+                                        <td class="center-middle-o">Peso del progreso</td>
+                                        <td class="center-middle-o">Porcentaje de progreso (%)</td>
+                                    </tr>
+                                    <tr class="text-align:right;vertical-align:middle;height: auto;width: 100%;padding: 0px;border-collapse:collapse;">
+                                        <td class="center-middle-o"><span t-esc="o.planunidad_id.name"/> </td>
+                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(totalPeso)"/></td>
+                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(calculo)"/></td>
+                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(progreso)"/></td>
+                                    </tr>
+                                </table>        
+                            </div>
+                        </t>
+                    </t>
+                </t>
+
+            </template>
+        </data>
+</odoo>

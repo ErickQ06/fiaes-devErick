@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+    <!--  MENU PLANIFICACION  -->
+    <menuitem name="Configuracion"
+    parent="fiaes.fiaes"
+    id="fiaes.configuracion"
+    sequence="40"
+    groups="base.group_user"/>
+      
+      <!--  Objeto de conservacion   -->
+     <record model="ir.ui.view" id="fiaes.conservacion_form">
+     <field name="name">fiaes.conservacion_form</field>
+     <field name="model">fiaes.conservacion</field>
+     <field name="arch" type="xml">
+       <form >
+               <sheet>
+                   <div class="oe_title oe_inline">
+                       <label for="name" class="oe_edit_only"/>
+                       <h1><field name="name" required="1"/></h1>
+                   </div>
+                   <group>
+                       <group>
+                          <field name="comentario" />
+                       </group>
+                   </group> 
+               </sheet>
+              <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+              </div>
+               </form>
+      </field>
+   </record>
+
+   <record model="ir.ui.view" id="fiaes.conservacion_tree">
+     <field name="name">fiaes.conservacion_tree</field>
+     <field name="model">fiaes.conservacion</field>
+     <field name="arch" type="xml">
+     <tree string="Objeto de Conservacion">
+       <field name="name"/>
+     </tree>
+      </field>
+   </record>
+
+   <record model="ir.actions.act_window" id="fiaes.conservacion_action">
+   <field name="name">Objeto de Conservacion</field>
+   <field name="res_model">fiaes.conservacion</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">Objeto de conservacion</p>
+   </field>
+ </record>
+
+
+   <menuitem name="Objeto de Conservacion"
+   parent="fiaes.configuracion"
+   id="fiaes.conservacion"
+   sequence="40"
+   action="fiaes.conservacion_action"
+   groups="account.group_account_manager"/>
+      
+      
+   
+      
+      
+
+      <!-- pantalla de territorios  -->
+      <record model="ir.ui.view" id="fiaes.territorio_form">
+     <field name="name">fiaes.territorio_form</field>
+     <field name="model">fiaes.territorio</field>
+     <field name="arch" type="xml">
+       <form >
+               <sheet>
+                   <div class="oe_title oe_inline">
+                       <label for="name" class="oe_edit_only"/>
+                       <h1><field name="name" required="1"/></h1>
+                   </div>
+                   <group>
+                       <group>
+                           <field name="codigo"  required="1" />
+                          <field name="descripcion" />
+                          <field name="unidades_ids" widget="many2many_tags"/>
+                          <field name="responsable_ids" widget="many2many_tags"/>
+                       </group>
+
+                       <label for="contacto_ids" />
+                       <field name="contacto_ids" />
+                       <label for="cordenada_ids" />
+                       <field name="cordenada_ids" context="{'default_territorio_id': id}">
+                         <tree string="Cordenadas" editable="bottom">
+                           <field name="name" />
+                           <field name="coordenadas_latitud" />
+                           <field name="coordenadas_longitud" />
+                         </tree>
+                       </field>
+                   </group>
+               </sheet>
+               <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                       <field name="message_ids" widget="mail_thread"/>
+ </div>
+               </form>
+      </field>
+   </record>
+
+   <record model="ir.ui.view" id="fiaes.territorio_tree">
+     <field name="name">fiaes.territorio_tree</field>
+     <field name="model">fiaes.territorio</field>
+     <field name="arch" type="xml">
+     <tree string="Territorios">
+       <field name="name"/>
+       <field name="descripcion" />
+     </tree>
+      </field>
+   </record>
+
+   <record model="ir.actions.act_window" id="fiaes.territorio_action">
+   <field name="name">Territorios</field>
+   <field name="res_model">fiaes.territorio</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">Territorios de interención</p>
+   </field>
+ </record>
+
+
+   <menuitem name="Territorios"
+   parent="fiaes.configuracion"
+   id="fiaes.territorios"
+   sequence="31"
+   action="fiaes.territorio_action"
+   groups="account.group_account_manager"/>      
+      
+      
+      
+      
+      
+      
+      
+<!-- pantalla de fuentes  -->
+<record model="ir.ui.view" id="fiaes.fuente_form">
+<field name="name">fiaes.fuente_form</field>
+<field name="model">fiaes.fuente</field>
+<field name="arch" type="xml">
+ <form >
+         <sheet>
+             <group>
+                 <group>
+                     <field name="codigo" required="1"/>
+                     <field name="name"  required="1"/>
+                     <field name="tipo"  required="1"/>
+                     <field name="account_id"  required="1"/>
+                 </group>
+                 <label for="cuentabancaria_ids" />
+                 <field name="cuentabancaria_ids"  required="1"/>
+                 <label for="cuentabancaria_ids" string="Objetos de conservacion" />
+                 <field name="conservacion_ids"  />
+             </group>
+         </sheet>
+         <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                       <field name="message_ids" widget="mail_thread"/>
+ </div>
+         </form>
+</field>
+</record>
+
+<record model="ir.ui.view" id="fiaes.fuenteo_tree">
+<field name="name">fiaes.fuente_tree</field>
+<field name="model">fiaes.fuente</field>
+<field name="arch" type="xml">
+<tree string="proyectos">
+   <field name="name"/>
+ <field name="name"/>
+
+</tree>
+</field>
+</record>
+
+<record model="ir.actions.act_window" id="fiaes.fuente_action">
+<field name="name">Fuentes</field>
+<field name="res_model">fiaes.fuente</field>
+<field name="view_type">form</field>
+<field name="view_mode">tree,form</field>
+<field name="help" type="html">
+<p class="oe_view_nocontent_create">Fuentes</p>
+</field>
+</record>
+
+
+<menuitem name="Fuentes"
+parent="fiaes.configuracion"
+id="fiaes.fuentes"
+sequence="33"
+action="fiaes.fuente_action"
+groups="account.group_account_manager"/>
+      
+      
+      
+ <!-- pantalla de redes  -->
+<record model="ir.ui.view" id="fiaes.redes_form">
+<field name="name">fiaes.redes_form</field>
+<field name="model">fiaes.red</field>
+<field name="arch" type="xml">
+ <form >
+         <sheet>
+             <group>
+                 <group>
+                     <field name="tipo" />
+                     <field name="partner_id" attrs="{'invisible':[('tipo', '!=', 'Contacto')]}" />
+                     <field name="otro" attrs="{'invisible':[('tipo', '=', 'Contacto')],'required':[('tipo', '!=', 'Contacto')]}"  />
+                     <field name="abreviatura" />
+                     <field name="alcance" />
+                     <field name="puntofocal" required="1"/>
+                     <field name="contacto" />
+                 </group>
+                 <group>
+                   <field name="correo"  required="1"/>
+                   <field name="telefono"  required="1"/>
+                   <field name="direccion" />
+                   <field name="sede" />
+                   <field name="estado" required="1"/>
+                 </group>
+                 <label for="miembros"/>
+                 <field name="miembros" nolabel="1" widget="many2many"/>
+             </group>
+
+         </sheet>
+         </form>
+</field>
+</record>
+
+<record model="ir.ui.view" id="fiaes.territorio_tree">
+<field name="name">fiaes.red_tree</field>
+<field name="model">fiaes.red</field>
+<field name="arch" type="xml">
+<tree string="Redes">
+ <field name="name"/>
+ <field name="estado" />
+</tree>
+</field>
+</record>
+
+<record model="ir.actions.act_window" id="fiaes.redes_action">
+<field name="name">Redes</field>
+<field name="res_model">fiaes.red</field>
+<field name="view_type">form</field>
+<field name="view_mode">tree,form</field>
+<field name="help" type="html">
+<p class="oe_view_nocontent_create">Redes</p>
+</field>
+</record>
+
+
+<menuitem name="Redes"
+parent="fiaes.configuracion"
+id="fiaes.redes"
+sequence="31"
+action="fiaes.redes_action"
+groups="account.group_account_manager"/>     
+      
+      
+      
+      
+ <!-- pantalla de UET  -->
+     <record model="ir.ui.view" id="fiaes.uet_form">
+     <field name="name">fiaes.uet_form</field>
+     <field name="model">fiaes.uet</field>
+     <field name="arch" type="xml">
+       <form >
+               <sheet>
+                   <div class="oe_title oe_inline">
+                       <label for="name" class="oe_edit_only"/>
+                       <h1><field name="name" required="1"/></h1>
+                   </div>
+                   <group>
+                       <group>
+                          <field name="comentario" />
+                          <field name="territorio_ids" />
+                       </group>
+                   </group>
+               </sheet>
+               <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                       <field name="message_ids" widget="mail_thread"/>
+ </div>
+               </form>
+      </field>
+   </record>
+
+   <record model="ir.ui.view" id="fiaes.uet_tree">
+     <field name="name">fiaes.uet_tree</field>
+     <field name="model">fiaes.uet</field>
+     <field name="arch" type="xml">
+     <tree string="UETs">
+       <field name="name"/>
+     </tree>
+      </field>
+   </record>
+
+   <record model="ir.actions.act_window" id="fiaes.uet_action">
+   <field name="name">UETs</field>
+   <field name="res_model">fiaes.uet</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">UET</p>
+   </field>
+ </record>
+
+
+   <menuitem name="UET"
+   parent="fiaes.configuracion"
+   id="fiaes.uets"
+   sequence="50"
+   action="fiaes.uet_action"
+   groups="account.group_account_manager"/>   
+
+
+    <!-- pantalla de Convocatoria  -->
+     <record model="ir.ui.view" id="fiaes.convocatoria_form">
+     <field name="name">fiaes.convocatoria_form</field>
+     <field name="model">fiaes.convocatoria</field>
+     <field name="arch" type="xml">
+       <form >
+                <header>
+                  
+                </header>
+               <sheet>
+                   <div class="oe_title oe_inline">
+                       <label for="name" class="oe_edit_only"/>
+                       <h1><field name="name" required="1"/></h1>
+                   </div>
+                   <group>
+                       <group>
+                       <field name="codigo" />
+                       <field name="state"  />
+                       <field name="anio" />
+                          <field name="comentario" />
+                          <field name="territorio_ids" />
+                          <field name="conservacion_ids" />                          
+                       </group>
+                   </group>
+               </sheet>
+               <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                       <field name="message_ids" widget="mail_thread"/>
+ </div>
+               </form>
+      </field>
+   </record>
+
+   <record model="ir.ui.view" id="fiaes.convocatoria_tree">
+     <field name="name">fiaes.convocatoria_tree</field>
+     <field name="model">fiaes.convocatoria</field>
+     <field name="arch" type="xml">
+     <tree string="convocatorias">
+       <field name="name"/>
+     </tree>
+      </field>
+   </record>
+
+   <record model="ir.actions.act_window" id="fiaes.convocatoria_action">
+   <field name="name">convocatorias</field>
+   <field name="res_model">fiaes.convocatoria</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">convocatoria</p>
+   </field>
+ </record>
+
+
+   <menuitem name="convocatoria"
+   parent="fiaes.configuracion"
+   id="fiaes.convocatorias"
+   sequence="60"
+   action="fiaes.convocatoria_action"
+   groups="account.group_account_manager"/>  
+
+
+
+
+
+<!-- pantalla de producto  -->
+     <record model="ir.ui.view" id="fiaes.producto_form">
+     <field name="name">fiaes.producto_form</field>
+     <field name="model">fiaes.producto</field>
+     <field name="arch" type="xml">
+       <form >
+               <sheet>
+                   <div class="oe_title oe_inline">
+                       <label for="name" class="oe_edit_only"/>
+                       <h1><field name="name" required="1"/></h1>
+                   </div>
+                   <group>
+                       <group>
+                           <field name="conservacion_id" />
+                           <field name="uom_id" />
+                           <field name="indicador_ids" >
+                            <tree>
+                            <field name="name" />
+                            </tree>
+                           </field>
+                           <field name="comentario" />
+                       </group>
+                   </group>
+               </sheet>
+               <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                       <field name="message_ids" widget="mail_thread"/>
+ </div>
+               </form>
+      </field>
+   </record>
+
+   <record model="ir.ui.view" id="fiaes.producto_tree">
+     <field name="name">fiaes.producto_tree</field>
+     <field name="model">fiaes.producto</field>
+     <field name="arch" type="xml">
+     <tree string="productos">
+       <field name="name"/>
+     </tree>
+      </field>
+   </record>
+
+   <record model="ir.actions.act_window" id="fiaes.producto_action">
+   <field name="name">productos</field>
+   <field name="res_model">fiaes.producto</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">producto</p>
+   </field>
+ </record>
+
+
+   <menuitem name="producto"
+   parent="fiaes.configuracion"
+   id="fiaes.productos"
+   sequence="70"
+   action="fiaes.producto_action"
+   groups="account.group_account_manager"/>  
+
+
+
+
+<!-- pantalla de tenica de restauracion  -->
+     <record model="ir.ui.view" id="fiaes.tecnica_form">
+     <field name="name">fiaes.tecnica_form</field>
+     <field name="model">fiaes.tecnica</field>
+     <field name="arch" type="xml">
+       <form >
+           <sheet>
+               <div class="oe_title oe_inline">
+                  <label for="name" class="oe_edit_only"/>
+                  <h1><field name="name" required="1"/></h1>
+               </div>
+               <group>
+                  <group>
+                   <field name="codigo" />
+                   <field name="comentario" />
+                  </group>
+                </group>
+             </sheet>
+             <div class="oe_chatter">
+               <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+               <field name="message_ids" widget="mail_thread"/>
+              </div>
+          </form>
+      </field>
+   </record>
+
+   <record model="ir.ui.view" id="fiaes.tecnica_tree">
+     <field name="name">fiaes.tecnica_tree</field>
+     <field name="model">fiaes.tecnica</field>
+     <field name="arch" type="xml">
+     <tree string="Tecnicas">
+       <field name="name"/>
+     </tree>
+      </field>
+   </record>
+
+   <record model="ir.actions.act_window" id="fiaes.tecnica_action">
+   <field name="name">Tecnicas</field>
+   <field name="res_model">fiaes.tecnica</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">Tecnica</p>
+   </field>
+ </record>
+
+
+   <menuitem name="Tecnica de restauracion"
+   parent="fiaes.configuracion"
+   id="fiaes.tecnica"
+   sequence="80"
+   action="fiaes.tecnica_action"
+   groups="account.group_account_manager"/>  
+
+
+
+
+<!-- pantalla de tenica de restauracion  -->
+     <record model="ir.ui.view" id="fiaes.categoria_form">
+     <field name="name">fiaes.categoria_form</field>
+     <field name="model">fiaes.insumo.categoria</field>
+     <field name="arch" type="xml">
+       <form >
+           <sheet>
+               <div class="oe_title oe_inline">
+                  <label for="name" class="oe_edit_only"/>
+                  <h1><field name="name" required="1"/></h1>
+               </div>
+               <group>
+                  <group>
+                   <field name="comentario" />
+                  </group>
+                </group>
+             </sheet>
+             <div class="oe_chatter">
+               <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+               <field name="message_ids" widget="mail_thread"/>
+              </div>
+          </form>
+      </field>
+   </record>
+
+   <record model="ir.ui.view" id="fiaes.categoria_tree">
+     <field name="name">fiaes.categoria_tree</field>
+     <field name="model">fiaes.insumo.categoria</field>
+     <field name="arch" type="xml">
+     <tree string="Categorias">
+       <field name="name"/>
+     </tree>
+      </field>
+   </record>
+
+   <record model="ir.actions.act_window" id="fiaes.categoria_action">
+   <field name="name">Categorias de insumo</field>
+   <field name="res_model">fiaes.insumo.categoria</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">Categorias de insumo</p>
+   </field>
+ </record>
+
+
+   <menuitem name="Categorias de insumos"
+   parent="fiaes.configuracion"
+   id="fiaes.categoria"
+   sequence="80"
+   action="fiaes.categoria_action"
+   groups="account.group_account_manager"/>  
+
+
+
+
+  </data>
+
+</odoo>

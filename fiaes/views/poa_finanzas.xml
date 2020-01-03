@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+   
+
+   
+      <!--  POA   -->
+     <record model="ir.ui.view" id="fiaes.poa_finanzas_form">
+     <field name="name">fiaes.poa_form</field>
+     <field name="model">fiaes.poa</field>
+     <field name="arch" type="xml">
+       <form >
+               <sheet>
+                   <div class="oe_title oe_inline">
+                       <label for="name" class="oe_edit_only"/>
+                       <h1><field name="name" required="1"/></h1>
+                   </div>
+                   <group>
+                       <group>
+                          <field name="anio"  required="1" />
+                          <field name="comentario" />
+                       </group>
+                   </group>
+                   <notebook>
+                      <page string="Plan de Ingresos">
+                        <field name="ingresos" context="{'defaul_poa_id':active_id}">
+                            <tree>
+                              <field name="name"/>
+                              <field name="state" readonly="1"/>
+                            </tree>
+                        </field>
+                      </page>
+                      <page string="Plan de techos de inversion">
+                        <field name="techos" context="{'defaul_poa_id':active_id}">
+                            <tree>
+                              <field name="name"/>
+                              <field name="state" readonly="1"/>
+                            </tree>
+                        </field>
+                      </page>
+                   </notebook>
+               </sheet>
+              <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+              </div>
+               </form>
+      </field>
+   </record>
+
+   <record model="ir.ui.view" id="fiaes.poa_tree">
+     <field name="name">fiaes.poa_tree</field>
+     <field name="model">fiaes.poa</field>
+     <field name="arch" type="xml">
+     <tree string="POA">
+       <field name="name"/>
+       <field name="anio"/>
+     </tree>
+      </field>
+   </record>
+
+   <record model="ir.actions.act_window" id="fiaes.poa_action_finanzas">
+   <field name="name">POA</field>
+   <field name="res_model">fiaes.poa</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,form</field>
+   <field name="form_view_id" ref="fiaes.poa_finanzas_form"/>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">POA</p>
+   </field>
+ </record>
+
+
+   <menuitem name="POA"
+   parent="fiaes.planificacion_finanzas"
+   id="fiaes.poa_finanzas"
+   sequence="10"
+   action="fiaes.poa_action_finanzas"
+   groups="account.group_account_manager"/>
+      
+      
+      
+      <!--  POA INGRESOS  -->
+    <record model="ir.ui.view" id="fiaes.poa_ingresos_form">
+     <field name="name">fiaes.poa_ingresos_form</field>
+     <field name="model">fiaes.poa.ingreso</field>
+     <field name="arch" type="xml">
+       <form >
+        <header>
+          <button name="aprobar" states="Borrador" string="Aprobar" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+          <button name="cancelar" states="Borrador" string="Cancelar" groups="fiaes.autoriza_proyectos"  type="object" class="oe_highlight"/>
+          <button name="regresar" states="Aprobado,Cancelado" string="Regresar a borrador" groups="fiaes.autoriza_proyectos"  type="object" class="oe_highlight"/>
+          <button name="totalfirmado" string="Calcular" type="object" class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+               <sheet>
+                   <div class="oe_title oe_inline">
+                       <label for="name" class="oe_edit_only"/>
+                       <h1><field name="name" required="1"/></h1>
+                       <label for="poa_id" string="POA" />
+                       <field name="poa_id"/>
+                   </div>                   
+                   <notebook groups="fiaes.autoriza_proyectos">
+                      <page string="Fuentes Tradicionales">
+                        <field name="ingresos_tradicionales" context="{'default_poa_id':active_id}">
+                            <tree  editable="bottom">
+                              <field name="fuente_id" domain="[('tipo','=','Tradicional')]"/>
+                              <field name="mes" />
+                              <field name="utilidad" sum="Total Utilidad" />
+                              <field name="patrimonio"  sum="Total Patrimonio"/>
+                              <field name="total"  sum="Total"/>
+                            </tree>
+                        </field>
+                        <group>
+                          <field name="ingresos_tradicionales_supuestos" />
+                        </group>
+                      </page>                      
+                      <page string="Fuentes de compensacion">
+                        <field name="ingresos_compensaciones" context="{'default_poa_id':active_id}">
+                            <tree  editable="bottom">
+                              <field name="mes" />
+                              <field name="firmado" sum="Total compensaciones firmadas" readonly="1" />
+                              <field name="nuevas"  sum="Total nuevas"/>
+                              <field name="firmadocalculado"  sum="Total" readonly="1"/>
+                              <field name="total"  sum="Total"/>
+                            </tree>
+                        </field>
+                        <group>
+                          <field name="ingresos_compensaciones_supuestos" />
+                        </group>
+                      </page>
+
+                      <page string="Otras fuentes">
+                        <field name="ingresos_otros" context="{'default_poa_id':active_id}">
+                            <tree editable="bottom">
+                              <field name="fuente_id" domain="[('tipo','=','Otra')]"/>
+                              <field name="mes" />
+                              <field name="monto"  sum="Total"/>
+                              <field name="supuesto" />
+                            </tree>
+                        </field>
+                        <group>
+                          <field name="ingresos_otros_supuestos" />
+                        </group>
+                      </page>
+
+                   </notebook>
+               </sheet>
+               <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+              </div>
+               </form>
+      </field>
+   </record>
+      
+      
+  <record model="ir.ui.view" id="fiaes.poa_ingresos_tree">
+     <field name="name">fiaes.poa_ingresos_tree</field>
+     <field name="model">fiaes.poa.ingreso</field>
+     <field name="arch" type="xml">
+     <tree string="POA Ingresos">
+       <field name="name"/>
+       <field name="poa_id"/>
+       <field name="state"/>
+     </tree>
+      </field>
+   </record>
+
+   <record model="ir.actions.act_window" id="fiaes.poa_ingresos_action">
+   <field name="name">POA - Ingresos</field>
+   <field name="res_model">fiaes.poa.ingreso</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">POA -  Ingresos</p>
+   </field>
+ </record>
+
+    <menuitem name="POA - Ingresos"
+   parent="fiaes.planificacion_finanzas"
+   id="fiaes.poa_ingresos"
+   sequence="11"
+   action="fiaes.poa_ingresos_action"
+   groups="account.group_account_manager"/>    
+      
+      
+      
+      <!--  POA TECHOS  -->
+    <record model="ir.ui.view" id="fiaes.poa_techos_form">
+     <field name="name">fiaes.poa_techos_form</field>
+     <field name="model">fiaes.poa.techo</field>
+     <field name="arch" type="xml">
+       <form >
+        <header>
+          <button name="aprobar" states="Borrador" string="Aprobar" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+          <button name="cancelar" states="Borrador" string="Cancelar" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+          <button name="regresar" states="Aprobado,Cancelado" string="Regresar a borrador" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+               <sheet>
+                   <div class="oe_title oe_inline">
+                       <label for="name" class="oe_edit_only"/>
+                       <h1><field name="name" required="1"/></h1>
+                       <label for="poa_id" string="POA" />
+                       <field name="poa_id"/>
+                      
+                   </div> 
+                   <group>
+                      
+                   </group>                  
+                   <notebook>
+                      <page string="Techos territorios">
+                        <field name="techo_territorio_ids" context="{'default_techo_id':id,'default_poa_id':poa_id}">
+                            <tree  >
+                              <field name="territorio_id" />
+                              <field name="porcentaje_gasto"/>
+                              <field name="monto" sum="Total" />   
+                              <field name="monto_gasto" sum="Total Gasto" />  
+                              <field name="controlado_total" sum="Total Controlado" />                              
+                              <field name="disponible_gastos" sum="Total disponible" />     
+                              <field name="gasto_operativo" sum="Total gasto operativo" />     
+                              <field name="presupuesto" sum="Total presupeusto" />   
+                              <field name="diferencia" sum="Total diferencia" />                              
+                            </tree>
+                            <form>
+                              <sheet>
+                                <group>
+                                  <field name="territorio_id" />
+                                  <field name="monto" sum="Total" />   
+                                  <field name="porcentaje_gasto"/>
+                                  <field name="monto_gasto" sum="Total Gasto" />  
+                                  <field name="detalle_ids"  context="{'default_techo_territorio_id':id}">
+                                      <tree  editable="bottom">
+                                        <field name="name" />
+                                        <field name="monto" />
+                                        <field name="suma" />
+                                      </tree>
+                                  </field>
+                                  <field name="controlado_total" sum="Total Controlado" />                              
+                                  <field name="disponible_gastos" sum="Total disponible" />     
+                                  <field name="gasto_operativo" sum="Total gasto operativo" />     
+                                  <field name="presupuesto" sum="Total presupeusto" />   
+                                  <field name="diferencia" sum="Total diferencia" /> 
+                                </group>
+                              </sheet>
+                            </form>
+                        </field>
+                        <group>
+                          <field name="techo_territorio_supuestos" />
+                        </group>
+                      </page>
+                      <page string="Techos departamentos">
+                        <field name="techo_departamento_ids" context="{'default_techo_id':active_id}">
+                            <tree  >
+                              <field name="deparment_id" />
+                              <field name="tipo" />
+                              <field name="porcentaje_gasto" />
+                              <field name="monto" sum="Total" />   
+                              <field name="monto_gasto" sum="Total Gasto" />  
+                              <field name="controlado_total" sum="Total Controlado" />                              
+                              <field name="disponible_gastos" sum="Total disponible" />     
+                              <field name="gasto_operativo" sum="Total gasto operativo" />     
+                              <field name="presupuesto" sum="Total presupeusto" />   
+                              <field name="diferencia" sum="Total diferencia" />                              
+                            </tree>
+                            <form>
+                              <sheet>
+                                <group>
+                                  <field name="deparment_id" />
+                                  <field name="tipo" />
+                                  <field name="fuente_id" attrs="{'invisible':[('tipo', '!=', 'Especifica')]}"/>
+                                  <field name="territorio_id"  attrs="{'invisible':[('tipo', '!=', 'Territorio')]}"/>
+                                  <field name="territorio_ids" attrs="{'invisible':[('tipo', '!=', 'VariosTerritorio')]}" context="{'default_techo_departamento_id':id}">
+                                      <tree  editable="bottom">
+                                        <field name="territorio_id" />
+                                        <field name="base" />
+                                        <field name="porcentaje" />
+                                        <field name="monto" />
+                                      </tree>
+                                  </field>
+                                  <field name="monto_ingresado" attrs="{'invisible':[('tipo', '!=', 'Monto')]}"/>
+                                  <field name="porcentaje_gasto"  attrs="{'invisible':[('tipo', 'in', ('Monto','VariosTerritorio'))]}"/>
+                                  <field name="monto" sum="Total" />   
+                                  <field name="monto_gasto" sum="Total Gasto" />  
+                                  <field name="detalle_ids"  context="{'default_techo_territorio_id':id}">
+                                      <tree  editable="bottom">
+                                        <field name="name" />
+                                        <field name="monto" />
+                                        <field name="suma" />
+                                      </tree>
+                                  </field>
+                                  <field name="controlado_total" sum="Total Controlado" />                              
+                                  <field name="disponible_gastos" sum="Total disponible" />     
+                                  <field name="gasto_operativo" sum="Total gasto operativo" />     
+                                  <field name="presupuesto" sum="Total presupeusto" />   
+                                  <field name="diferencia" sum="Total diferencia" /> 
+                                </group>
+                              </sheet>
+                            </form>
+                        </field>                        
+                      </page>                          
+                   </notebook>
+               </sheet>
+               <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+              </div>
+               </form>
+      </field>
+   </record>
+      
+      
+  <record model="ir.ui.view" id="fiaes.poa_techos_tree">
+     <field name="name">fiaes.poa_techos_tree</field>
+     <field name="model">fiaes.poa.techo</field>
+     <field name="arch" type="xml">
+     <tree string="POA Techos">
+       <field name="name"/>
+       <field name="poa_id"/>
+       <field name="state"/>
+     </tree>
+      </field>
+   </record>
+
+   <record model="ir.actions.act_window" id="fiaes.poa_techos_action">
+   <field name="name">POA - Techos</field>
+   <field name="res_model">fiaes.poa.techo</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">POA - Techos</p>
+   </field>
+ </record>
+
+  <menuitem name="POA - Techos"
+   parent="fiaes.planificacion_finanzas"
+   id="fiaes.poa_techos"
+   sequence="12"
+   action="fiaes.poa_techos_action"
+   groups="account.group_account_manager"/>
+
+
+    </data>
+</odoo>

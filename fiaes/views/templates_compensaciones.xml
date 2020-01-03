@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      
+      <record id="compensacion_registro_solicitud_ingreso" model="mail.template">
+          <field name="name">compensacion_registro_solicitud_ingreso</field>
+          <field name="email_from">${object.source_email or ''}</field>
+          <field name="subject">Solicitud de registro recibida</field>
+          <field name="email_to">${object.email}</field>
+          <field name="model_id" ref="fiaes.model_fiaes_compensacion_registro"/>
+          <field name="auto_delete" eval="True"/>
+          <field name="body_html">
+                  <![CDATA[
+                PLANTILLA DE RECIBIDO
+            ]]>
+          </field>
+       </record>
+
+
+      <record id="compensacion_registro_solicitud_aprobado" model="mail.template">
+          <field name="name">compensacion_registro_solicitud_ingreso</field>
+          <field name="email_from">${object.source_email or ''}</field>
+          <field name="subject">Solicitud de registro recibida</field>
+          <field name="email_to">${object.email}</field>
+          <field name="model_id" ref="fiaes.model_fiaes_compensacion_registro"/>
+          <field name="auto_delete" eval="True"/>
+          <field name="body_html">
+                  <![CDATA[
+                PLANTILLA DE ACEPTADO
+            ]]>
+          </field>
+       </record>
+
+        <record id="compensacion_registro_solicitud_rechazo" model="mail.template">
+          <field name="name">compensacion_registro_solicitud_ingreso</field>
+          <field name="email_from">${object.source_email or ''}</field>
+          <field name="subject">Solicitud de registro recibida</field>
+          <field name="email_to">${object.email}</field>
+          <field name="model_id" ref="fiaes.model_fiaes_compensacion_registro"/>
+          <field name="auto_delete" eval="True"/>
+          <field name="body_html">
+                  <![CDATA[
+                PLANTILLA DE RECHAZADO
+            ]]>
+          </field>
+       </record>
+
+
+
+
+
+
+
+      <record id="compensacion_proceso_ingreso" model="mail.template">
+          <field name="name">compensacion_titular_solicitud_ingreso</field>
+          <field name="email_from">${object.source_email or ''}</field>
+          <field name="subject">Solicitud de registro de titular recibida</field>
+          <field name="email_to">${object.usuario_id.email}</field>
+          <field name="model_id" ref="fiaes.model_fiaes_compensacion_proceso"/>
+          <field name="auto_delete" eval="True"/>
+          <field name="body_html">
+                  <![CDATA[
+                Estimado ${object.name}:
+Reciba un cordial saludo de parte del Fondo de la Iniciativa para las Américas, que se abrevia “FIAES”. 
+Agradecemos que haya seleccionado a FIAES para efectuar la compensación ambiental.
+Con respecto a la resolución número: ${object.proyecto_resolucion}, de fecha 03 de julio de 2019 para realizar el proyecto: "Estación de servicio Texaco Autopista Norte", solicitamos de favor nos indique el día en que podamos coordinar una reunión o llamada telefónica para presentarle la función del FIAES y discutir sobre el desembolso de compensación ambiental por el valor de US$3,508.74.
+A sus apreciables órdenes.
+            ]]>
+          </field>
+       </record>
+
+
+
+      <record id="compensacion_proceso_estado" model="mail.template">
+          <field name="name">compensacion_proceso_estado</field>
+          <field name="email_from">${object.source_email or ''}</field>
+          <field name="subject">Su proceso ha cambiado de estado</field>
+          <field name="email_to">${object.usuario_id.email}</field>
+          <field name="model_id" ref="fiaes.model_fiaes_compensacion_proceso"/>
+          <field name="auto_delete" eval="True"/>
+          <field name="body_html">
+                  <![CDATA[
+                Estimado ${object.name}:
+                Reciba un cordial saludo de parte del Fondo de la Iniciativa para las Américas, que se abrevia “FIAES”. 
+                Agradecemos que haya seleccionado a FIAES para efectuar la compensación ambiental, al respecto atentamente le solicitamos:
+                    1. Presentar a las instalaciones del FIAES la documentación legal certificada por notario, según lo indicado en los anexos adjuntos. 
+                    2. Revisar el borrador del convenio de compensación ambiental enviado por FIAES en un plazo no mayor a 5 días hábiles. 
+                    3. Notificar al FIAES el visto bueno del borrador del convenio de compensación ambiental.
+                    4. Esperar la aprobación del convenio de compensación ambiental por parte del MARN.
+                    5. Esperar la notificación de FIAES para la firma del convenio de compensación ambiental
+                    6. Efectuar el pago de la compensación ambiental a la firma del convenio o previamente, por el valor de (valor en cifras USD) en concepto de (único/primer/segundo/tercero...) desembolso, en alguna de las modalidades siguientes: 
+                    a) Cheque certificado o de gerencia a favor de FIAES/FONDO DE COMPENSACIÓN AMBIENTAL
+                    b) Transferencia bancaria a la cuenta corriente con el Banco Agrícola:  No. 500-022475-6, a nombre de FIAES/FONDO DE COMPENSACIÓN AMBIENTAL.
+                Política de Prevención de Lavado de Dinero, Activos y Financiamiento al Terrorismo
+                A partir de 2018, FIAES solicita atentamente completar el Anexo __ Formulario y Declaración Jurada, firmado por su representante legal o Apoderado. 
+                Cordialmente.
+            ]]>
+          </field>
+       </record>
+
+
+
+
+
+
+      <record id="compensacion_titular_solicitud_aprobado" model="mail.template">
+          <field name="name">compensacion_titular_solicitud_ingreso</field>
+          <field name="email_from">${object.source_email or ''}</field>
+          <field name="subject">Solicitud de registro de titular aprobada</field>
+          <field name="email_to">${object.usuario_id.email}</field>
+          <field name="model_id" ref="fiaes.model_fiaes_compensacion_proceso"/>
+          <field name="auto_delete" eval="True"/>
+          <field name="body_html">
+                  <![CDATA[
+                PLANTILLA DE PROCESO ACEPTADO
+            ]]>
+          </field>
+       </record>
+
+        <record id="compensacion_titular_solicitud_rechazo" model="mail.template">
+          <field name="name">compensacion_titular_solicitud_ingreso</field>
+          <field name="email_from">${object.source_email or ''}</field>
+          <field name="subject">Solicitud de registro  de titular rechazada</field>
+          <field name="email_to">${object.usuario_id.email}</field>
+          <field name="model_id" ref="fiaes.model_fiaes_compensacion_proceso"/>
+          <field name="auto_delete" eval="True"/>
+          <field name="body_html">
+                  <![CDATA[
+                PLANTILLA DE PROCESO RECHAZADO
+            ]]>
+          </field>
+       </record>
+
+
+
+
+
+
+
+      <record id="compensacion_proyecto_aprobado" model="mail.template">
+          <field name="name">compensacion_proyecto_ingreso</field>
+          <field name="email_from">${object.source_email or ''}</field>
+          <field name="subject">Proyecto aceptado</field>
+          <field name="email_to">${object.titular_id.usuario_id.email}</field>
+          <field name="model_id" ref="fiaes.model_fiaes_compensacion_proyecto"/>
+          <field name="auto_delete" eval="True"/>
+          <field name="body_html">
+                  <![CDATA[
+                PLANTILLA DE PROYECTO ACEPTADO
+            ]]>
+          </field>
+       </record>
+
+        <record id="compensacion_proyecto_rechazo" model="mail.template">
+          <field name="name">compensacion_titular_solicitud_ingreso</field>
+          <field name="email_from">${object.source_email or ''}</field>
+          <field name="subject">Proyecto rechazado</field>
+          <field name="email_to">${object.titular_id.usuario_id.email}</field>
+          <field name="model_id" ref="fiaes.model_fiaes_compensacion_proyecto"/>
+          <field name="auto_delete" eval="True"/>
+          <field name="body_html">
+                  <![CDATA[
+                PLANTILLA DE PROYECTO RECHAZADO
+            ]]>
+          </field>
+       </record>
+
+
+        <record id="compensacion_desembolso_alerta" model="mail.template">
+          <field name="name">Alerta de proximidad de pago</field>
+          <field name="email_from"></field>
+          <field name="subject">Proximidad de pago</field>
+          <field name="email_to">${object.titular_id.usuario_id.email,object.titular_id.employee_id.email}</field>
+          <field name="model_id" ref="fiaes.model_fiaes_compensacion_desembolso_alerta"/>
+          <field name="auto_delete" eval="True"/>
+          <field name="body_html">
+                  <![CDATA[
+                Proximidad de pago
+            ]]>
+          </field>
+       </record>
+
+      <record id="compensacion_fianza_alerta" model="mail.template">
+          <field name="name">Alerta de proximidad de fianza</field>
+          <field name="email_from"></field>
+          <field name="subject">Proximidad de pago</field>
+          <field name="email_to">${object.titular_id.usuario_id.email,object.titular_id.employee_id.email}</field>
+          <field name="model_id" ref="fiaes.model_fiaes_compensacion_fianza_alerta"/>
+          <field name="auto_delete" eval="True"/>
+          <field name="body_html">
+                  <![CDATA[
+                Proximidad de fianza
+            ]]>
+          </field>
+       </record>
+
+
+
+
+
+    </data>
+</odoo>

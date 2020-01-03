@@ -1,0 +1,844 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+
+
+
+<record model="ir.ui.view" id="fiaes_com_registro_form">
+    <field name="name">fiaes_com_registro_form</field>
+    <field name="model">fiaes.compensacion.registro</field>
+    <field name="arch" type="xml">
+        <form string="Registro de compensancion">
+        <header>
+          <button name="contactar" states="Solicitado" string="Contactar"  type="object" class="oe_highlight"/>
+          <button name="aprobar" states="Contactado" string="Aprobar" type="object" class="oe_highlight"/>
+          <button name="rechazar" states="Contactado" string="Rechazar" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+            <sheet>
+                <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name" required="1"/>
+                    </h1>
+                </div> 
+                <group>
+                    <field name="email" />
+                    <field name="telefono" />
+                    <field name="nit" />
+                    <field name="tipo"/>
+                </group>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+<!--tree del -->
+ <record model="ir.ui.view" id="fiaes_com_registro_tree">
+    <field name="name">fiaes_com_registro_tree</field>
+    <field name="model">fiaes.compensacion.registro</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" />
+            <field name="email" />
+            <field name="telefono" />
+            <field name="nit" />
+            <field name="tipo"/>      
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del -->
+    <record model="ir.actions.act_window" id="fiaes_com_registro_action">
+            <field name="name">Solicitud de registro</field>
+            <field name="res_model">fiaes.compensacion.registro</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Solicitud de registro
+                </p>
+            </field>
+        </record>
+
+<!--menu del -->
+   <menuitem 
+   id="fiaes_registro" 
+   parent="fiaes.compensacion_proceso"
+   name="Solicitudes"
+   action="fiaes_com_registro_action"
+   sequence="1"
+   /> 
+
+
+
+
+<record id="inscripcion_page_link" model="website.menu">
+    <field name="name">Inscripcion</field>
+    <field name="url">/compensacion/new_registro</field>
+    <field name="parent_id" ref="website.main_menu" />
+    <field name="sequence" type="int">100</field>
+</record>
+
+    </data>
+
+    <data>
+        <record id="fiaes.model_fiaes_compensacion_registro" model="ir.model">
+            <field name="website_form_default_field_id" ref="fiaes.field_fiaes_compensacion_registro__name" />
+            <field name="website_form_access">True</field>
+            <field name="website_form_label">Registro</field>
+        </record>
+        <function model="ir.model.fields" name="formbuilder_whitelist">
+            <value>fiaes.compensacion.registro</value>
+            <value eval="[
+                'name',
+                'telefono',
+                'email',
+                'nit',
+                'tipo',
+            ]"/>
+        </function>
+    </data>
+
+
+
+
+
+
+
+
+
+
+    <!-- PARA LA SOLICITUD DEL TITULAR -->
+
+
+<data>
+<record model="ir.ui.view" id="fiaes_com_proceso_solicitud_form">
+    <field name="name">fiaes_com_proceso_solicitud_form</field>
+    <field name="model">fiaes.compensacion.proceso</field>
+    <field name="arch" type="xml">
+        <form string="Proceso de compensacion">
+        <header>
+          <button name="recibir" states="Solicitud" string="Recibir"  type="object" class="oe_highlight"/>
+            <button name="aprobar_titular" states="Recibida" string="Revision (Datos del titular)"  type="object" class="oe_highlight"/>
+            <button name="confirmar_proyecto" states="RevisionTitular" string="Revision (Datos del proyecto)"  type="object" class="oe_highlight"/>
+            <button name="documentos_revisados" states="RevisionProyecto" string="Revision (Documentos legales)"  type="object" class="oe_highlight"/>
+            <button name="aprobar" states="RevisionLegal" string="Solicitud Aprobada"  type="object" class="oe_highlight"/>
+            <button name="plan_elaboracion" states="Aprobada" string="Plan de desembolsos y fianzas en elaboracion'"  type="object" class="oe_highlight"/>
+            <button name="plan_titular" states="Plan" string="Plan de desembolsos revision por el titular"  type="object" class="oe_highlight"/>
+            <button name="plan_titular_aprobado" states="PlanTitular" string="Plan de pagos aprobado por el titular"  type="object" class="oe_highlight"/>
+            <button name="convenio_elaboracion" states="PlanAprobadoTitular" string="Convenio en elaboracion"  type="object" class="oe_highlight"/>
+            <button name="convenio_titular" states="Convenio" string="Convenio en revision titular"  type="object" class="oe_highlight"/>
+            <button name="convenio_titular_aprobado" states="ConvenioTitular" string="Convenio aprobado por el titular"  type="object" class="oe_highlight"/>
+            <button name="convenio_marn" states="ConvenioAprobadoTitular" string="Convenio en revision MARN"  type="object" class="oe_highlight"/>
+            <button name="convenio_marn_aprobado" states="ConvenioMarn" string="Convenio aprobado por el MARN"  type="object" class="oe_highlight"/>
+            <button name="revision_pago" states="ConvenioAprobadoMarn" string="Revision de pago y fianza"  type="object" class="oe_highlight"/>
+            <button name="firma_programada" states="RevisionPago" string="Programacion de firma de convenio"  type="object" class="oe_highlight"/>
+            <button name="firmar" states="FirmaProgramada" string="Convenio Firmado"  type="object" class="oe_highlight"/>
+            <button name="rechazar" string="No Aprobar"  type="object" class="oe_highlight"/>
+          
+          
+        </header>
+            <sheet>
+                <div>
+                    <h2>
+                        
+                    </h2>
+                </div>
+                <group>
+                    <field name="name" />
+                    <field name="state" readonly="1"/>
+                    <field name="nombre_comercial" />
+                    <field name="tipo"/>
+                    <field name="fecha_actual" readonly="1" invisible="1"/>
+                    <field name="x_fecha" readonly="1" invisible="1"/>
+                </group>
+                <notebook>
+                    <page string="Titular">
+                        <group>
+                            <field name="representante_legal" />
+                            <field name="empresa_nit" />
+                            <field name="empresa_nit_letras" readonly="1" invisible="1"/>
+                            <field name="representante_nit" />
+                            <field name="representante_nit_letras" readonly="1" invisible="1"/>
+                            <field name="representante_dui" />
+                            <field name="representante_dui_letras" readonly="1" invisible="1"/>
+                            <field name="apoderado_nit" />
+                            <field name="apoderado_nit_letras" readonly="1" invisible="1"/>
+                            <field name="apoderado_dui" />
+                            <field name="apoderado_dui_letras" readonly="1" invisible="1"/>
+                            <field name="poder" />
+                            <field name="departamento_id" />
+                            <field name="municipio_id" />
+                            <field name="representante_nacionalidad" />
+                            <field name="representante_profesion" />
+                            <field name="representante_nacimeinto" />
+                            <field name="contacto" />
+                            <field name="contacto_email" />
+                            <field name="usuario_id" readonly="True"/>
+                            <field name="proceso_uuid" readonly="True"/>
+                        </group>
+                    </page>
+                    <page string="Proyecto">
+                        <group>
+                            <field name="proyecto_name" />
+                            <field name="proyecto_descripcion" />
+                            <field name="proyecto_resolucion" />
+                            <field name="proyecto_resolucion_nfa" />
+                            <field name="proyecto_resolucion_fecha" />
+                            <field name="proyecto_resolucion_file" />
+                            <field name="proyecto_direccion" />
+                            <field name="proyecto_departamento_id" />
+                            <field name="proyecto_municipio_id" />
+                            <field name="proyecto_afectacion" />
+                            <field name="proyecto_vencimiento" />
+                            <field name="proyecto_afectacion" />
+                            <field name="proyecto_valor" />
+                            <field name="proyecto_valor_letras" />
+                        </group>
+                    </page>
+                    <page string="Legal">
+                         <group>
+                            <field name="legal_persona_dui"  attrs="{'invisible':[('tipo', '!=', 'Persona')]}"/>
+                            <field name="legal_persona_nit"  attrs="{'invisible':[('tipo', '!=', 'Persona')]}"/>
+                            <field name="legal_escritura" attrs="{'invisible':[('tipo', '=', 'Persona')]}"/>
+                            <field name="legal_modificacion"  attrs="{'invisible':[('tipo', '=', 'Persona')]}"/>
+                            <field name="legal_estatutos"  attrs="{'invisible':[('tipo', '!=', 'ONG')]}"/>
+                            <field name="legal_credencial" attrs="{'invisible':[('tipo', '=', 'Persona')]}"/>
+                            <field name="legal_renovacion" attrs="{'invisible':[('tipo', '=', 'Persona')]}"/>
+                            <field name="legal_ley_creacion" attrs="{'invisible':[('tipo', '!=', 'Gobierno')]}"/>
+                            <field name="legal_representante_diario" attrs="{'invisible':[('tipo', '!=', 'Gobierno')]}"/>
+                            <field name="legal_representante_dui" />
+                            <field name="legal_representante_nit" />
+                            <field name="legal_sociedad_nit" />
+                            <field name="legal_iva" />
+                            <field name="legal_certificacion" />
+                            <field name="legal_poder" />
+                            <field name="legal_apoderado_dui" />
+                            <field name="legal_apoderado_nit" />
+                        </group>
+                    </page>
+                    <page string="Comentarios">
+                         <group>
+                            <field name="comentario_plan" />
+                            <field name="comentario_convenio" />
+                         </group>
+                    </page>
+                </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="activity_ids" widget="mail_activity"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+<!--tree del -->
+ <record model="ir.ui.view" id="fiaes_com_proceso_solicitud_tree">
+    <field name="name">fiaes_com_proceso_solicitud_tree</field>
+    <field name="model">fiaes.compensacion.proceso</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" />
+            <field name="nombre_comercial" />
+            <field name="state" />
+            <field name="usuario_id" />
+            <field name="tipo"/>      
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del -->
+    <record model="ir.actions.act_window" id="fiaes_com_proceso_solicitud_action">
+            <field name="name">Solicitud de compensacion</field>
+            <field name="res_model">fiaes.compensacion.proceso</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Solicitud de registro de titular,proyecto
+                </p>
+            </field>
+        </record>
+
+<!--menu del -->
+   <menuitem 
+   id="fiaes_proceso_solicitud" 
+   parent="fiaes.compensacion_proceso"
+   name="Compensaciones en proceso"
+   action="fiaes_com_proceso_solicitud_action"
+   sequence="20"
+   /> 
+
+
+    </data>
+
+    <data>
+        <record id="fiaes.model_fiaes_compensacion_solicitud" model="ir.model">
+            <field name="website_form_default_field_id" ref="fiaes.field_fiaes_compensacion_solicitud__name" />
+            <field name="website_form_access">True</field>
+            <field name="website_form_label">Solicitud de registro</field>
+        </record>
+
+        <function model="ir.model.fields" name="formbuilder_whitelist">
+            <value>fiaes.compensacion.solicitud</value>
+            <value eval="[
+                'id',
+                'name',
+                'nombre_comercial',
+                'representante_legal',
+                'empresa_nit',
+                'representante_nit',
+                'representante_dui',
+                'apoderado',
+                'apoderado_nit',
+                'apoderado_dui',
+                'poder',
+                'poder_filename',
+                'departamento_id',
+                'municipio_id',
+                'representante_nacionalidad',
+                'representante_profesion',
+                'representante_nacimeinto',
+                'contacto',
+                'contacto_email',
+                'usuario_id',
+                'tipo',
+                'state',
+                'proyecto_name',
+                'proyecto_descripcion',
+                'proyecto_resolucion',
+                'proyecto_resolucion_nfa',
+                'proyecto_resolucion_fecha',
+                'proyecto_direccion',
+                'proyecto_departamento_id',
+                'proyecto_municipio_id',
+                'proyecto_afectacion',
+                'proyecto_vencimiento',
+                'proyecto_valor',
+                'legal_escritura',
+                'legal_modificacion',
+                'legal_credencial',
+                'legal_renovacion',
+                'legal_representante_dui',
+                'legal_representante_nit',
+                'legal_sociedad_nit',
+                'legal_iva',
+                'legal_certificacion',
+                'legal_poder',
+                'legal_apoderado_dui',
+                'legal_apoderado_nit',
+                'legal_estatus',
+                'legal_ley_creacion',
+                'legal_representante_diario',
+                'legal_persona_dui',
+                'legal_persona_nit',
+                'proceso_uuid',
+                'procesar',
+
+            ]"/>
+        </function>
+
+
+        <record id="fiaes.model_fiaes_compensacion_action" model="ir.model">
+            <field name="website_form_default_field_id" ref="fiaes.field_fiaes_compensacion_action__name" />
+            <field name="website_form_access">True</field>
+            <field name="website_form_label">Registro de accion</field>
+        </record>
+
+        <function model="ir.model.fields" name="formbuilder_whitelist">
+            <value>fiaes.compensacion.action</value>
+            <value eval="[
+                'id',
+                'name',
+                'state',
+                'comentario',
+            ]"/>
+        </function>
+
+
+    </data>
+
+
+
+
+
+
+
+
+
+<data>
+
+<!-- Titulares -->
+
+<!--action del -->
+    <record model="ir.actions.act_window" id="fiaes_com_titular_action">
+            <field name="name">Titular</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('tipo','=','Titular')]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Solicitud de registro de titular
+                </p>
+            </field>
+        </record>
+
+<!--menu del -->
+   <menuitem 
+   id="fiaes_titiular" 
+   parent="fiaes.compensacion_compensacion"
+   name="Titulares"
+   action="fiaes_com_titular_action"
+   sequence="20"
+   /> 
+
+</data>
+
+
+
+
+
+
+
+
+
+    <!-- PARA PROYECTO -->
+
+
+<data>
+<record model="ir.ui.view" id="fiaes_com_proyecto_form">
+    <field name="name">fiaes_com_proyecto_form</field>
+    <field name="model">fiaes.compensacion.proyecto</field>
+    <field name="arch" type="xml">
+        <form string="Registro de proyectos">
+        <header>
+          <button name="contactar" states="Solicitado" string="Evaluar"  type="object" class="oe_highlight"/>
+          <button name="aprobar" states="Evaluando" string="Aprobar" type="object" class="oe_highlight"/>
+          <button name="rechazar" states="Evaluando" string="Rechazar" type="object" class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+            <sheet>
+                <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                </div>
+                <group>
+                    <field name="titular_id" />
+                    <field name="descripcion" />
+                    <field name="resolucion" />
+                    <field name="resolucion_fecha" />
+                    <field name="direccion" />
+                    <field name="departamento_id" />
+                    <field name="municipio_id" />
+                    <field name="afectacion" />
+                    <field name="vencimiento" />
+                    <field name="valor" />
+                    <field name="coordenadas_latitud" />
+                    <field name="coordenadas_longitud" />
+                </group>
+                <notebook>
+                    <page string="Afectaciones">
+                        <field name="afectacion_ids"  context="{'default_proyecto_id':id}">
+                            <tree  editable="bottom">
+                                <field name="afectacion_id" />
+                                <field name="name"/>                        
+                                <field name="uom_id" />
+                                <field name="cantidad" />
+                                <field name="cantidad_ha" />
+                                <field name="conservacion_ids" widget="many2many_tags"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Saldos">
+                        <group>
+                            <field name="total_deuda_lp"/>
+                            <field name="total_deuda_cp"/>
+                            <field name="total_pagado"/>
+                            <field name="disponible_sin_gastos"/>
+                            <field name="disponible_con_gastos"/>
+                            <field name="gasto_operativo"/>
+                            <field name="gasto_administrativo"/>
+                            <field name="financiamineto_proyectos"/>
+                        </group>
+                    </page>
+                </notebook>
+                
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+<!--tree del -->
+ <record model="ir.ui.view" id="fiaes_com_proyecto_tree">
+    <field name="name">fiaes_com_proyecto_tree</field>
+    <field name="model">fiaes.compensacion.proyecto</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" />
+            <field name="titular_id" />
+            <field name="valor" />
+            <field name="resolucion" />
+            <field name="resolucion_fecha"/>      
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del -->
+    <record model="ir.actions.act_window" id="fiaes_com_proyecto_action">
+        <field name="name">Proyecto</field>
+        <field name="res_model">fiaes.compensacion.proyecto</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Proyecto</p>
+        </field>
+    </record>
+
+<!--menu del -->
+   <menuitem 
+   id="fiaes_proyecto" 
+   parent="fiaes.compensacion_compensacion"
+   name="Proyectos"
+   action="fiaes_com_proyecto_action"
+   sequence="30"
+   /> 
+
+
+
+
+
+
+
+    <!-- PARA FIANZA -->
+
+<record model="ir.ui.view" id="fiaes_com_fianza_form">
+    <field name="name">fiaes_com_fianza_form</field>
+    <field name="model">fiaes.compensacion.fianza</field>
+    <field name="arch" type="xml">
+        <form string="Registro de Fianzas">
+        <header>
+         
+        </header>
+            <sheet>
+                <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                </div>
+                <group>
+                    <field name="proyecto_id" />
+                    <field name="titular_id" />
+                    <field name="aseguradora" />
+                    <field name="monto" />
+                    <field name="fecha_emision" />
+                    <field name="fecha_vencimiento" />
+                    <field name="fianza_filename" invisible="1" />
+                    <field name="fianza" widget="binary" filename="fianza_filename" placeholder="Documento"/>
+                </group>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+<!--tree del -->
+ <record model="ir.ui.view" id="fiaes_com_fianza_tree">
+    <field name="name">fiaes_com_fianza_tree</field>
+    <field name="model">fiaes.compensacion.fianza</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="proyecto_id" />
+            <field name="titular_id" />
+            <field name="aseguradora" />
+            <field name="monto" />
+            <field name="fecha_emision" />
+            <field name="fecha_vencimiento" />
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del -->
+    <record model="ir.actions.act_window" id="fiaes_com_fianza_action">
+        <field name="name">Fianza</field>
+        <field name="res_model">fiaes.compensacion.fianza</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Proyecto</p>
+        </field>
+    </record>
+
+<!--menu del -->
+   <menuitem 
+   id="fiaes_fianza" 
+   parent="fiaes.compensacion_compensacion"
+   name="Fianza"
+   action="fiaes_com_fianza_action"
+   sequence="30"
+   /> 
+
+
+
+
+
+
+
+
+
+
+    </data>
+
+
+
+
+
+
+
+
+
+    <!-- PARA Afectacion -->
+
+
+<data>
+<record model="ir.ui.view" id="fiaes_com_afectacion_form">
+    <field name="name">fiaes_com_afectacion_form</field>
+    <field name="model">fiaes.compensacion.afectacion</field>
+    <field name="arch" type="xml">
+        <form string="Afectaciones">
+        
+            <sheet>
+                <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                </div>
+                <group>
+                    <field name="uom_id" />
+                    <field name="descripcion" />
+                </group>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+<!--tree del -->
+ <record model="ir.ui.view" id="fiaes_com_afectacion_tree">
+    <field name="name">fiaes_com_afectacion_tree</field>
+    <field name="model">fiaes.compensacion.afectacion</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" />
+            <field name="uom_id" />
+            <field name="descripcion" />
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del -->
+    <record model="ir.actions.act_window" id="fiaes_com_afectacion_action">
+            <field name="name">Afectacion</field>
+            <field name="res_model">fiaes.compensacion.afectacion</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Afectacion
+                </p>
+            </field>
+        </record>
+
+<!--menu del -->
+   <menuitem 
+   id="fiaes_afectacion" 
+   parent="fiaes.configuracion"
+   name="Afectacion"
+   action="fiaes_com_afectacion_action"
+   sequence="30"
+   /> 
+
+
+
+
+
+
+
+    <!-- pantalla de desembolsos por proyectos ya confirmados  -->
+    <record model="ir.ui.view" id="fiaes.desembolso_form">
+        <field name="name">fiaes.desembolso_form</field>
+        <field name="model">fiaes.compensacion.pack.proyecto.desembolso</field>
+        <field name="arch" type="xml">
+            <tree string="Desembolsos a proyectos" create="0" edit="0">
+                <field name="projecto_ejecutora_id" />
+                <field name="componente_id" />
+                <field name="obconservacion" />
+                <field name="territorio" />
+                <field name="convocatorio" />
+                <field name="entidadejutora" />
+                <field name="tipoproyecto" />
+                <field name="projecto_compensacion_id" />
+                <field name="titular_id" />
+                <field name="resolucion" />
+                <field name="resolucion_NFA" />
+                <field name="resolucion_fecha" />
+                <field name="departamento_id" />
+                <field name="municipio_id" />
+                <field name="fecha_desembolso" />
+                <field name="monto_administrativo" />
+                <field name="monto_operativo" />
+                <field name="monto_ejecutora" />
+                <field name="pack_id" />
+                <field name="operativo_transferencia_id" />
+                <field name="administrativo_transferencia_id" />
+            </tree>
+        </field>
+     </record>
+
+   <record model="ir.actions.act_window" id="fiaes.compensacion_desembolso_action">
+   <field name="name">Detalle de desembolsos</field>
+   <field name="res_model">fiaes.compensacion.pack.proyecto.desembolso</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,pivot,graph</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">Detalle de desembolsos</p>
+   </field>
+ </record>
+
+   <menuitem name="Compensacion - Desembolsos comprometidos"
+   parent="fiaes.compensacion_reportes"
+   id="fiaes.compensacion_desembolsos_comprometidos"
+   sequence="55"
+   action="fiaes.compensacion_desembolso_action"
+   groups="base.group_user"/>  
+
+
+
+
+    <!-- pantalla de desembolsos programados por  -->
+    <record model="ir.ui.view" id="fiaes.desembolso_proyecto_form">
+        <field name="name">fiaes.desembolso_proyecto_form</field>
+        <field name="model">fiaes.compensacion.desembolso.desembolso</field>
+        <field name="arch" type="xml">
+            <tree string="Desembolsos programados" create="0" edit="0">
+                <field name="fecha" />
+                <field name="fechapago" />
+                <field name="state" />
+                <field name="monto" />
+                <field name="fase_id" />
+                <field name="plan_id" />
+                <field name="projecto_id" />
+                <field name="fianza_monto" />
+                <field name="titular_id" />
+                <field name="resolucion" />
+                <field name="resolucion_NFA" />
+                <field name="resolucion_fecha" />
+                <field name="departamento_id" />
+                <field name="municipio_id" />
+            </tree>
+        </field>
+     </record>
+
+   <record model="ir.actions.act_window" id="fiaes.proyecto_compensacion_desembolso_action">
+   <field name="name">Detalle de desembolsos programados</field>
+   <field name="res_model">fiaes.compensacion.desembolso.desembolso</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,pivot,graph</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">Detalle de desembolsos programados</p>
+   </field>
+ </record>
+
+   <menuitem name="Compensacion - Desembolsos programados "
+   parent="fiaes.compensacion_reportes"
+   id="fiaes.compensacion_desembolsos_programados"
+   sequence="53"
+   action="fiaes.proyecto_compensacion_desembolso_action"
+   groups="base.group_user"/>  
+
+
+
+
+    <!-- pantalla de desembolsos programados por  -->
+    <record model="ir.ui.view" id="fiaes.desembolso_ejecutora_form">
+        <field name="name">fiaes.desembolso_ejecutora_form</field>
+        <field name="model">fiaes.ejecutora.desembolso</field>
+        <field name="arch" type="xml">
+            <tree string="Desembolsos ejecutora" create="0" edit="0">
+                <field name="fechafiaes" />
+                <field name="proyect_id" />
+                <field name="total_financiado" />
+                <field name="state" />
+                <field name="fecha_aplicacion" />
+                <field name="componente_id" />
+                <field name="obconservacion" />
+                <field name="territorio" />
+                <field name="convocatorio" />
+                <field name="entidadejutora" />
+                <field name="tipoproyecto" />
+                <field name="total_reintegrado" />
+            </tree>
+        </field>
+     </record>
+
+   <record model="ir.actions.act_window" id="fiaes.proyecto_compensacion_ejecutora_action">
+   <field name="name">Detalle de desembolsos ejecutora</field>
+   <field name="res_model">fiaes.ejecutora.desembolso</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,pivot,graph</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">Detalle de desembolsos a ejecutora</p>
+   </field>
+ </record>
+
+   <menuitem name="Compensacion - Desembolsos a ejecutora "
+   parent="fiaes.compensacion_reportes"
+   id="fiaes.compensacion_desembolsos_ejecutora"
+   sequence="55"
+   action="fiaes.proyecto_compensacion_ejecutora_action"
+   groups="base.group_user"/>  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </data>
+
+
+
+
+
+</odoo>

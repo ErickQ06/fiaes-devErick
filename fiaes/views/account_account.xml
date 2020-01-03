@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <!--Modificacion del formulario de Cuenta contable-->
+    <record id="fiaes_account_form" model="ir.ui.view">
+      <field name="name">fiaes account form</field>
+      <field name="model">account.account</field>
+      <field name="inherit_id" ref="account.view_account_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='deprecated']" position="after">
+          <field name="tipo_de_aplicacion" string='Tipo de aplicación'/>
+        </xpath>
+        <xpath expr="//field[@name='tipo_de_aplicacion']" position="after">
+          <field name="tipo_de_saldo" string='Tipo de saldo'/>
+        </xpath>
+        <xpath expr="//field[@name='tipo_de_aplicacion']" position="attributes">
+          <attribute name="widget">radio</attribute>
+        </xpath>
+        <xpath expr="//field[@name='tipo_de_saldo']" position="attributes">
+          <attribute name="widget">radio</attribute>
+        </xpath>
+      </field>
+    </record>
+
+
+  </data>
+</odoo>

@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!--form del objetivo-->
+<record model="ir.ui.view" id="fiaes_objpoa_form">
+<field name="name">fiaes_objpoa_form</field>
+<field name="model">fiaes.poaobjetivos</field>
+<field name="arch" type="xml">
+ <form string="Objetivo Operativo">
+ <sheet>
+ <group>
+<field name="state"/>
+<field name="poa_id" placeholder="Poa" required="1"  attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}" />
+<field name="vinculado_pei"/>
+<field name="planunidad_id"  required="1"  placeholder="Plan Unidad" domain="[('poa_id','=',poa_id)]" attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}" />
+<field name="name"  required="1"  placeholder="Objetivo" attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}" />
+<field name="objetivorer_id" placeholder="Objetivo Padre" attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}" />
+<field name="descripcion" placeholder="Descripcion" attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}" />
+<field name="total"/>
+
+<field name="objetivopei_id" placeholder="Objetivo estrategico" attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')],'invisible':[('vinculado_pei','=',False)]}" />
+</group>  
+<notebook>
+<page string="Indicadores" attrs="{'invisible':[('vinculado_pei','=',False)]}">
+<field name="indicador_line" attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}" context="{'default_objetivopoa_id':active_id,'default_objetivopei_id':objetivopei_id}">
+<tree editable="buttom"> 
+<field name="objetivopei_id" invisible="1"/>
+<field name="indicador_id"  required="1"  domain="[('objetivo_id', '=', objetivopei_id),('mostrar_poa','=',True)]" />
+<field name="uom_id"  required="1" />
+<field name="valor"  required="1" />
+<field name="supuesto"/>
+</tree>
+</field>
+</page>
+<page string="Actividades">
+<field name="actividad_line" context="{'default_objetivopoa_id':id}"  attrs="{'readonly':True}" >
+<tree > 
+<field name="name"/>
+<field name="total"/>
+<field name="ejecutado"/>
+<field name="descripcion"/>
+<field name="objetivopoa_id"/>
+</tree>
+</field>
+</page>
+
+</notebook>
+</sheet>
+<div class="oe_chatter">
+<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+<field name="message_ids" widget="mail_thread"/>
+</div>
+ </form>
+ </field>
+ </record>
+
+
+<!--tree del objetivo-->
+ <record model="ir.ui.view" id="fiaes_objpoa_tree">
+<field name="name">fiaes_objpoa_tree</field>
+<field name="model">fiaes.poaobjetivos</field>
+<field name="arch" type="xml">
+<tree>
+<field name="name" placeholder="Objetivo"/>
+<field name="total" />
+ <field name="objetivorer_id" placeholder="Objetivo Padre"/>
+  <field name="descripcion" placeholder="Descripcion"/>
+<field name="objetivopei_id" placeholder="Objetivo estrategico"/>
+ </tree>
+ </field>
+ </record>
+
+
+<!--action del objetivo-->
+    <record model="ir.actions.act_window" id="objetivopoa_action">
+            <field name="name">Objetivo Operativo</field>
+            <field name="res_model">fiaes.poaobjetivos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+               <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Objetivo Operativo
+                </p>
+            </field>
+        </record>
+
+<!--menu del objetivo-->
+   <menuitem 
+   id="fiaes_objpoa_menu" 
+   parent="fiaes.planificacion_tecnico"
+   name="Objetivo Operativo"
+   action="objetivopoa_action"
+   sequence="21"
+   /> 
+
+   
+ <!--form del actividad-->
+<record model="ir.ui.view" id="fiaes_actpoa_form">
+<field name="name">fiaes_actpoa_form</field>
+<field name="model">fiaes.poaactividad</field>
+<field name="arch" type="xml">
+ <form string="Actividad">
+ <sheet>
+ <group>
+ <field name="state" invisible="1"/>
+ <field name="planunidad_id"  required="1"  placeholder="plan" attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}" />
+<field name="name"  required="1"  placeholder="actividad" attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}" />
+<field name="descripcion" placeholder="Descripcion"  attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}"/>
+<field name="objetivopoa_id" required="1"  placeholder="Objetivo Poa"  domain="[('planunidad_id','=',planunidad_id)]" attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}"/>
+<field name="proyecto" required="1"  placeholder="Proyecto"  attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}" />
+<field name="prioridad" groups="fiaes.autoriza_proyectos"/>
+<field name="fecha_inicial" required="1"   attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}"/>
+<field name="fecha_final" required="1"   attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}"/>
+<field name="total"/>
+<field name="ejecutado"/>
+<field name="peso"/>
+<field name="responsable" placeholder="Responsable" widget="many2many_tags"  attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}" >
+<tree editable="bottom"> 
+<field name="name"/>
+</tree>
+</field>
+<field name="coordina" placeholder="Coordina con" widget="many2many_tags"  attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}" >
+<tree editable="bottom"> 
+<field name="name"/>
+</tree>
+</field>
+<field name="inr_id" placeholder="INR"/>
+</group>  
+<notebook>
+<page string="Sub actividades">
+<field name="subactividades_line" context="{'actividad_id':id}"   attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}">
+<tree create="true" editable="bottom"> 
+<field name="name"  required="1" />
+<field name="fecha_inicial"  required="1" />
+<field name="fecha_final"  required="1" />
+<field name="descripcion"/>
+<field name="responsable" placeholder="Responsable" widget="many2many_tags"/>
+<button name="duplicate" string="copiar"  type="object" class="oe_highlight"/>
+</tree>
+</field>
+</page>
+<page string="Bienes/Servicios">
+<field name="insumo_line" context="{'actividad_id':id}"   attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}" >
+<tree editable="bottom"> 
+<field name="name"  required="1" />
+<field name="categoria"  required="1" />
+<field name="preciouni" required="1" />
+<field name="cantidad" required="1" />
+<field name="total"/>
+<field name="mes" required="1" />
+<field name="fuente" required="1" />
+<field name="cuenta_id"  required="1" />
+<field name="ejecutado"  readonly="1" />
+<button name="duplicate" string="copiar"  type="object" class="oe_highlight"/>
+</tree>
+</field>
+</page>
+<page string="Resultados esperados" context="{'actividad_id':id}"  attrs="{'readonly':[('planunidad_id','!=',False),('state','!=','Borrador')]}">
+<field name="resultados_line">
+<tree editable="bottom"> 
+<field name="name" required="1" />
+<field name="tipo" required="1" />
+<field name="uom_id"    attrs="{'invisible':[('tipo', '!=', 'Cuantitativo')]}" />
+<field name="cantidad"  attrs="{'invisible':[('tipo', '!=', 'Cuantitativo')]}"/>
+<field name="supuesto"  attrs="{'invisible':[('tipo', '!=', 'Cuantitativo')]}"/>
+</tree>
+</field>
+</page>
+</notebook> 
+
+</sheet>
+<div class="oe_chatter">
+<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+<field name="message_ids" widget="mail_thread"/>
+</div>
+ </form>
+ </field>
+ </record>
+
+
+<!--tree del Actividad-->
+ <record model="ir.ui.view" id="fiaes_actpoa_tree">
+<field name="name">fiaes_actpoa_tree</field>
+<field name="model">fiaes.poaactividad</field>
+<field name="arch" type="xml">
+<tree>
+<field name="name" placeholder="Objetivo"/>
+<field name="descripcion" placeholder="Descripcion"/>
+<field name="objetivopoa_id" placeholder="Objetivo Poa"/>
+<field name="responsable" placeholder="Responsable"/>
+<field name="coordina" placeholder="Coordina con"/>
+<field name="inr_id" placeholder="INR"/>
+ </tree>
+ </field>
+ </record>
+
+
+<!--action del Actividad-->
+    <record model="ir.actions.act_window" id="actividadpoa_action">
+            <field name="name">Actividad</field>
+            <field name="res_model">fiaes.poaactividad</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+               <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Actividad
+                </p>
+            </field>
+        </record>
+
+<!--menu del Actitidad-->
+   <menuitem 
+   id="fiaes_actpoa_menu" 
+   parent="fiaes.planificacion_tecnico"
+   name="Actividad POA"
+   action="actividadpoa_action"
+   sequence="22"
+   /> 
+
+   
+ <!--form del POA-->
+<record model="ir.ui.view" id="fiaes_poamain_form">
+<field name="name">fiaes_poamain_form</field>
+<field name="model">fiaes.poa</field>
+<field name="arch" type="xml">
+ <form string="POA">
+ <sheet>
+ <group>
+<field name="name" placeholder="Name"/>
+<field name="anio" placeholder="Año"/>
+<field name="comentario" placeholder="Comentario"/>
+</group>  
+<notebook>
+<page string="Proyectos">
+<field name="project_line">
+<tree create="true"> 
+<field name="name" placeholder="Name"/>
+<field name="total"/>
+</tree>
+</field>
+</page>
+<page string="Objetivos">
+<field name="objetivo_line" string="Objetivo Operativos">
+<tree create="true"> 
+<field name="name" placeholder="Descripcion"/>
+<field name="total"/>
+</tree>
+</field>
+</page>
+<page string="Plan de unidad">
+<field name="planunidad_line" string="Plan de Unidad">
+<tree create="true"> 
+<field name="unidad" placeholder="Unidad"/>
+<field name="total"/>
+</tree>
+</field>
+</page>
+</notebook> 
+
+</sheet>
+<div class="oe_chatter">
+<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+<field name="message_ids" widget="mail_thread"/>
+</div>
+ </form>
+ </field>
+ </record>
+
+
+<!--tree del POA-->
+ <record model="ir.ui.view" id="fiaes_poamain_tree">
+<field name="name">fiaes_poamain_tree</field>
+<field name="model">fiaes.poa</field>
+<field name="arch" type="xml">
+<tree>
+<field name="name" placeholder="Name"/>
+<field name="anio" placeholder="Año"/>
+<field name="comentario" placeholder="Comentario"/>
+ </tree>
+ </field>
+ </record>
+
+
+<!--action del POA-->
+    <record model="ir.actions.act_window" id="mainpoa_action">
+            <field name="name">POA</field>
+            <field name="res_model">fiaes.poa</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="form_view_id" ref="fiaes_poamain_form"/>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">POA
+                </p>
+            </field>
+        </record>
+
+<!--menu del POA-->
+
+
+
+   
+ <!--form del subactividad-->
+<record model="ir.ui.view" id="fiaes_poasubactividad_form">
+<field name="name">fiaes_poasubactividad_form</field>
+<field name="model">fiaes.poasubactividad</field>
+<field name="arch" type="xml">
+ <form string="Sub Actividad">
+ <sheet>
+ <group>
+ <field name="name" />
+ <field name="fecha_inicial"/>
+<field name="fecha_final"/>
+<field name="descripcion" placeholder="Descripcion"/>
+
+<field name="responsable" placeholder="Responsable" widget="many2many_tags">
+<tree editable="bottom"> 
+<field name="name"/>
+</tree>
+</field>
+
+
+</group>  
+</sheet>
+<div class="oe_chatter">
+<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+<field name="message_ids" widget="mail_thread"/>
+</div>
+ </form>
+ </field>
+ </record>
+
+
+
+
+<!--action del POA-->
+    <record model="ir.actions.act_window" id="subactividadpoa_action">
+            <field name="name">Sub Actividad</field>
+            <field name="res_model">fiaes.poasubactividad</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+               <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Sub Activida 
+                </p>
+            </field>
+        </record>
+
+   
+ <!--form del PLAN UNIDAD-->
+<record model="ir.ui.view" id="fiaes_planunidad_form">
+<field name="name">fiaes_planunidad_form</field>
+<field name="model">fiaes.planunidad</field>
+<field name="arch" type="xml">
+ <form string="Plan Unidad">
+ <header>
+          <button name="presentar" states="Borrador" string="Presentar"  type="object" class="oe_highlight"/>
+          <button name="aprobar" states="Presentado" string="Aprobar" groups="fiaes.autoriza_proyectos"  type="object" class="oe_highlight"/>
+          <button name="cancelar" states="Presentado" string="Cancelar" groups="fiaes.autoriza_proyectos"  type="object" class="oe_highlight"/>
+          <button name="regresar" states="Aprobado,Cancelado" string="Regresar a borrador" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+ <sheet>
+ <group>
+<field name="unidad" placeholder="Unidad" attrs="{'readonly':[('state','!=','Borrador')]}"/>
+<field name="poa_id" attrs="{'readonly':[('state','!=','Borrador')]}"/>
+<field name="responsable" placeholder="Responsable" widget="many2many_tags" attrs="{'readonly':[('state','!=','Borrador')]}"/>
+<field name="total" />
+<field name="disponible" />
+<field name="disponible_actual" />
+<field name="ejecutado" />
+<!--field name="reporte_ids" />
+<field name="reporte_proyecto_ids" /-->
+</group>  
+<notebook>
+<page string="Objetivos">
+<field name="objetivo_line"  context="{'default_planunidad_id':active_id}" attrs="{'readonly':[('state','!=','Borrador')]}">
+<tree create="true"> 
+<field name="name" placeholder="Objetivo"/>
+<field name="total" />
+<field name="descripcion" placeholder="Descripcion"/>
+</tree>
+</field>
+</page>
+<page string="Disponible">
+  <field name="disponible_line" >
+  <tree editable="bottom"> 
+  <field name="proyecto_id" readonly="1" />
+  <field name="fuente_id" readonly="1"/>
+  <field name="monto" readonly="1"/>
+  </tree>
+  </field>
+  </page>
+</notebook> 
+
+</sheet>
+<div class="oe_chatter">
+<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+<field name="message_ids" widget="mail_thread"/>
+</div>
+ </form>
+ </field>
+ </record>
+
+
+<!--tree del PLAN UNIDAD-->
+ <record model="ir.ui.view" id="fiaes_planunidad_tree">
+<field name="name">fiaes_planunidad_tree</field>
+<field name="model">fiaes.planunidad</field>
+<field name="arch" type="xml">
+<tree>
+<field name="unidad" placeholder="Unidad"/>
+<field name="total" />
+<field name="disponible" />
+<field name="responsable" placeholder="Responsable" widget="many2many_tags"/>
+ </tree>
+ </field>
+ </record>
+
+
+<!--action del PLAN UNIDAD-->
+    <record model="ir.actions.act_window" id="planunidad_action">
+            <field name="name">Plan Unidad</field>
+            <field name="res_model">fiaes.planunidad</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+               <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Plan Unidad
+                </p>
+            </field>
+        </record>
+
+<!--menu del PLAN UNIDAD-->
+   <menuitem 
+   id="fiaes_planunidad_menu" 
+   parent="fiaes.planificacion_tecnico"
+   name="Plan Unidad"
+   action="planunidad_action"
+   sequence="23"
+   /> 
+
+
+
+   
+ <!--form del subactividad-->
+<record model="ir.ui.view" id="fiaes_poasubactividad_form">
+<field name="name">fiaes_poasubactividad_form</field>
+<field name="model">fiaes.poasubactividad</field>
+<field name="arch" type="xml">
+ <form string="Sub Actividad">
+ <sheet>
+ <group>
+ <field name="name" placeholder="Objetivo"/>
+<field name="descripcion" placeholder="Descripcion"/>
+
+<field name="responsable" placeholder="Responsable" widget="many2many_tags">
+<tree editable="bottom"> 
+<field name="name"/>
+</tree>
+</field>
+
+
+</group>  
+</sheet>
+<div class="oe_chatter">
+<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+<field name="message_ids" widget="mail_thread"/>
+</div>
+ </form>
+ </field>
+ </record>
+
+
+
+
+<!--action del subactividad-->
+    <record model="ir.actions.act_window" id="subactividadpoa_action">
+            <field name="name">Sub Actividad</field>
+            <field name="res_model">fiaes.poasubactividad</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+               <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Sub Actividad
+                </p>
+            </field>
+        </record>
+
+  
+ <!--form del Insumo-->
+<record model="ir.ui.view" id="fiaes_insumo_form">
+<field name="name">fiaes_insumo_form</field>
+<field name="model">fiaes.insumo</field>
+<field name="arch" type="xml">
+ <form string="Insumo">
+ <sheet>
+ <group>
+ <field name="name" placeholder="Insumo"/>
+<field name="categoria" placeholder="Categoria"/>
+</group>  
+</sheet>
+<div class="oe_chatter">
+<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+<field name="message_ids" widget="mail_thread"/>
+</div>
+ </form>
+ </field>
+ </record>
+
+
+
+
+<!--action del insumo-->
+    <record model="ir.actions.act_window" id="insumo_action">
+            <field name="name">Insumo</field>
+            <field name="res_model">fiaes.insumo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+               <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Insumo
+                </p>
+            </field>
+        </record>
+
+
+  
+ <!--form del Resultado-->
+<record model="ir.ui.view" id="fiaes_resultado_form">
+<field name="name">fiaes_resultado_form</field>
+<field name="model">fiaes.resultado</field>
+<field name="arch" type="xml">
+ <form string="Resultado">
+ <sheet>
+ <group>
+ <field name="name" placeholder="Resultado"/>
+<field name="uom_id" placeholder="Unidad de medida"/>
+</group>  
+</sheet>
+<div class="oe_chatter">
+<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+<field name="message_ids" widget="mail_thread"/>
+</div>
+ </form>
+ </field>
+ </record>
+
+
+
+
+<!--action del resultado-->
+    <record model="ir.actions.act_window" id="resultado_action">
+            <field name="name">Resultado</field>
+            <field name="res_model">fiaes.resultado</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+               <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Resultado
+                </p>
+            </field>
+        </record>
+
+<record model="ir.ui.view" id="fiaes_insumo_pivot">
+<field name="name">fiaes_insumo_pivot</field>
+<field name="model">fiaes.insumo</field>
+<field name="arch" type="xml">
+ <pivot string="Bienes/Servicios">
+    <field name="unidad" type="row"/>
+    <field name="actividad_id" type="row"/>
+    <field name="total" type="measure"/>
+ </pivot>
+ </field>
+ </record>
+   
+
+   <record model="ir.actions.act_window" id="fiaes.inr_insumos_action">
+   <field name="name">INR - Detalles</field>
+   <field name="res_model">fiaes.insumo</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">pivot</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">INR - Detalle</p>
+   </field>
+ </record>
+
+
+   <menuitem name="INR - Reporte "
+   parent="fiaes.planificacion_reportes"
+   id="fiaes.inr_inversion"
+   sequence="52"
+   action="fiaes.inr_insumos_action"
+   groups="account.group_account_manager"/>  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<record model="ir.ui.view" id="fiaes_insumosedit_tree">
+<field name="name">fiaes_insumosedit_tree</field>
+<field name="model">fiaes.insumo</field>
+<field name="arch" type="xml">
+
+    <tree editable="bottom"> 
+        <field name="actividad_id"   readonly="1"/>
+        <field name="objetivopoa_id"   readonly="1"/>
+        <field name="proyecto" readonly="1"/>
+
+        <field name="name" readonly="1"/>
+        <field name="categoria"   readonly="1"/>
+        <field name="preciouni" readonly="1" />
+        <field name="cantidad" readonly="1"/>
+        <field name="total"  readonly="1"/>
+        <field name="mes" readonly="1"/>
+        <field name="fuente" required="1" />
+        <field name="cuenta_id"  required="1" />
+    </tree>
+ </field>
+ </record>
+
+    <record model="ir.actions.act_window" id="insumos_edit_action">
+            <field name="name">POA</field>
+            <field name="res_model">fiaes.insumo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="tree_view_id" ref="fiaes_insumosedit_tree"/>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">INSUMO
+                </p>
+            </field>
+        </record>
+
+   <menuitem name="Insumos - Listado - Edicion "
+   parent="fiaes.planificacion_reportes"
+   id="fiaes.inr_inversion_edit"
+   sequence="70"
+   action="fiaes.insumos_edit_action"
+   groups="account.group_account_manager"/>  
+
+
+
+
+
+
+<record model="ir.ui.view" id="fiaes_inversioninsumosedit_tree">
+<field name="name">fiaes_inversioninsumosedit_tree</field>
+<field name="model">fiaes.inversion.actividad.insumo</field>
+<field name="arch" type="xml">
+
+    <tree editable="bottom"> 
+        <field name="inversion_id"   readonly="1"/>
+        <field name="uet_id"  readonly="1"/>
+        <field name="territorio_id"  readonly="1"/>
+        <field name="conservacion_id"  readonly="1"/>
+        <field name="producto_id"  readonly="1"/>
+        <field name="convocatoria_id"  readonly="1"/>
+
+         <field name="name"  readonly="1"/>
+        <field name="tecnica_id" readonly="1"/>
+        <field name="uom_id"  readonly="1"/>
+        <field name="cantidad"  readonly="1"/>
+        <field name="costo_unitario"  readonly="1"/>
+        <field name="total" sum="Total"/>
+        <field name="mes"  readonly="1"/>
+        <field name="anio1"  readonly="1"/>
+        <field name="fuente_id"  required="1"/>
+    </tree>
+ </field>
+ </record>
+
+    <record model="ir.actions.act_window" id="inversioninsumos_edit_action">
+            <field name="name">Inversion Insumos</field>
+            <field name="res_model">fiaes.inversion.actividad.insumo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="tree_view_id" ref="fiaes_inversioninsumosedit_tree"/>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">INSUMO
+                </p>
+            </field>
+        </record>
+
+   <menuitem name="Inversion Insumos - Listado - Edicion "
+   parent="fiaes.planificacion_reportes"
+   id="fiaes.inversion_inversion_edit"
+   sequence="80"
+   action="fiaes.inversioninsumos_edit_action"
+   groups="account.group_account_manager"/>  
+
+
+
+
+
+  <record model="ir.actions.act_window" id="fiaes.inversionreport_action">
+   <field name="name">Reporte de inversion</field>
+   <field name="res_model">fiaes.inversion.reporte</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">pivot</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">INR - Detalle</p>
+   </field>
+ </record>
+
+
+   <menuitem name="Reporte de Inversion"
+   parent="fiaes.planificacion_reportes"
+   id="fiaes.inversion_reporte"
+   sequence="80"
+   action="fiaes.inversionreport_action"
+   groups="account.group_account_manager"/>  
+
+
+
+
+
+
+<!-- CALENDARIOS  -->
+<record id="view_calendar_actividades" model="ir.ui.view">
+  <field name="model">fiaes.poaactividad</field>
+  <field name="arch" type="xml">
+    <calendar date_start="fecha_inicial" date_stop="fecha_final" color="unidad" mode="month" >
+      <!-- Fields used for the display text -->
+      <field name="name" />
+      <field name="unidad" />
+      <field name="proyecto" />
+    </calendar>
+  </field>
+</record>
+
+
+
+
+<record model="ir.actions.act_window" id="fiaes.poa_calendario_actividad">
+<field name="name">Actividades</field>
+<field name="res_model">fiaes.poaactividad</field>
+<field name="view_type">form</field>
+<field name="view_mode">calendar</field>
+<field name="domain">[]</field>
+<field name="help" type="html">
+<p class="oe_view_nocontent_create">Actividades</p>
+</field>
+</record>
+
+
+<menuitem name="Calendario-Actividades"
+parent="fiaes.planificacion_reportes"
+id="fiaes.poa_calendario_actividades"
+sequence="41"
+action="fiaes.poa_calendario_actividad"
+groups="base.group_user"/>
+
+
+
+<record id="view_calendar_subactividades" model="ir.ui.view">
+  <field name="model">fiaes.poasubactividad</field>
+  <field name="arch" type="xml">
+    <calendar date_start="fecha_inicial" date_stop="fecha_final" color="unidad" mode="month" >
+      <!-- Fields used for the display text -->
+      <field name="name" />
+      <field name="unidad" />
+      <field name="actividad_id" />
+    </calendar>
+  </field>
+</record>
+
+
+
+
+<record model="ir.actions.act_window" id="fiaes.poa_calendario_subactividad">
+<field name="name">Sub Actividades</field>
+<field name="res_model">fiaes.poasubactividad</field>
+<field name="view_type">form</field>
+<field name="view_mode">calendar</field>
+<field name="domain">[]</field>
+<field name="help" type="html">
+<p class="oe_view_nocontent_create">Sub Actividades</p>
+</field>
+</record>
+
+
+<menuitem name="Calendario-SubActividades"
+parent="fiaes.planificacion_reportes"
+id="fiaes.poa_calendario_subactividades"
+sequence="42"
+action="fiaes.poa_calendario_subactividad"
+groups="base.group_user"/>
+
+
+
+
+    </data>
+</odoo>

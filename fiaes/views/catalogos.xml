@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <!-- Modificaciones a la pantalla de empleado -->
+      <record id="fiaes_employee_form" model="ir.ui.view">
+        <field name="name">fiaes employee form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='department_id']" position="attributes">
+            <attribute name="string">Unidad Organizativa</attribute>
+          </xpath>
+
+          <xpath expr="//page[@name='public']" position="replace">
+            <page name="public" string="Información Laboral">
+              <group>
+                <group string="Position">
+                  <field name="codigo" required="1"/>
+                  <field name="department_id"  required="1"/>
+                  <field name="job_id"  required="1"/>
+                  <field name="job_title"/>
+                  <field name="parent_id"  required="1"/>
+                  <field name="resource_calendar_id" required="1"/>
+                  <field name="tz"/>
+                </group>
+                <group string="Ingreso/Retiro">
+                  <field name="fecha_ingreso"  required="1"/>
+                  <field name="fecha_retiro"/>
+                  <field name="causas_despido"/>
+                </group>
+              </group>
+              <field name="notes" placeholder="Other Information ..." colspan="4"/>
+            </page>
+          </xpath>
+          <xpath expr="//page[@name='personal_information']" position="replace">
+             <page name="Información personal" string="Información personal" groups="hr.group_hr_user">
+            <group>
+              <group string="Informacion Personal">
+                  <field name="nombres"  required="1"/>
+                  <field name="apellidos"  required="1"/>
+                  <field name="birthday"  required="1"/>
+                  <field name="gender" widget="radio"  required="1"/>
+                  <field name="marital"  required="1"/>
+                  <field name="country_id"/>
+                  <field name="tipo_sangre"/>
+                  <field name="profesion_id"/>
+                  <field name="afp_id"/>
+              </group>
+              <group string="Documentos">
+                <field name="dui"  required="1"/>
+                <field name="nit"  required="1"/>
+                <field name="passport_id"/>
+                <field name="licencia"  required="1"/>
+                <field name="fecha_licencia"/>
+              </group>
+              <group string="Direccion">
+                <field name="departamento_id"  required="1"/>
+                <field name="municipio_id"  required="1"/>
+                <field name="direccion"  required="1"/>
+              </group>
+              <group string="Informacion de contacto">
+                <field name="work_email" widget="email"/>
+                <field name="mobile_phone" widget="phone"  required="1"/>
+                <field name="work_phone" widget="phone"/>
+                <field name="emergency_contact"  required="1"/>
+                <field name="emergency_phone"  required="1"/>
+              </group>
+              <group string="Cuenta Bancaria">
+                <field name="cuenta_bancaria"  required="1"/>
+                <field name="cuenta_tipo" />
+                <field name="cuenta_banco_id"  required="1"/>
+              </group>
+              <label for="beneficiarios_ids" colspan="2"/>
+              <field name="beneficiarios_ids" nolabel="1" colspan="2" context="{'default_empleado_id': id}">
+                <tree  editable="bottom">
+                  <field name="name" />
+                  <field name="parentesco" />
+                </tree>
+              </field>
+              <group string="Imagenes de documentos" cols="4">
+                <field name="dui_image"  widget="image"/>
+                <field name="nit_image"  widget="image"/>
+              </group>
+            </group>
+          </page>
+          </xpath>
+        </field>
+      </record>
+
+
+      <record id="fiaes_contract_form" model="ir.ui.view">
+        <field name="name">fiaes contract form</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form" />
+        <field name="arch" type="xml">
+          <xpath expr="//group[@name='salary_and_advantages']" position="inside">
+            <label for="sueldo_dia"/>
+            <div class="o_row" name="sueldo_dia">
+              <field name="sueldo_dia" nolabel="1"  required="1"/>
+              <span>/ dia</span>
+            </div>
+            <label for="sueldo_hora"/>
+            <div class="o_row" name="sueldo_hora">
+              <field name="sueldo_hora" nolabel="1"  required="1"/>
+              <span>/ hora</span>
+            </div>
+            <label for="sueldo_minuto"/>
+            <div class="o_row" name="sueldo_minuto">
+              <field name="sueldo_minuto" nolabel="1"  required="1"/>
+              <span>/ Minuto</span>
+            </div>
+          </xpath>
+          <xpath expr="//field[@name='reported_to_secretariat']" position="replace">
+              <field name="perfil_id" >
+              </field>
+          </xpath>
+
+        </field>
+      </record>
+
+
+      <record id="fiaes_partnert_2_form" model="ir.ui.view">
+        <field name="name">fiaes partner2 form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form" />
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='property_payment_term_id']" position="attributes">
+            <attribute name="widget">Many2one</attribute>
+          </xpath>
+          <xpath expr="//field[@name='property_supplier_payment_term_id']" position="attributes">
+            <attribute name="widget">Many2one</attribute>
+          </xpath>
+        </field>
+      </record>
+
+      <record id="fiaes_partnert_form" model="ir.ui.view">
+        <field name="name">fiaes partner form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='vat']" position="replace">
+              <field name="tipo" />
+              <field name="nombres" attrs="{'invisible':[('company_type', '!=', 'person')],'required':[('company_type', '=', 'person')]}"/>
+              <field name="apellidos"  attrs="{'invisible':[('company_type', '!=', 'person')],'required':[('company_type', '=', 'person')]}"/>
+              <field name="nombre_comercial"  attrs="{'invisible':[('company_type', '=', 'person')],'required':[('company_type', '!=', 'person')]}"/>
+              <field name="nit" />
+              <field name="nrc" />
+              
+          </xpath>
+          <xpath expr="//field[@name='email']" position="attributes">
+              <attribute name="required">1</attribute>
+          </xpath>
+          <xpath expr="//field[@name='street']" position="attributes">
+              <attribute name="required">1</attribute>
+          </xpath>
+          <xpath expr="//page[@name='internal_notes']" position="after">
+            <page string="Titular" attrs="{'invisible':[('tipo', '!=', 'Titular')]}">
+              <group>
+                <field name="contacto" />
+                <field name="contacto_email" />
+                <field name="usuario_id" />
+                <field name="employee_id" />
+                <field name="tipo_titular" />
+                <field name="representante_nombre" />
+                <field name="representante_nit"  />
+                <field name="representante_dui" />
+                <field name="representante_nacionalidad" />
+                <field name="representante_nacimiento" />
+                <field name="giro" />
+                <field name="departamento_id" />
+                <field name="municipio_id" domain="[('departamento.id','=',departamento_id)]"/>
+              </group>
+            </page>
+            <page string="Documentos" attrs="{'invisible':[('tipo', '!=', 'Titular')]}">
+              <group>
+                <field name="nit_image"  widget="image"/>
+                <field name="dui_rep_image"  widget="image"/>
+                <field name="nit_rep_image"  widget="image"/>
+              </group>
+            </page>
+          </xpath>
+          <xpath expr="//field[@name='category_id']" position="after">
+            <field name="telefono_ids" context="{'default_contacto_id': id}">
+              <tree string="Telefono" editable="bottom">
+                <field name="name" />
+                <field name="telefono" />
+              </tree>
+            </field>
+          </xpath>
+        </field>
+      </record>
+
+
+
+
+      <record id="fiaes_tallerservicio_form" model="ir.ui.view">
+        <field name="name">fiaes tallerservicio form</field>
+        <field name="model">fleet.vehicle.log.services</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form" />
+        <field name="arch" type="xml">
+          <xpath expr="//sheet" position="replace">
+            <sheet>
+                    <group col="2">
+                        <group string="Services Details">
+                            <field name="solicitante_id" required="1"/>
+                            <field name="descripcion"/>
+                            <field name="vehicle_id"  required="1"/>
+                            <field name="marca"/>
+                            <field name="modelo"/>
+                            <field name="placa"/>
+                            <field name="cost_subtype_id" string="Service Type" domain="['|',('category','=','service'),('category','=','both')]" required="1"/>
+                            <field name="amount"/>
+                            <field name="purchase_order_id"/>
+                            <field name="odometer_unit"/>
+                        </group>
+                        <group string="Taller">
+                          <field name="taller_id"  required="1"/>
+                          <field name="taller_contacto"/>
+                          <field name="taller_direccion"/>
+                          <field name="taller_telefono"/>
+                        </group>
+                        <group string=" Salida">
+                          <field name="salida_fecha"  required="1"/>
+                          <field name="salida_km"  required="1"/>
+                          <field name="salida_gas"  required="1"/>
+                          <field name="salida_encargado_id"  required="1"/>
+                        </group>
+                        <group string="Retorno">
+                          <field name="retorno_fecha"/>
+                          <field name="retorno_km"/>
+                          <field name="retorno_gas"/>
+                          <field name="retorno_encargado_id"  required="1"/>
+                        </group>
+                        <label for="apecto_ids" />
+                        <field name="apecto_ids"  widget="many2many_tags"/>
+                        <label for="diagnostico" />
+                        <field name="diagnostico"/>
+                    </group>
+
+                    <group string="Included Services">
+                        <field name="cost_ids" nolabel="1">
+                            <tree string="Included Services" editable="bottom">
+                                <field name="cost_subtype_id" string="Service" domain="[('category','=','service')]"/>
+                                <field name="amount" sum="Price" string="Indicative Cost"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group string="Notes">
+                        <field nolabel="1" name="notes" placeholder="Write here any other information related to the service completed."/>
+                    </group>
+                </sheet>
+
+
+
+
+
+
+          </xpath>
+        </field>
+      </record>
+
+
+
+
+      <record id="fiaes_activo_form" model="ir.ui.view">
+        <field name="name">fiaes activo form</field>
+        <field name="model">account.asset.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_asset_form" />
+        <field name="arch" type="xml">
+          <xpath expr="//button[@name='validate']" position="before">
+            <button name="set_codigo" states="draft" string="Asignar codigo" type="object" class="oe_highlight"/>
+            <button name="create_equipo" states="open" string="Crear Equipo" type="object" class="oe_highlight"/>
+          </xpath>
+          <xpath expr="//field[@name='account_analytic_id']" position="after">
+              <field name="responsable_id" required="1"/>
+              <field name="ubicacion_id"  required="1"/>
+          </xpath>
+          <xpath expr="//field[@name='invoice_id']" position="after">
+              <field name="marca"  required="1"/>
+              <field name="modelo"  required="1"/>
+              <field name="capitalizable" widget="radio" />
+           </xpath>
+          <xpath expr="//notebook" position="inside">
+            <page string="Características Extendidas">
+            <field name="propiedad_ids" context="{'default_activo_id': id}">
+              <tree string="Características" editable="bottom">
+                <field name="name"  required="1"/>
+                <field name="valor"  required="1"/>
+              </tree>
+            </field>
+          </page>
+
+          <page string="Componentes">
+          <field name="child_ids" context="{'default_parent_id': id}">
+            <tree string="Componentes">
+              <field name="name"  required="1"/>
+              <field name="code"  required="1"/>
+            </tree>
+          </field>
+        </page>
+
+          </xpath>
+
+        </field>
+      </record>
+
+      <record id="fiaes_tipo_activo_form" model="ir.ui.view">
+        <field name="name">fiaes tipo activo form</field>
+        <field name="model">account.asset.category</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_category_form" />
+        <field name="arch" type="xml">
+
+          <xpath expr="//sheet//group" position="inside">
+            <group string="FIAES">
+              <field name="codigo"  required="1"/>
+            </group>
+
+          </xpath>
+        </field>
+      </record>
+
+      <record id="fiaes_equipo_form" model="ir.ui.view">
+        <field name="name">fiaes equipo form</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_form" />
+        <field name="arch" type="xml">
+
+          <xpath expr="//field[@name='maintenance_team_id']" position="attributes">
+              <attribute name="string">Equipo responsable del mantenimiento</attribute>
+          </xpath>
+        </field>
+      </record>
+
+
+
+
+
+      <record id="fiaes_compensacion_form" model="ir.ui.view">
+        <field name="name">fiaes compensacion form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+          <xpath expr="//page[@name='other_information']" position="after">
+            <page string="compensacion ambiental" >
+              <div class="width300">
+                <group string="Empresa" >
+                  <field name="nombre_comercial" class="width300" />
+                  <field name="departamento_id"   class="width300"  />
+                  <field name="municipio_id"  class="width300" domain="[('departamento.id','=',departamento_id)]"/>
+                  <field name="nit"    class="width300" />
+                  <field name="representante_nombre"    class="width300" />
+                  <field name="representante_nit"   class="width300" />
+                  <field name="representante_dui"   class="width300" />
+                  <field name="representante_nacionalidad"   class="width300" />
+                  <field name="representante_profesion"    class="width300" />
+                  <field name="representante_nacimiento"   class="width300"  />
+
+                </group>
+                <group string="Proyecto">
+                  <field name="poryecto_ambiental"  class="width300"  />
+                  <field name="resolucion_marn"   class="width300"  />
+                  <field name="resolucion_fecha"   class="width300"  />
+                  <field name="proyecto_direcion"   class="width300"  />
+                  <field name="proyecto_departamento_id"   class="width300"  />
+                  <field name="proyecto_municipio_id"   class="width300"  domain="[('departamento.id','=',proyecto_departamento_id)]"/>
+                  <field name="descripcion"  class="width300"  />
+                  <field name="rubro"   class="width300"  />
+                  <field name="area"   class="width300"  />
+                  <field name="valor"   class="width300" />
+                  <field name="desembolsos"   class="width300"  />
+                  <field name="fianza"  class="width300"  />
+                </group>
+              </div>
+            </page>
+          </xpath>
+        </field>
+      </record>
+
+
+
+
+
+
+
+
+
+   <!-- pantalla de territorios  -->
+   <record model="ir.ui.view" id="fiaes.proyecto_form">
+  <field name="name">fiaes.proyecto_form</field>
+  <field name="model">fiaes.proyecto</field>
+  <field name="arch" type="xml">
+    <form >
+            <sheet>
+                <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="codigo" />
+                        <field name="departamento_id" />
+                        <field name="municipio_id" />
+                        <field name="coordenadas_latitud" />
+                        <field name="coordenadas_longitud" />
+                        <field name="afectacion" />
+                        <field name="ejecutora" />
+                        <field name="contrapartida" />
+                        <field name="aliados"  widget="many2many_tags" />
+                        <field name="fuentes_ids"  widget="many2many_tags" />
+                        <field name="estado" />
+                    </group>
+                </group>
+
+            </sheet>
+            </form>
+   </field>
+</record>
+
+<record model="ir.ui.view" id="fiaes.proyecto_tree">
+  <field name="name">fiaes.proyeto_tree</field>
+  <field name="model">fiaes.proyecto</field>
+  <field name="arch" type="xml">
+  <tree string="proyectos">
+    <field name="name"/>
+    <field name="codigo" />
+    <field name="afectacion" />
+    <field name="ejecutora" />
+  </tree>
+   </field>
+</record>
+
+<record model="ir.actions.act_window" id="fiaes.proyecto_action">
+<field name="name">Proyectos</field>
+<field name="res_model">fiaes.proyecto</field>
+<field name="view_type">form</field>
+<field name="view_mode">tree,form</field>
+<field name="help" type="html">
+  <p class="oe_view_nocontent_create">Proyectos</p>
+</field>
+</record>
+
+
+<menuitem name="Proyectos"
+parent="fiaes.fiaes"
+id="fiaes.proyectos"
+sequence="32"
+action="fiaes.proyecto_action"
+groups="account.group_account_manager"/>
+
+
+
+
+
+
+
+<!-- Vehiculos -->
+<record id="fiaes_vehicle_form" model="ir.ui.view">
+  <field name="name">fiaes vehicle form</field>
+  <field name="model">fleet.vehicle</field>
+  <field name="inherit_id" ref="fleet.fleet_vehicle_view_form" />
+  <field name="arch" type="xml">
+    <xpath expr="//field[@name='vin_sn']" position="attributes">
+        <attribute name="string">VIN #</attribute>
+    </xpath>
+    <xpath expr="//field[@name='driver_id']" position="attributes">
+        <attribute name="string">Responsable</attribute>
+    </xpath>
+    <xpath expr="//field[@name='vin_sn']" position="after">
+      <field name="motor"/>
+      <field name="chasis"/>
+      <field name="activo_id"/>
+    </xpath>
+    <xpath expr="//field[@name='seats']" position="after">
+        <field name="clase_id"/>
+        <field name="tipo_id"/>
+    </xpath>
+    <xpath expr="//sheet" position="inside">
+        <group>
+          <group string="Tarjeta de circulacion">
+            <field name="tarjeta" widget="image" />
+          </group>
+          <group>
+            <label for="servicios_km_ids" />
+            <field name="servicios_km_ids" nolabel="1" context="{'default_vehicle_id':id}">
+              <tree string="Kilometraje por servicio"  editable="bottom" >
+                <field name="name" />
+                <field name="servicio" />
+                <field name="kilometraje"/>
+                <field name="ultimo_kilometraje"/>
+             </tree>
+            </field>
+          </group>
+        </group>
+
+    </xpath>
+  </field>
+</record>
+
+
+<!-- pantalla de solicitudes  -->
+<record model="ir.ui.view" id="fiaes.solicitud_vehiculo_form">
+<field name="name">fiaes.solicitud_vehiculo_form</field>
+<field name="model">fiaes.solicitud_vehiculo</field>
+<field name="arch" type="xml">
+ <form>
+         <header>
+           <button name="solicitar" string="Solicitar" type="object" class="oe_highlight" attrs="{'invisible':[('state', '!=', 'Borrador')]}"/>
+           <button name="autorizar" string="Autorizar" groups="fiaes.autoriza_vehiculo" type="object" class="oe_highlight" attrs="{'invisible':[('state', '!=', 'Solicitado')]}"/>
+           <button name="asignar" string="Asignar" groups="fiaes.asigna_vehiculo" type="object" class="oe_highlight" attrs="{'invisible':[('state', '!=', 'Autorizado')]}"/>
+           <button name="iniciar" string="Iniciar" groups="fiaes.entrega_vehiculo" type="object" class="oe_highlight" attrs="{'invisible':[('state', '!=', 'Asignado')]}"/>
+           <button name="finalizar" string="Finalizar" groups="fiaes.recibe_vehiculo" type="object" class="oe_highlight" attrs="{'invisible':[('state', '!=', 'En curso')]}"/>
+           <button name="cancelar" string="Cancelar" type="object" class="oe_highlight" attrs="{'invisible':[('state', 'in', ('Cerrado','En curso'))]}"/>
+           <field name="state" widget="statusbar"/>
+         </header>
+          <sheet>
+              <div class="oe_title oe_inline">
+                  <label for="name" string="Evento" class="oe_edit_only"/>
+                  <h1><field name="name"/></h1>
+              </div>
+              <group>
+                  <group string="Solcitud">
+                      <field name="programada"/>
+                      <field name="solicitante_tipo" attrs="{'readonly':[('state', '!=', 'Borrador')]}"/>
+                      <field name="solicitante_employee_id" attrs="{'invisible':[('solicitante_tipo', '!=', 'Empleado')],'readonly':[('state', '!=', 'Borrador')]}"/>
+                      <field name="solicitante_partner_id" attrs="{'invisible':[('solicitante_tipo', '!=', 'Contacto')],'readonly':[('state', '!=', 'Borrador')]}"/>
+                      <field name="fecha_solicitud" attrs="{'readonly':[('state', '!=', 'Borrador')]}"/>
+                      <field name="destino" attrs="{'readonly':[('state', '!=', 'Borrador')]}"/>
+                      <field name="mision_oficial" attrs="{'readonly':[('state', '!=', 'Borrador')]}"/>
+                      <field name="fecha_salida" attrs="{'readonly':[('state', '!=', 'Borrador')]}"/>
+                      <field name="fecha_regreso_esperada" attrs="{'readonly':[('state', '!=', 'Borrador')]}"/>
+                 </group>
+                  <group string="Autorizacion" attrs="{'readonly':[('state', '!=', 'Solicitado')]}">
+                      <field name="encargado_autorizacion_id" attrs="{'readonly':['|',('state', '=', 'Autorizado'),('state', '=', 'Asignado'),('state', '=', 'En curso'),('state', '=', 'Cancelado')]}"/>
+                 </group>
+                 <group string="Asignacion">
+                      <field name="vehicle_id" groups="fiaes.asigna_vehiculo" attrs="{'invisible':[('state', '!=', 'Autorizado')],'required':[('state', '=', 'Autorizado')]}"/>
+                      <field name="vehicle_name" attrs="{'invisible':[('state', '=', 'Autorizado')]}"/>
+                      <field name="encargado_revision_id" attrs="{'readonly':[('state', '!=', 'Autorizado')]}"/>
+                </group>
+                    <group string="Salida">
+                         <field name="fecha_salida_real" attrs="{'readonly':[('state', '!=', 'Asignado')],'required':[('state', '=', 'Asignado')]}"/>
+                         <field name="asistieron_ids" widget="many2many_tags" attrs="{'readonly':[('state', '!=', 'Asignado')],'required':[('state', '=', 'Asignado')]}"/>
+                         <field name="conductor_ids" widget="many2many_tags" attrs="{'readonly':[('state', '!=', 'Asignado')],'required':[('state', '=', 'Asignado')]}"/>
+                         <field name="fecha_regreso" attrs="{'readonly':[('state', '!=', 'En curso')]}"/>
+                       </group>
+
+              </group>
+                   <label for="odometros_ids"/>
+                   <field name="odometros_ids" attrs="{'readonly':[('state', '!=', 'En curso')]}" nolabel="1" context="{'default_vehicle_id':vehicle_id,'default_solicitud_id':active_id}">
+                     <tree string="Registro del odometro" editable="bottom">
+                       <field name="solicitud_id" invisible="1"/>
+                       <field name="conductor_ids" invisible="1" widget="many2many_tags" />
+                       <field name="vehicle_id" invisible="1"/>
+                       <field name="conductor_id"  domain="[('id','in',conductor_ids)]"/>
+                       <field name="fecha_salida"/>
+                       <field name="odometro_salida"/>
+                       <field name="fecha_regreso"/>
+                       <field name="odometro_regreso"/>
+                       <field name="comentario"/>
+                    </tree>
+                   </field>
+
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                       <field name="message_ids" widget="mail_thread"/>
+ </div>
+          </form>
+
+</field>
+</record>
+
+<record model="ir.ui.view" id="fiaes.solicitud_vehiculo_tree">
+<field name="name">fiaes.solicitud_vehiculo_tree</field>
+<field name="model">fiaes.solicitud_vehiculo</field>
+<field name="arch" type="xml">
+<tree string="Solicitudes">
+ <field name="name"/>
+ <field name="solicitante" />
+ <field name="fecha_salida" />
+ <field name="fecha_regreso_esperada" />
+ <field name="fecha_salida_real" />
+ <field name="fecha_regreso" />
+ <field name="destino" />
+ <field name="mision_oficial" />
+ <field name="state" />
+</tree>
+</field>
+</record>
+
+<record id="view_calendar_solicitudes" model="ir.ui.view">
+  <field name="model">fiaes.solicitud_vehiculo</field>
+  <field name="arch" type="xml">
+    <calendar date_start="fecha_salida" date_stop="fecha_regreso_esperada" color="vehicle_id" mode="month" >
+      <!-- Fields used for the display text -->
+      <field name="solicitante" />
+      <field name="vehicle_id" />
+    </calendar>
+  </field>
+</record>
+
+<record id="view_form_fuel" model="ir.ui.view">
+  <field name="model">fleet.vehicle.log.fuel</field>
+  <field name="inherit_id" ref="fleet.fleet_vehicle_log_fuel_view_form" />
+  <field name="arch" type="xml">
+    <xpath expr="//field[@name='liter']" position="attributes">
+        <attribute name="string">Galon</attribute>
+    </xpath>
+    <xpath expr="//field[@name='price_per_liter']" position="attributes">
+        <attribute name="string">Precio por galon</attribute>
+    </xpath>
+  </field>
+</record>
+
+
+
+<record model="ir.actions.act_window" id="fiaes.solicitud_vehiculo_action">
+<field name="name">Solicitudes</field>
+<field name="res_model">fiaes.solicitud_vehiculo</field>
+<field name="view_type">form</field>
+<field name="view_mode">calendar,tree,form</field>
+<field name="domain">[('state','!=','Cancelado')]</field>
+<field name="help" type="html">
+<p class="oe_view_nocontent_create">Solicitudes</p>
+</field>
+</record>
+
+
+<menuitem name="Solicitudes"
+parent="fleet.fleet_vehicles"
+id="fiaes.solicitud_vehiculo"
+sequence="31"
+action="fiaes.solicitud_vehiculo_action"
+groups="base.group_user"/>
+
+
+<record  model="res.groups" id="fiaes.autoriza_vehiculo">
+  <field name="name">FIAES/Autoriza vehiculo</field>
+</record>
+<record  model="res.groups" id="fiaes.asigna_vehiculo">
+  <field name="name">FIAES/Asigna vehiculo</field>
+</record>
+<record  model="res.groups" id="fiaes.entrega_vehiculo">
+  <field name="name">FIAES/Entrega vehiculo</field>
+</record>
+<record model="res.groups" id="fiaes.recibe_vehiculo" >
+  <field name="name">FIAES/Recibe vehiculo</field>
+</record>
+
+
+<record id="view_tree_odometers" model="ir.ui.view">
+  <field name="model">fleet.vehicle.odometer</field>
+    <field name="inherit_id" ref="fleet.fleet_vehicle_odometer_view_tree" />
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='value']" position="replace">
+          <field name="solicitud_id"/>
+          <field name="solicitante"/>
+          <field name="destino"/>
+          <field name="mision_oficial"/>
+          <field name="conductor_id"/>
+          <field name="fecha_salida"/>
+          <field name="odometro_salida"/>
+          <field name="fecha_regreso"/>
+          <field name="odometro_regreso"/>
+      </xpath>
+  </field>
+</record>
+
+<record id="view_form_odometers" model="ir.ui.view">
+  <field name="model">fleet.vehicle.odometer</field>
+    <field name="inherit_id" ref="fleet.fleet_vehicle_odometer_view_form" />
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='value']" position="replace">
+          <field name="solicitud_id"/>
+          <field name="solicitante"/>
+          <field name="destino"/>
+          <field name="mision_oficial"/>
+          <field name="conductor_id"/>
+          <field name="fecha_salida"/>
+          <field name="odometro_salida"/>
+          <field name="fecha_regreso"/>
+          <field name="odometro_regreso"/>
+      </xpath>
+      <xpath expr="//field[@name='date']" position="replace">
+      </xpath>
+  </field>
+</record>
+
+
+
+
+
+
+<record id="fiaes_unidad_form" model="ir.ui.view">
+  <field name="name">fiaes unidad form</field>
+  <field name="model">hr.department</field>
+  <field name="inherit_id" ref="hr.view_department_form" />
+  <field name="arch" type="xml">
+    <xpath expr="//field[@name='name']" position="after">
+        <field name="codigo" required="1"/>
+    </xpath>
+    <xpath expr="//field[@name='manager_id']" position="attributes">
+        <attribute name="required">1</attribute>
+    </xpath>
+    <xpath expr="//field[@name='parent_id']" position="after">
+        <field name="child_ids" />
+    </xpath>
+  </field>
+</record>
+
+
+<record id="fiaes_bank_form" model="ir.ui.view">
+  <field name="name">fiaes bank form</field>
+  <field name="model">res.bank</field>
+  <field name="inherit_id" ref="base.view_res_bank_form" />
+  <field name="arch" type="xml">
+    <xpath expr="//field[@name='bic']" position="after">
+        <field name="abba" />
+        <field name="bank_id" />
+        <field name="cuenta_intermedio" />
+    </xpath>
+
+  </field>
+</record>
+
+
+
+  </data>
+
+</odoo>

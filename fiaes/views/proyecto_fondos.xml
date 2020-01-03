@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+     <!--form Fondos proyetos-->
+<record model="ir.ui.view" id="fiaes_fondoproyectos_form">
+    <field name="name">fiaes_fondoproyectos_form</field>
+    <field name="model">fiaes.ejecutora.proyecto</field>
+    <field name="arch" type="xml">
+        <form string="Proyectos - Ejecutora">
+        <header>
+        
+        </header>
+            <sheet>
+             <group>
+                <field name="name" />
+                <field name="id_proyecto" />
+                <field name="anio" />
+                <field name="coordenadas_latitud" />
+                <field name="coordenadas_longitud" /> 
+                <field name="componente_id" />
+                <field name="obconservacion" /> 
+                <field name="territorio" />
+                <field name="convocatorio" /> 
+                <field name="entidadejutora" domain="[('tipo','=','Ejecutora')]" /> 
+                 </group>
+
+            <notebook>
+<page string="Desembolsos Fiaes">
+<field name="line_fiaesdes" >
+ <tree editable="bottom">
+  <field name="fechafiaes" /> 
+  <field name="valorfiaes" /> 
+  <field name="total_financiado" /> 
+</tree>
+  </field>
+ </page>
+<page string="Desembolsos contrapartida">
+<field name= "line_cotrasdes"> 
+ <tree editable="bottom">
+  <field name="monto" /> 
+ <field name="numero" />
+ <field name="fechacontrpartida" /> 
+</tree>
+</field>
+ </page>
+<page string="Producto">
+<field name="line_producto">
+ <tree editable="bottom">
+  <field name="nombreproducto" /> 
+ <field name="codigoproducto" />
+</tree>
+</field>
+ </page>
+<page string="Actividad">
+<field name="line_actividad">
+ <tree editable="bottom">
+  <field name="nombreactividad" /> 
+ <field name="codigoactividad" />
+</tree>
+</field>
+ </page>
+<page string="Indicadores">
+<field name="line_indicadores">
+ <tree editable="bottom">
+  <field name="indicador_id" /> 
+ <field name="meta" />
+</tree>
+</field>
+
+ </page>
+    <page string="Compensaciones disponibles">
+        <group>
+        <button name="calcular_disponible"  string="Calcular disponibles"  type="object" class="oe_highlight"/>
+        </group>
+        <group>
+            <group>
+                <field name="total_financiar" />
+            </group>
+            <group>
+                <field name="total_financiado" />
+            </group>
+        </group>
+        <group>
+            <field name="pack_disponible_ids" nolabel="1">
+                <tree editable="bottom" nocreate="1">
+                    <field name="name" /> 
+                    <field name="distancia" />
+                    <field name="monto_ejecutora" />
+                    <field name="fecha_disponibilidad" />
+                    <field name="disponible_ejecutora" />
+                    <!--field name="disponible_administrativo" />
+                    <field name="disponible_operativo" /-->
+                    <button name="addionar_pack"  string="+"  type="object" class="oe_highlight"/>
+                </tree>
+            </field>
+            <field name="pack_includes_ids" nolabel="1">
+                <tree editable="bottom" nocreate="1">
+                    <field name="name" /> 
+                    <field name="titular_id" /> 
+                    <field name="projecto_compensacion_id" /> 
+                    <field name="monto_ejecutora" />
+                    <!--field name="monto_administrativo" />
+                    <field name="monto_operativo" /-->
+                </tree>
+            </field>
+        </group>
+        <group>
+            <button name="calcular_desembolsos"  string="Calcular desembolsos"  type="object" class="oe_highlight"/>
+            <field name="pack_desembolso_ids" colspan="2" nolabel="1">
+                <tree readonly="1">
+                    <field name="name" /> 
+                    <field name="titular_id" /> 
+                    <field name="projecto_compensacion_id" /> 
+                    <field name="fecha_desembolso" />
+                    <field name="monto_ejecutora" />
+                </tree>
+            </field>
+        </group>
+    </page>
+            </notebook>
+            </sheet>
+             <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+
+<!--tree del Fondos-->
+ <record model="ir.ui.view" id="fiaes_fondoproyectos_tree">
+<field name="name">fiaes_fondosproyectos_tree</field>
+<field name="model">fiaes.ejecutora.proyecto</field>
+<field name="arch" type="xml">
+<tree>
+                <field name="id_proyecto" />
+                <field name="coordenadas_latitud" />
+                <field name="coordenadas_longitud" /> 
+                <field name="componente_id" />
+                <field name="obconservacion" /> 
+                <field name="territorio" />
+                <field name="convocatorio" /> 
+ </tree>
+ </field>
+ </record>
+
+
+
+<record model="ir.actions.act_window" id="fiaes.fondos_proyectos">
+<field name="name">Fondos Proyectos</field>
+<field name="res_model">fiaes.ejecutora.proyecto</field>
+<field name="view_type">form</field>
+<field name="view_mode">tree,form</field>
+<field name="help" type="html">
+<p class="oe_view_nocontent_create">Proyectos - Ejecutora</p>
+</field>
+</record>
+
+
+<menuitem name="Proyectos - Ejecutora"
+parent="fiaes.compensacion_ejecutora"
+id="fiaes.fondosproyectos"
+sequence="43"
+action="fiaes.fondos_proyectos"
+/>
+
+
+
+
+
+
+
+
+
+<!-- APLICACION DE PAGOS -->
+<record model="ir.ui.view" id="fiaes_ejecutora_pago_form">
+    <field name="name">fiaes_ejecutora_pago_form</field>
+    <field name="model">fiaes.ejecutora.desembolso</field>
+    <field name="arch" type="xml">
+        <form string="Desembolso a ejecutora">
+            <header>
+                <button name="aplicar"  string="Aplicar" states="Borrador" type="object" class="oe_highlight"/>
+                <button name="iniciar_reintegro"  string="Reintegro" states="Aplicado" type="object" class="oe_highlight"/>
+                <button name="revertir"  string="Reintegrar" states="Reintegro" type="object" class="oe_highlight"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+                <group>
+                    <field name="proyect_id"   readonly="1"/>
+                    <field name="fechafiaes" readonly="1"/>
+                    <field name="entidadejutora"  readonly="1"/>
+                    <field name="tipoproyecto"  readonly="1"/>
+                    <field name="valorfiaes"  readonly="1"/>
+                    <field name="total_financiado" String="Monto a aplicar"  readonly="1"/>
+                    <field name="componente_id"  readonly="1"/>
+                    <field name="obconservacion"  readonly="1"/>
+                    <field name="territorio"  readonly="1"/>
+                    <field name="convocatorio"  readonly="1"/>
+                    <field name="move_id"  readonly="1"/>
+                </group>
+                <group string="Desembolsos a aplicar">
+                    <field name="pack_includes_ids" colspan="2" nolabel="1"  attrs="{'readonly':[('state', 'in', ('Aplicado','Reintegrado'))]}">
+                        <tree editable="bottom">
+                            <field name="name" readonly="1"/> 
+                            <field name="titular_id" readonly="1"/> 
+                            <field name="projecto_compensacion_id" readonly="1"/> 
+                            <field name="fecha_desembolso" />
+                            <field name="monto_ejecutora" />
+                            <field name="monto_administrativo" />
+                            <field name="monto_operativo" />
+                            <field name="state_desembolso" invisible="1"/>
+                            <field name="monto_reintegrado" attrs="{'invisible':[('state_desembolso', 'in', ('Borrador','Aplicado'))]}"/>
+                        </tree>
+                    </field>
+                </group>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+
+
+
+<!--tree del -->
+ <record model="ir.ui.view" id="fiaes_ejecutora_pago_tree">
+    <field name="name">fiaes_ejecutora_pago_tree</field>
+    <field name="model">fiaes.ejecutora.desembolso</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="proyect_id"   readonly="1"/>
+            <field name="fechafiaes" readonly="1"/>
+            <field name="entidadejutora"  readonly="1"/>
+            <field name="tipoproyecto"  readonly="1"/>
+            <field name="valorfiaes"  readonly="1"/>
+            <field name="total_financiado" string="Monto a aplicar"  readonly="1"/>
+            <field name="componente_id"  readonly="1"/>
+            <field name="obconservacion"  readonly="1"/>
+            <field name="territorio"  readonly="1"/>
+            <field name="convocatorio"  readonly="1"/>
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del -->
+    <record model="ir.actions.act_window" id="fiaes_ejecutora_pago_action">
+            <field name="name">Desembolsos a ejecutoras</field>
+            <field name="res_model">fiaes.ejecutora.desembolso</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Desembolsos a ejecutoras
+                </p>
+            </field>
+        </record>
+
+<!--menu del -->
+   <menuitem 
+   id="fiaes_ejecutora_desembolso" 
+   parent="fiaes.compensacion_ejecutora"
+   name="Desembolsos a ejecutoras"
+   action="fiaes_ejecutora_pago_action"
+   sequence="80"
+   /> 
+
+
+    </data>
+</odoo>
+
+

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+ <!--form basico-->   
+<record model="ir.ui.view" id="move_conci_form">
+  <field name="name">move_conci_form</field>
+  <field name="model">account.move</field>
+  <field name="inherit_id" ref="account.view_move_form" />
+  <field name="arch" type="xml">
+    <xpath expr="//field[@name='ref']" position="after">
+      <field name="compensacion" invisible="1"/>
+      <field name="compensacion_conciliado" attrs="{'invisible':[('compensacion', '=', False)]}"/>
+      <field name="compensacion_comentario" attrs="{'invisible':[('compensacion_conciliado', '=', False)]}"/>
+    </xpath>
+  </field>
+</record>
+
+<!--form basico-->   
+<record model="ir.ui.view" id="journal_conci_form">
+  <field name="name">journal_conci_form</field>
+  <field name="model">account.journal</field>
+  <field name="inherit_id" ref="account.view_account_journal_form" />
+  <field name="arch" type="xml">
+    <xpath expr="//field[@name='post_at_bank_rec']" position="after">
+      <field name="compensacion" />
+      
+    </xpath>
+  </field>
+</record>
+
+  <!--form basico-->   
+<record model="ir.ui.view" id="compensacion_conci_form">
+<field name="name">con_conci_form</field>
+<field name="model">res.company</field>
+<field name="inherit_id" ref="base.view_company_form" />
+<field name="arch" type="xml">
+  <xpath expr="//sheet//notebook" position="inside">
+      <page string="Cuentas de compensaciones">
+        <group>
+          <group string="Cuentas para conversion de CXC">
+            <field name="cargalargoplazo" />
+            <field name="abonolargoplazo" />
+            <field name="cargacortoplazo" />
+            <field name="abonarcortoplazo" />
+            <field name="compensacion_journal_id" />
+          </group>
+          <group string="Cuentas para proyectos especiales">
+            <field name="operativo_especial_cargo_account_id" />
+            <field name="operativo_especial_abono_account_id" />
+            <field name="administrativo_especial_cargo_account_id" />
+            <field name="administrativo_especial_abono_account_id" />
+            <field name="inversion_especial_cargo_account_id" />
+            <field name="inversion_especial_abono_account_id" />
+          </group>
+          <group string="Cuentas para proyectos de convocatorias">
+            <field name="operativo_especifico_cargo_account_id" />
+            <field name="operativo_especifico_abono_account_id" />
+            <field name="administrativo_especifico_cargo_account_id" />
+            <field name="administrativo_especifico_abono_account_id" />
+            <field name="inversion_especifico_cargo_account_id" />
+            <field name="inversion_especifico_abono_account_id" />
+          </group>
+        </group>
+      </page>
+    </xpath>
+    <xpath expr="//sheet//notebook" position="inside">
+      <page string="Formulas para contratos">
+          <group>
+            <field name="planilla_unidad_id" />
+          </group>
+          <field name="tipo_line" >
+              <tree editable="bottom"> 
+                <field name="name" />
+                <field name="formula" />
+                <field name="tipo" />
+                <field name="mes" attrs="{'invisible':[('tipo', '=', 'Mensual')]}"/>
+                <field name="cuenta_id" />
+              </tree>
+              </field>
+      </page>
+    </xpath>
+    <xpath expr="//sheet//notebook" position="inside">
+      <page string="variables para contratos">
+          <field name="variable_line" >
+              <tree editable='bottom'> 
+              <field name="name" />
+              </tree>
+              </field>
+      </page>
+    </xpath>
+ </field>
+ </record>
+
+
+
+<!--form basico-->   
+<record model="ir.ui.view" id="payment_conci_form">
+    <field name="name">payment_conci_form</field>
+    <field name="model">account.payment</field>
+    <field name="inherit_id" ref="account.view_account_payment_form" />
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='state']" position="before">
+        <button type="object" name="aplica" string="Aplicar"/>
+      </xpath>
+
+      <xpath expr="//field[@name='journal_id']" position="before">
+        <field name="x_letras" readonly="1"/>
+      </xpath>
+      <xpath expr="//field[@name='payment_date']" position="after">
+        <field name="x_fecha" readonly="1"/>
+      </xpath>
+    </field>
+  </record>
+  
+
+ </data>
+</odoo>
+
+

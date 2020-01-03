@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <report
+    id="planunidad_cuenta"
+    model="fiaes.planunidad"
+    string="Plan Unidad /Cuenta"
+    report_type="qweb-pdf"
+    name="fiaes.report_template_planunidadcuenta" 
+    file="fiaes.report_template_planunidadcuenta" 
+/>
+
+<template id ="report_template_planunidadcuenta" >
+  <t t-call= "web.html_container">
+    <t t-foreach="docs" t-as="doc">
+      <t t-call="web.external_layout">
+        <div class="page">
+        <h2>Presupuestos por proyecto</h2>
+        <div style="width:100%;border-bottom: thin solid block">
+          <h3>Informacion general</h3>
+          <table class="table table_sm o_main_table">
+            <thead>
+            <th>
+              <span style="font-weight:bold">
+                Cuenta
+              </span>
+            </th>
+            <th>
+              <span style="font-weight:bold">
+                Presupuesto
+              </span>
+            </th>
+            <th>
+              <span style="font-weight:bold">
+                Refuerzo
+              </span>
+            </th>
+            <th>
+              <span style="font-weight:bold">
+                Recorte
+              </span>
+            </th>
+            <th>
+              <span style="font-weight:bold">
+                Ejecutado
+              </span>
+            </th>
+          </thead>
+          <tbody>
+          <tr t-foreach="doc.reporte_ids" t-as="table_line">
+              <td>
+                <span t-field="table_line.name"/>
+              </td>
+              <td>
+                <span t-field="table_line.presupuesto"/>
+              </td>
+              <td>
+                <span t-field="table_line.refuerzo"/>
+              </td>
+              <td>
+                <span t-field="table_line.recorte"/>
+              </td>
+              <td>
+                <span t-field="table_line.ejecutado"/>
+             </td>
+                        
+         </tr>
+         </tbody>
+        </table>
+
+        </div>
+        </div>
+      </t>
+      </t>
+      </t>
+     
+   </template>
+
+
+<report
+id="planunidad_proyecto"
+model="fiaes.planunidad"
+string="Plan Unidad /Proyecto"
+report_type="qweb-pdf"
+name="fiaes.report_template_planunidadproyecto" 
+file="fiaes.report_template_planunidadproyecto" 
+/>
+
+
+ <template id ="report_template_planunidadproyecto" >
+  <t t-call= "web.html_container">
+    <t t-foreach="docs" t-as="doc">
+      <t t-call="web.external_layout">
+        <div class="page">
+        <h2>Presupuestos por proyecto</h2>
+        <div style="width:100%;border-bottom: thin solid block">
+          <h3>Informacion general</h3>
+          <table class="table table_sm o_main_table">
+            <thead>
+            <th>
+              <span style="font-weight:bold">
+                Proyecto
+              </span>
+            </th>
+            <th>
+              <span style="font-weight:bold">
+                Presupuesto
+              </span>
+            </th>
+            <th>
+              <span style="font-weight:bold">
+                Refuerzo
+              </span>
+            </th>
+            <th>
+              <span style="font-weight:bold">
+                Recorte
+              </span>
+            </th>
+            <th>
+              <span style="font-weight:bold">
+                Ejecutado
+              </span>
+            </th>
+          </thead>
+           <tbody>
+             <tr t-foreach="doc.reporte_proyecto_ids" t-as="table_line">
+               
+         <td>
+           <span t-field="table_line.proyecto_id.name"/>
+         </td>
+       <td>
+                 <span t-field="table_line.presupuesto"/>
+               </td>
+         <td>
+           <span t-field="table_line.refuerzo"/>
+         </td>
+         <td>
+               <span t-field="table_line.recorte"/>
+             </td>
+             <td>
+                   <span t-field="table_line.ejecutado"/>
+             </td>
+             </tr>          
+
+          </tbody>
+          </table>
+      </div>
+      </div>
+     </t>
+     </t>
+    </t>
+    
+    
+  </template>
+
+
+  <report
+id="planunidad_actividad"
+model="fiaes.planunidad"
+string="Plan Unidad /Actividad"
+report_type="qweb-pdf"
+name="fiaes.report_template_planunidadactividad" 
+file="fiaes.report_template_planunidadactividad" 
+/>
+
+<template id ="report_template_planunidadactividad" >
+  <t t-call= "web.html_container">
+    <t t-foreach="docs" t-as="doc">
+      <t t-call="web.external_layout">
+        <div class="page">
+        <h2>Presupuestos por proyecto</h2>
+        <div style="width:100%;border-bottom: thin solid block">
+          <h3>Informacion general</h3>
+          <table class="table table_sm o_main_table">
+            <thead>
+            <th>
+              <span style="font-weight:bold">
+                Actividad
+              </span>
+            </th>
+            <th>
+              <span style="font-weight:bold">
+                Presupuesto
+              </span>
+            </th>
+            <th>
+              <span style="font-weight:bold">
+                Refuerzo
+              </span>
+            </th>
+            <th>
+              <span style="font-weight:bold">
+                Recorte
+              </span>
+            </th>
+            <th>
+              <span style="font-weight:bold">
+                Ejecutado
+              </span>
+            </th>
+          </thead>
+            <tbody>
+              <tr t-foreach="doc.reporte_actividad_ids" t-as="table_line">
+                                 
+              <td>
+                <span t-field="table_line.cuenta"/>
+              </td>
+              <td>
+                <span t-field="table_line.presupuesto"/>
+              </td>
+              <td>
+                <span t-field="table_line.refuerzo"/>
+              </td>
+              <td>
+                <span t-field="table_line.recorte"/>
+              </td>
+              <td>
+                <span t-field="table_line.ejecutado"/>
+              </td>
+                         
+                         
+                         
+              </tr>
+              </tbody>
+              </table>
+          </div>
+         </div>
+  
+      </t>
+      </t>
+      </t>
+     
+     
+   </template>
+ 
+<report
+id="reasignacion_fondo1"
+model="fiaes.asignacion.presupuesto"
+string="Reasignacion fondos"
+report_type="qweb-pdf"
+name="fiaes.report_template_presupuesto1" 
+file="fiaes.report_template_presupuesto1"
+/>
+
+<template id ="report_template_presupuesto1" >
+    <t t-call="web.html_container">
+   <t t-foreach="docs" t-as="doc">
+       <t t-call="web.external_layout">
+          <div class="is-subtotal text-right">
+              <strong>Fecha:</strong><span class="m-0" t-field="doc.x_fecha"/>
+            </div>
+       <div class="page">
+       
+          <div style="width:100%;border-bottom:thin solid black">
+              <h3>Reasignacion de fondos</h3>
+          </div>
+
+          <table>
+              <tr>
+          <strong>Nombre:</strong><span class="m-0" t-field="doc.name"/>
+          <br/>
+        </tr>
+        <tr>
+          <strong>Tipo:</strong><span class="m-0" t-field="doc.tipo"/>
+          <br/>
+          <br/>
+        </tr>
+          </table>
+          <br/>
+          <table class="table table-sm o_main_table" >
+              <thead>
+                      <tr style="background:gray"><td colspan="6">Detalle de reasignacion</td></tr>
+                      <td style="font-weight:bold">Plan unidad</td>
+                      <td style="font-weight:bold">Proyecto</td>
+                      <td style="font-weight:bold">Fuente</td>
+                      <td style="font-weight:bold">Monto</td>
+                    </thead>
+    
+              <tbody>
+                
+                <tr t-foreach="doc.detalle_line" t-as="table_line">   
+                <td>
+                <span t-field="table_line.planunidad_id"/>
+                </td>
+                <td>
+                <span t-field="table_line.proyecto_id"/>
+                </td>
+                <td>
+                <span t-field="table_line.fuente_id"/>
+                </td>
+                <td>
+                <span t-field="table_line.monto"/>
+                </td>
+                </tr>
+
+              </tbody>
+     
+            </table>
+            <br/>
+            <br/>
+
+            <strong>Fecha Aprobado:</strong><span class="m-0" t-field="doc.x_fecha"/>
+      </div>
+      <div class="footer">
+          <table class="table o_report_block_table" >
+              <thead>
+                      <tr>
+                      <td>____________________________________</td>
+                      <td></td>
+                      <td></td>
+                      <td>____________________________________</td>
+                      </tr>
+                    </thead>
+              <tbody>
+                <tr >   
+                <td>
+                    <span>f.</span>
+                </td>
+                <td>
+                <span></span>
+                </td>
+                <td>
+                <span></span>
+                </td>
+                <td>
+                    <span>f.</span>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+      </div>
+  
+    </t>
+    </t>
+  </t>
+   
+   
+ </template>
+ 
+<report
+id="reasignacion_fondo2"
+model="fiaes.reasignacion.planunidad"
+string="Reasignacion fondos"
+report_type="qweb-pdf"
+name="fiaes.report_template_presupuesto2" 
+file="fiaes.report_template_presupuesto2"
+/>
+
+
+<template id ="report_template_presupuesto2" >
+    <t t-call="web.html_container">
+   <t t-foreach="docs" t-as="doc">
+      <t t-call="web.external_layout">
+          <div class="is-subtotal text-right">
+              <strong>Fecha:</strong><span class="m-0" t-field="doc.x_fecha"/>
+            </div>
+       <div class="page">
+       
+          <div style="width:100%;border-bottom:thin solid black">
+              <h3>Reasignacion de fondos</h3>
+          </div>
+
+          <table>
+              <tr>
+          <strong>Nombre:</strong><span class="m-0" t-field="doc.name"/>
+          <br/>
+        </tr>
+        <tr>
+          <strong>Descripcion:</strong><span class="m-0" t-field="doc.descripcion"/>
+          <br/>
+        </tr>
+        <tr>
+            <strong>Plan de unidad:</strong><span class="m-0" t-field="doc.planunidad_id"/>
+            <br/>
+          </tr>
+        
+          </table>
+          <br/>
+          <table class="table table-sm o_main_table" >
+              <thead>
+                      <tr style="background:gray"><td colspan="8">Detalle de reasignacion</td></tr>
+                      <td style="font-weight:bold">Actividad</td>
+                      <td style="font-weight:bold">Bien/Servicio</td>
+                      <td style="font-weight:bold">Precio</td>
+                      <td style="font-weight:bold">Cantidad</td>
+                      <td style="font-weight:bold">total</td>
+                      <td style="font-weight:bold">mes</td>
+                      <td style="font-weight:bold">fuente</td>
+                      <td style="font-weight:bold">Estado</td>
+
+                    </thead>
+              <tbody>
+
+
+                <t t-foreach="doc.insumo_line" t-as="table_line">   
+                <tr t-if="table_line.state != 'Copiado'">   
+                <td>
+                <span t-field="table_line.actividad_id"/>
+                </td>
+                <td>
+                <span t-field="table_line.categoria"/>
+                </td>
+                <td>
+                <span t-field="table_line.preciouni"/>
+                </td>
+                <td>
+                <span t-field="table_line.cantidad"/>
+                </td>
+                <td>
+                <span t-field="table_line.total"/>
+                </td>
+                <td>
+                <span t-field="table_line.mes"/>
+                </td>
+                <td>
+                <span t-field="table_line.fuente"/>
+                </td>
+
+                <td>
+                <span t-field="table_line.state"/>
+                
+                </td> 
+             
+                </tr>
+              </t>
+              </tbody>
+            </table>
+            <br/>
+            <br/>
+
+            <strong>Fecha Aprobado:</strong><span class="m-0" t-field="doc.x_fecha"/>
+      </div>
+      <div class="footer">
+          <table class="table o_report_block_table" >
+              <thead>
+                      <tr>
+                      <td>____________________________________</td>
+                      <td></td>
+                      <td></td>
+                      <td>____________________________________</td>
+                      </tr>
+                    </thead>
+              <tbody>
+                <tr >   
+                <td>
+                    <span>f.</span>
+                </td>
+                <td>
+                <span></span>
+                </td>
+                <td>
+                <span></span>
+                </td>
+                <td>
+                    <span>f.</span>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+      </div>
+  
+    </t>
+    </t>
+  </t>
+   
+   
+ </template>
+
+     </data>
+</odoo>
+

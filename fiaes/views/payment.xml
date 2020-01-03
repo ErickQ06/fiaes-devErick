@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <report
+    id="report_payment"
+    model="account.payment"
+    string="Recibo"
+    report_type="qweb-pdf"
+    name="fiaes.report_template_payment" 
+    file="fiaes.report_template_payment" 
+/>
+
+ <template id ="report_template_payment" >
+   <t t-call= "web.basic_layout">
+    <t t-foreach="docs" t-as="doc">
+    <div class="page">
+        <body LANG="en-US" TEXT="#000000" DIR="LTR">
+            <P LANG="es-ES" CLASS="western" align="center" style="margin-bottom: 0in">
+         
+            </P>
+            <P LANG="es-ES" CLASS="western" align="center" style="margin-bottom: 0in">
+           
+            </P>
+            <P LANG="es-ES" CLASS="western" align="center" style="margin-bottom: 0in">
+            
+            </P>
+            <P LANG="es-ES" CLASS="western" align="center" style="margin-bottom: 0in">
+           
+            </P>
+            <P LANG="es-ES" CLASS="western" align="center" style="margin-bottom: 0in">
+           
+            </P>
+            <P LANG="es-ES" CLASS="western" align="center" style="margin-bottom: 0in">
+            <FONT FACE="Century Gothic, sans-serif"><B><SPAN>Por
+            US$2,737.24</SPAN></B></FONT></P>
+            <P LANG="es-ES" CLASS="western" align="center" style="margin-bottom: 0in">
+           
+            </P>
+            <P LANG="es-ES" CLASS="western" aling= "justify" style="margin-bottom: 0in; line-height: 115%">
+            <FONT FACE="Century Gothic, sans-serif">Recibimos de </FONT><FONT FACE="Century Gothic, sans-serif"><SPAN >ALIMENTOS
+            NUTRICIONALES, S.A. de C.V. la</SPAN></FONT><FONT FACE="Century Gothic, sans-serif">
+            cantidad de </FONT><FONT FACE="Century Gothic, sans-serif"><SPAN >US$2,737.24
+            (DOS MIL SETECIENTOS TREINTA Y SIETE 24/100 Dólares),</SPAN></FONT><FONT FACE="Century Gothic, sans-serif">
+            en concepto de cumplimiento del pago de Compensación Ambiental, por
+            el proyecto de</FONT><FONT FACE="Century Gothic, sans-serif">nominado
+            </FONT><FONT FACE="Century Gothic, sans-serif"><B><SPAN >“Planta
+            Procesadora de Huevo Fresco Pasteurizado”</SPAN></B></FONT><FONT FACE="Century Gothic, sans-serif"><B>
+            </B></FONT><FONT FACE="Century Gothic, sans-serif"><SPAN >ubicado
+            en Antigua Calle Zacatecoluca, kilómetro 38.5, municipio de Rosario,
+            departamento de La Paz, con DEC GEA 22875 222 2018, del 08 de febrero
+            de 2018</SPAN></FONT><FONT FACE="Century Gothic, sans-serif"><SPAN >.</SPAN></FONT><FONT FACE="Century Gothic, sans-serif">
+            Fondos entregados por medio de </FONT><FONT FACE="Century Gothic, sans-serif"><SPAN >transferencia
+            bancaria a favor de FIAES para ser depositados a la cuenta corriente
+            No. 500-022475-6 a nombre FIAES/FONDO DE COMPENSACIÓN AMBIENTAL, con
+            el Banco Agrícola.</SPAN></FONT><FONT FACE="Century Gothic, sans-serif">
+            </FONT>
+            </P>
+            <P LANG="es-ES" CLASS="western" aling= "justify" style="margin-bottom: 0in; line-height: 150%">
+          
+            </P>
+            <P LANG="es-ES" CLASS="western" align="center" style="margin-bottom: 0in; line-height: 150%">
+            <FONT COLOR="#000000"><FONT FACE="Century Gothic, sans-serif">Santa
+            Tecla, a los veintitrés días del mes de octubre de dos mil
+            diecinueve.</FONT></FONT></P>
+        </body>
+    </div>
+
+     </t>
+     </t>
+    
+  </template>
+     </data>
+</odoo>
+
+

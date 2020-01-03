@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+      <!-- pantalla de inversion en territorio  -->
+      <record model="ir.ui.view" id="fiaes.invesion_form">
+     <field name="name">fiaes.inversion_form</field>
+     <field name="model">fiaes.inversion</field>
+     <field name="arch" type="xml">
+       <form >
+       <header>
+          <button name="presentar" states="Borrador" string="Presentar"  type="object" class="oe_highlight"/>
+          <button name="aprobar" states="Presentado" string="Aprobar" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+          <button name="cancelar" states="Presentado" string="Cancelar" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+          <button name="regresar" states="Aprobado,Cancelado" string="Regresar a borrador" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+               <sheet>
+                   <div class="oe_title oe_inline">
+                       <label for="name" class="oe_edit_only"/>
+                       <h1><field name="name" required="1" attrs="{'readonly':[('state','!=','Borrador')]}" /></h1>
+                   </div>
+                   <group>
+                       <group>
+                          <field name="poa_id"  required="1"  attrs="{'readonly':[('state','!=','Borrador')]}" />                           
+                          <field name="convocatoria_id"  required="1"  attrs="{'readonly':[('state','!=','Borrador')]}" /> 
+                          <field name="conservacion_id"  required="1"  attrs="{'readonly':[('state','!=','Borrador')]}" /> 
+                          <field name="uet_id"  required="1"  attrs="{'readonly':[('state','!=','Borrador')]}" />        
+                          <field name="territorio_id"  required="1"  attrs="{'readonly':[('state','!=','Borrador')]}" /> <!-- TODO: filtrar por  uet-->
+                          <field name="total_programado"/>
+                          <field name="total_disponible"/>
+                       </group>
+                   </group>     
+                   <notebook>
+                    <page string="Actividades">
+                        <label for="actividad_ids" />
+                        <field name="actividad_ids" context="{'default_inversion_id': id}"  attrs="{'readonly':[('state','!=','Borrador')]}" >
+                                         
+                       </field>
+                    </page>
+                    <page string="Desembolsos">
+                                  <label for="desembolso_ids" />
+                                  <field name="desembolso_ids" context="{'default_inversion_actividad_id': id}"  attrs="{'readonly':[('state','!=','Borrador')]}" >
+                                    <tree string="Desembolsos" editable="bottom">
+                                      <field name="convocatoria_id"  required="1" /> 
+                                      <field name="total" sum="Total"/>
+                                      <field name="mes" />
+                                      <field name="anio" />
+                                      <field name="fuente_id" />
+                                      <field name="name" />
+                                    </tree>
+                                  </field>
+                                </page>            
+                    <page string="Indicadores involucrados">
+                      <label for="indicador_ids" />
+                      <field name="indicador_ids" context="{'default_inversion_id': active_id}"  attrs="{'readonly':[('state','!=','Borrador')]}" >
+                        <tree string="Indicadores" editable="bottom">
+                          <field name="indicador_id" domain="[('conservacion_id','=',parent.conservacion_id),('mostrar_inversion','=',True)]"/>
+                          <field name="name" invisible="1"/>
+                          <field name="uom_id" />
+                          <field name="frecuencia" />
+                          <field name="cantidad" />
+                        </tree>
+                      </field>
+                    </page>                    
+                   </notebook>                        
+               </sheet>
+               <div class="oe_chatter">
+                  <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                  <field name="message_ids" widget="mail_thread"/>
+                </div>
+               </form>
+      </field>
+   </record>
+
+   <record model="ir.ui.view" id="fiaes.inversion_tree">
+     <field name="name">fiaes.inversion_tree</field>
+     <field name="model">fiaes.inversion</field>
+     <field name="arch" type="xml">
+     <tree string="Componentes">
+       <field name="name"/>
+       <field name="uet_id" />
+       <field name="conservacion_id"/>
+       <field name="territorio_id"/>
+     </tree>
+      </field>
+   </record>
+
+   <record model="ir.actions.act_window" id="fiaes.inversion_action">
+   <field name="name">Componentes</field>
+   <field name="res_model">fiaes.inversion</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">Componentes</p>
+   </field>
+ </record>
+
+
+   <menuitem name="Componentes"
+   parent="fiaes.planificacion_inversion"
+   id="fiaes.inversion"
+   sequence="40"
+   action="fiaes.inversion_action"
+   groups="account.group_account_manager"/>      
+      
+      
+      
+      
+
+
+      <!-- pantalla de inversion actividad en territorio  -->
+      <record model="ir.ui.view" id="fiaes.invesion_actividad_form">
+     <field name="name">fiaes.inversion_actividad_form</field>
+     <field name="model">fiaes.inversion.actividad</field>
+     <field name="arch" type="xml">
+       <form >
+          <sheet>
+                              <group>
+                              <field name="state_inversion" />
+                                <field name="conservacion_id"  /> 
+                                <field name="producto_id"  domain="[('conservacion_id','=',conservacion_id)]"/> 
+                                <field name="name"   attrs="{'readonly':[('state_inversion','!=','Borrador')]}" />
+                                <field name="inversion_id" readonly="1" />
+                                <field name="convocatoria_id"  /> 
+                                
+                                <field name="prioridad"   groups="fiaes.autoriza_proyectos"/>
+                                <field name="total_insumos" sum="total insumos"/>
+                              </group>
+                              <notebook>
+                                <page string="Insumos">
+                                  <label for="insumo_ids" />
+                                  <field name="insumo_ids" context="{'default_inversion_actividad_id': id}" attrs="{'readonly':[('state_inversion','!=','Borrador')]}" >
+                                    <tree string="Insumos" editable="bottom">
+                                      <field name="name" required="1"/>
+                                      <field name="tecnica_id" />
+                                      <field name="uom_id"  required="1"/>
+                                      <field name="cantidad"  required="1"/>
+                                      <field name="costo_unitario"  required="1"/>
+                                      <field name="total" sum="Total"/>
+                                      <field name="mes"  required="1"/>
+                                      <field name="anio1"  required="1"/>
+                                      <field name="fuente_id"  required="1"/>
+                                      <button name="duplicate" string="copiar"  type="object" class="oe_highlight"/>
+                                    </tree>
+                                  </field>
+                                </page>
+                                <page string="Resultados">
+                                  <label for="resultado_ids" />
+                                  <field name="resultado_ids" context="{'default_inversion_actividad_id': id}" attrs="{'readonly':[('state_inversion','!=','Borrador')]}" >
+                                    <tree string="Resultados" editable="bottom">
+                                      <field name="name" />
+                                      <field name="uom_id" />
+                                      <field name="cantidad" />
+                                      <field name="supuesto" />
+                                    </tree>
+                                  </field>
+                                </page>
+                                                    
+                              </notebook>                              
+                            </sheet>
+                              <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                          </div> 
+       </form>
+     </field>
+     </record>
+
+
+<record model="ir.ui.view" id="fiaes.inversion_actividad_tree">
+     <field name="name">fiaes.inversion_actividad_tree</field>
+     <field name="model">fiaes.inversion.actividad</field>
+     <field name="arch" type="xml">
+     <tree string="Componentes - actividades">
+     <field name="inversion_id" />
+     <field name="uet_id" />
+                           <field name="name" />
+                           <field name="convocatoria_id"  required="1" /> 
+                           <field name="cantidad" />
+                           <field name="resultado" />
+                           <field name="total_insumos" sum="total insumos"/>
+                         </tree>         
+      </field>
+   </record>
+
+   <record model="ir.actions.act_window" id="fiaes.inversion_actividad_action">
+   <field name="name">Componentes - Actividades</field>
+   <field name="res_model">fiaes.inversion.actividad</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">Componentes - Actividades</p>
+   </field>
+ </record>
+
+
+   <menuitem name="Componentes - Productos "
+   parent="fiaes.planificacion_inversion"
+   id="fiaes.inversion_actividad"
+   sequence="50"
+   action="fiaes.inversion_actividad_action"
+   groups="account.group_account_manager"/>     
+
+
+
+<!-- PANTALLA DE TERRITORIOS -->
+     <!-- pantalla de inversion actividad en territorio  -->
+      <record model="ir.ui.view" id="fiaes.invesion_actividad_insumo_form">
+     <field name="name">fiaes.inversion_actividad_insumo_form</field>
+     <field name="model">fiaes.inversion.actividad.insumo</field>
+     <field name="arch" type="xml">
+
+                                    <tree string="Insumos" create="0" edit="0">
+                                    <field name="uet_id" />
+                                    <field name="territorio_id" />
+                                    <field name="conservacion_id" />
+                                      <field name="tecnica_id" />
+                                      <field name="uom_id" />
+                                      <field name="cantidad" />
+                                      <field name="costo_unitario" />
+                                      <field name="total" />
+                                      <field name="mes" />
+                                      <field name="anio1" />
+                                      <field name="fuente_id" />
+                                      <field name="state_inversion" />
+                                      <field name="convocatoria_id" />
+                                      <field name="state_convocatoria" />
+                                      <field name="prioridad" />
+                                    </tree>
+                                
+     </field>
+     </record>
+
+      
+
+
+   <record model="ir.actions.act_window" id="fiaes.inversion_actividad_insumos_action">
+   <field name="name">Componentes - Detalles</field>
+   <field name="res_model">fiaes.inversion.actividad.insumo</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,pivot,graph</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">Componentes - Detalle</p>
+   </field>
+ </record>
+
+
+
+
+   <menuitem name="Componentes - Insumos - Reporte "
+   parent="fiaes.planificacion_reportes"
+   id="fiaes.inversion_actividad_inversion"
+   sequence="52"
+   action="fiaes.inversion_actividad_insumos_action"
+   groups="account.group_account_manager"/>  
+
+
+
+
+
+<!-- PANTALLA DE TERRITORIOS -->
+     <!-- pantalla de inversion actividad en territorio  -->
+      <record model="ir.ui.view" id="fiaes.invesion_actividad_resultado_form">
+     <field name="name">fiaes.inversion_actividad_resultado_form</field>
+     <field name="model">fiaes.inversion.actividad.resultado</field>
+     <field name="arch" type="xml">
+
+                                    <tree string="Resultados" create="0" edit="0">
+                                    <field name="uet_id" />
+                                    <field name="territorio_id" />
+                                    <field name="conservacion_id" />
+                                      <field name="uom_id" />
+                                      <field name="cantidad" />
+                                      <field name="state_inversion" />
+                                      <field name="convocatoria_id" />
+                                      <field name="state_convocatoria" />
+                                      <field name="prioridad" />
+                                    </tree>
+                                
+     </field>
+     </record>
+
+      
+
+
+   <record model="ir.actions.act_window" id="fiaes.inversion_actividad_resultado_action">
+   <field name="name">Componentes - Resultados - Detalles</field>
+   <field name="res_model">fiaes.inversion.actividad.resultado</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,pivot,graph</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">Componentes - Resultados - Detalle</p>
+   </field>
+ </record>
+
+
+
+
+   <menuitem name="Componentes - Resultados - Reporte "
+   parent="fiaes.planificacion_reportes"
+   id="fiaes.inversion_actividad_resultado"
+   sequence="52"
+   action="fiaes.inversion_actividad_resultado_action"
+   groups="account.group_account_manager"/>  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     <!-- pantalla de inversion actividad en territorio  -->
+      <record model="ir.ui.view" id="fiaes.inversion_desemolsos_form">
+     <field name="name">fiaes.inversion_desemolsos_form</field>
+     <field name="model">fiaes.inversion.actividad.desembolso</field>
+     <field name="arch" type="xml">
+
+                                    <tree string="Desembolsos" create="0" edit="0">
+                                    <field name="uet_id" />
+                                    <field name="territorio_id" />
+                                    <field name="conservacion_id" />
+                                      <field name="total" />
+                                      <field name="mes" />
+                                      <field name="anio" />
+                                      <field name="fuente_id" />
+                                      <field name="state_inversion" />
+                                      <field name="convocatoria_id" />
+                                      <field name="state_convocatoria" />
+                                    </tree>
+                                
+     </field>
+     </record>
+
+      
+
+
+   <record model="ir.actions.act_window" id="fiaes.inversion_desembolsos_action">
+   <field name="name">Componentes - Desembolsos - Detalles</field>
+   <field name="res_model">fiaes.inversion.actividad.desembolso</field>
+   <field name="view_type">form</field>
+   <field name="view_mode">tree,pivot,graph</field>
+   <field name="help" type="html">
+     <p class="oe_view_nocontent_create">Componentes - Desembolso - Detalle</p>
+   </field>
+ </record>
+
+
+   <menuitem name="Componentes - Desembolsos - Reporte "
+   parent="fiaes.planificacion_reportes"
+   id="fiaes.inversion_dsembolso_reporte"
+   sequence="53"
+   action="fiaes.inversion_desembolsos_action"
+   groups="account.group_account_manager"/>  
+
+
+
+
+
+  <report
+    id="inversion_report"
+    model="fiaes.inversion"
+    string="Inversion en territorio"
+    report_type="qweb-pdf"
+    name="fiaes.report_inversion"
+    file="fiaes.report_inversion"
+    attachment_use="False"
+    attachment="(object.state in ('Borrador','Aprobado')) and
+        (''+(object.name or '').replace('/','')+'.pdf')"
+/>
+
+
+
+  </data>
+
+</odoo>

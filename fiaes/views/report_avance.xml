@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="fiaes_reporteavance_formk">
+            <field name="name">fiaes_planavancereportk</field>
+            <field name="model">fiaes.reporte.avance</field>
+            <field name="arch" type="xml">
+                <form string="Reporte de avances">
+                    <header>
+                        <button name="generate_items" string="Generar" type="object" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="planunidad_id" placeholder="Plan de unidad"/>
+                            <field name="fecha" placeholder="Fecha"></field>
+                        </group>
+                    
+                    <notebook>
+                        <page string="Actividades del plan de unidad">
+                            <field editable="bottom" name="actividad_ids">
+                                <tree editable="bottom" create="0">
+                                    <field name="name_actividad" readonly="1" />
+                                    <field name="proyecto"  readonly="1"/>
+                                    <field name="peso" readonly="1"/>
+                                    <field name="porcentaje"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- action del reporte de avance-->
+        <record model="ir.actions.act_window" id="reporteavance_actionk">
+            <field name="name">REPORTE AVANCE ACTIVIDAD</field>
+            <field name="res_model">fiaes.reporte.avance</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Reporte Avance Actividad
+                </p>
+            </field>
+        </record>
+
+
+        <!-- Menu del reportre de avance de actividades-->
+        <menuitem 
+        id="fiaes_reporteavancek" 
+        parent="fiaes.fiaes"
+        name="Reporte Avance Actividades"
+        action="reporteavance_actionk"
+        sequence="10"
+        /> 
+     
+    </data>
+</odoo>

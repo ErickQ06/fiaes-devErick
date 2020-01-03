@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <record id="SolicitudVehiculo_solicitud" model="mail.template">
+          <field name="name">SolicitudVehiculo_solicitud</field>
+          <field name="email_from">${object.source_email or ''}</field>
+          <field name="subject">Solicitud de vehiculo</field>
+          <field name="email_to">${object.encargado_autorizacion_id.email}</field>
+          <field name="lang">${object.encargado_autorizacion_id.lang}</field>
+          <field name="model_id" ref="fiaes.model_fiaes_solicitud_vehiculo"/>
+          <field name="auto_delete" eval="True"/>
+	  <field name="body_html">
+            <![CDATA[
+
+	    ]]>
+	  </field>
+       </record>
+
+
+
+
+       <record id="SolicitudVehiculo_autorizado" model="mail.template">
+           <field name="name">SolicitudVehiculo_autorizado</field>
+           <field name="email_from">${object.encargado_autorizacion_id.email}</field>
+           <field name="subject">Autorizacion de vehiculo</field>
+           <field name="email_to">${object.source_email}</field>
+           <field name="lang">${object.encargado_autorizacion_id.lang}</field>
+           <field name="model_id" ref="fiaes.model_fiaes_solicitud_vehiculo"/>
+           <field name="auto_delete" eval="True"/>
+    <field name="body_html">
+             <![CDATA[
+
+      ]]>
+    </field>
+        </record>
+
+        <record id="SolicitudVehiculo_asignado" model="mail.template">
+            <field name="name">SolicitudVehiculo_asignado</field>
+            <field name="email_from">${object.encargado_revision_id.email}</field>
+            <field name="subject">Asignacion de vehiculo</field>
+            <field name="email_to">${object.source_email}</field>
+            <field name="lang">${object.encargado_autorizacion_id.lang}</field>
+            <field name="model_id" ref="fiaes.model_fiaes_solicitud_vehiculo"/>
+            <field name="auto_delete" eval="True"/>
+     <field name="body_html">
+              <![CDATA[
+
+       ]]>
+     </field>
+         </record>
+
+
+
+        <record id="SolicitudVehiculo_cancelado" model="mail.template">
+            <field name="name">SolicitudVehiculo_cancelado</field>
+            <field name="email_from">${object.encargado_autorizacion_id.email}</field>
+            <field name="subject">Cancelacion de vehiculo</field>
+            <field name="email_to">${object.source_email}</field>
+            <field name="lang">${object.encargado_autorizacion_id.lang}</field>
+            <field name="model_id" ref="fiaes.model_fiaes_solicitud_vehiculo"/>
+            <field name="auto_delete" eval="True"/>
+     <field name="body_html">
+              <![CDATA[
+
+       ]]>
+     </field>
+         </record>
+
+
+       <record id="MantenimientoVehiculo" model="mail.template">
+           <field name="name">MantenimientoVehiculo</field>
+           <field name="email_from">info@strategi-k.com</field>
+           <field name="subject">Mantenimiento de vehiculo</field>
+           <field name="email_to">${object.vehicle_id.driver_id.email}</field>
+           <field name="lang">${object.vehicle_id.driver_id.lang}</field>
+           <field name="model_id" ref="fiaes.model_fiaes_vehiculo_servicio"/>
+           <field name="auto_delete" eval="True"/>
+ 	  <field name="body_html">
+             <![CDATA[
+             El vehiculo ${object.vehicle_id.license_plate} requiere mantenimiento de ${object.servicio.name}
+ 	    ]]>
+ 	  </field>
+        </record>
+
+    </data>
+</odoo>

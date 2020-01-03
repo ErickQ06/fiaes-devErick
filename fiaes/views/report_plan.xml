@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+
+    <!--form del PLAN REPORT-->
+<record model="ir.ui.view" id="fiaes_planreport_form">
+    <field name="name">fiaes_planreport_form</field>
+    <field name="model">fiaes.reporte.plan</field>
+    <field name="arch" type="xml">
+        <form string="REPORTE">
+            <header>
+                <button name="generate_items" states="Borrador" string="Generar" type="object" class="oe_highlight"/>
+                <button name="calcular_indicador" states="Borrador" string="Calcular" type="object" class="oe_highlight"/>
+                <button name="aprobar" states="Borrador" string="Aprobar" type="object" class="oe_highlight"/>
+                <button name="cancelar" states="Borrador" string="Cancelar" type="object" class="oe_highlight"/>
+                <button name="regresar" states="Aprobado,Cancelado" string="Regresar a borrador" type="object" class="oe_highlight"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+                <group>
+                <field name="plan_id" placeholder="Plan de unidad"/>     
+                <field name="fecha" placeholder="Fecha"/> 
+                 
+                </group>
+                <notebook>
+                    <page string="Variables">
+                        <field name="variable_ids">
+                            <tree editable="bottom" create="0">
+                                <field name="objetivopoa_id" />
+                                <field name="indicador_id" />
+                                <field name="variable_id" />
+                                <field name="valor" />
+                                <field name="valor_acumulado" />
+                                <field name="comentario" />
+                                <field name="file_name" placeholder="Documento" invisible="1"/>
+                                <field name="document" widget="binary" filename="file_name" placeholder="Documento"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Resultados">
+                        <field name="resultado_ids">
+                            <tree editable="bottom" create="0">
+                                <field name="tipo" invisible="1" />
+                                <field name="objetivopoa_id" />
+                                <field name="actividad_id" />
+                                <field name="resultado_id" />
+                                <field name="valor" attrs="{'invisible':[('tipo', '!=', 'Cuantitativo')]}"/>
+                                <field name="valor_acumulado" attrs="{'invisible':[('tipo', '!=', 'Cuantitativo')]}"/>
+                                <field name="meta" />
+                                <field name="comentario" />
+                                <field name="file_name" placeholder="Documento" invisible="1"/>
+                                <field name="document" widget="binary" filename="file_name" placeholder="Documento"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Indicadores">
+                        <field name="indicador_ids">
+                            <tree editable="bottom" create="0">
+                                <field name="objetivopoa_id" />
+                                <field name="indicador_id" />
+                                <field name="valor" />
+                                <field name="valor_acumulado" />
+                                <field name="meta" />
+                                <field name="comentario" />
+                                <field name="forma_calculo" />
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+
+
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+<!--action del REPORT PLAN-->
+    <record model="ir.actions.act_window" id="reportplan_action">
+            <field name="name">REPORTE PLAN UNIDAD</field>
+            <field name="res_model">fiaes.reporte.plan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Reporte Plan Unidad
+                </p>
+            </field>
+        </record>
+
+<!--menu del REPORT PLAN-->
+   <menuitem 
+   id="fiaes_reportplan" 
+   parent="fiaes.fiaes"
+   name="Reporte Plan Unidad"
+   action="reportplan_action"
+   sequence="5"
+   /> 
+
+
+
+
+
+
+    <!--form del PLAN COMPONENTE-->
+<record model="ir.ui.view" id="fiaes_componentereport_form">
+    <field name="name">fiaes_componentereport_form</field>
+    <field name="model">fiaes.reporte.inversion</field>
+    <field name="arch" type="xml">
+        <form string="REPORTE COMPONENTE">
+            <header>
+                <button name="generate_items" states="Borrador" string="Generar" type="object" class="oe_highlight"/>
+                <button name="calcular_indicador" states="Borrador" string="Calcular" type="object" class="oe_highlight"/>
+                <button name="aprobar" states="Borrador" string="Aprobar" type="object" class="oe_highlight"/>
+                <button name="cancelar" states="Borrador" string="Cancelar" type="object" class="oe_highlight"/>
+                <button name="regresar" states="Aprobado,Cancelado" string="Regresar a borrador" type="object" class="oe_highlight"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+                <group>
+                <field name="inversion_id" placeholder="Componente"/>     
+                <field name="fecha" placeholder="Fecha"/> 
+                 
+                </group>
+                <notebook>
+                    <page string="Variables">
+                        <field name="variable_ids">
+                            <tree editable="bottom" create="0">
+                                <field name="indicador_id" />
+                                <field name="variable_id" />
+                                <field name="valor" />
+                                <field name="valor_acumulado" />
+                                <field name="comentario" />
+                                <field name="file_name" placeholder="Documento" invisible="1"/>
+                                <field name="document" widget="binary" filename="file_name" placeholder="Documento"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Resultados">
+                        <field name="resultado_ids">
+                            <tree editable="bottom" create="0">
+                                <field name="actividad_id" />
+                                <field name="resultado_id" />
+                                <field name="valor" />
+                                <field name="valor_acumulado" />
+                                <field name="meta" />
+                                <field name="comentario" />
+                                <field name="file_name" placeholder="Documento" invisible="1"/>
+                                <field name="document" widget="binary" filename="file_name" placeholder="Documento"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Indicadores">
+                        <field name="indicador_ids">
+                            <tree editable="bottom" create="0">
+                                <field name="indicador_id" />
+                                <field name="valor" />
+                                <field name="valor_acumulado" />
+                                <field name="meta" />
+                                <field name="comentario" />
+                                <field name="forma_calculo" />
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+
+
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+<!--action del REPORT PLAN-->
+    <record model="ir.actions.act_window" id="reportinversion_action">
+            <field name="name">REPORTE DE COMPONENTE</field>
+            <field name="res_model">fiaes.reporte.inversion</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Reporte de Componente
+                </p>
+            </field>
+        </record>
+
+<!--menu del REPORT PLAN-->
+   <menuitem 
+   id="fiaes_reportinversion" 
+   parent="fiaes.fiaes"
+   name="Reporte De Componente"
+   action="reportinversion_action"
+   sequence="6"
+   /> 
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--form del PLAN REPORT-->
+<record model="ir.ui.view" id="fiaes_calculo_form">
+    <field name="name">fiaes_calculo_form</field>
+    <field name="model">fiaes.calculo</field>
+    <field name="arch" type="xml">
+        <form string="Calculo de Indicadores">
+            <header>
+                <button name="generate_items" string="Generar" type="object" class="oe_highlight"/>
+            </header>
+            <sheet>
+                
+                <group>
+                <field name="name"/> 
+                <field name="fecha" placeholder="Fecha"/> 
+                </group>
+                <field name="indicador_ids">
+                    <tree editable="bottom" create="0">
+                        <field name="indicador_id" />
+                        <field name="valor" />
+                        <field name="meta" />
+                        <field name="forma_calculo" />
+                    </tree>
+                    <form>
+                        <group>
+                            <field name="indicador_id" />
+                            <field name="valor" />
+                            <field name="meta" />
+                            <field name="forma_calculo" />
+                        </group>
+                        <field name="interpretacion_ids">
+                            <tree editable="bottom" create="0">
+                                <field name="name" />
+                                <field name="calculo" />
+                                <field name="resultado" />
+                            </tree>
+                        </field>
+                    </form>
+                </field>
+                
+
+
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+<!--action del REPORT PLAN-->
+    <record model="ir.actions.act_window" id="calculo_action">
+            <field name="name">CALCULO DE INDICADORES</field>
+            <field name="res_model">fiaes.calculo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create"> Calculo de indicadores </p>
+            </field>
+        </record>
+
+<!--menu del REPORT PLAN-->
+   <menuitem 
+   id="fiaes_calculo" 
+   parent="fiaes.fiaes"
+   name="Calculo de indicadores"
+   action="calculo_action"
+   sequence="7"
+   /> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </data>
+</odoo>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!--form basico-->   
+<record model="ir.ui.view" id="variante_contract_form">
+        <field name="name">variante_contract_form</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form" />
+        <field name="arch" type="xml">
+          <xpath expr="//sheet//notebook" position="inside">
+            <page string="Variantes">
+              <field name="line_valor" >
+                <tree editable='bottom'> 
+                <field name="variante_id" />
+                <field name="valor" />
+                </tree>
+                </field>                      
+            </page>
+          </xpath>
+        </field>
+      </record>
+
+
+ <!--form del presupuesto-->
+ <record model="ir.ui.view" id="fiaes_asignacion_form">
+  <field name="name">fiaes_asignacion_form</field>
+  <field name="model">fiaes.asignacion.presupuesto</field>
+  <field name="arch" type="xml">
+   <form string="Asignacion de presupuesto">
+      <header>
+          
+          <button name="presentar" states="Borrador" string="Aprobar" type="object" class="oe_highlight"/>
+          
+          <field name="state" widget="statusbar"/>
+        </header>
+   <sheet>
+   <group>
+  <field name="name" />
+  <field name="tipo" />
+  <field name="saldo"  attrs="{'invisible':['|',('tipo', '=', 'Recorte'),('tipo', '=', 'Refuerzo')]}" />
+  <field name="x_fecha" invisible = "1"/>
+</group>  
+  <notebook >
+  <page string="Detalle de Presupuesto" >
+  <field name="detalle_line" >
+  <tree editable="buttom"> 
+      <field name="planunidad_id" readonly="0"/>
+      <field name="proyecto_id" readonly="0" />
+      <field name="fuente_id" readonly="0"/>
+      <field name="monto" />
+  </tree>
+  </field>
+  </page> 
+  </notebook>
+  </sheet>
+  <div class="oe_chatter">
+  <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+  <field name="message_ids" widget="mail_thread"/>
+  </div>
+   </form>
+   </field>
+   </record>
+  
+  <!--tree del pei-->
+<record model="ir.ui.view" id="reasignacion_tree1">
+  <field name="name">reasignacion_tree1</field>
+  <field name="model">fiaes.asignacion.presupuesto</field>
+  <field name="arch" type="xml">
+      <tree>
+              <field name="name" />
+              <field name="tipo" />
+      </tree>
+  </field>
+</record>
+          
+
+  
+  
+  <!--action del objetivo-->
+      <record model="ir.actions.act_window" id="presupuesto_action">
+              <field name="name">Presupuesto</field>
+              <field name="res_model">fiaes.asignacion.presupuesto</field>
+              <field name="view_type">form</field>
+              <field name="view_mode">tree,form</field>
+                 <field name="target">current</field>
+              <field name="help" type="html">
+                  <p class="oe_view_nocontent_create">Presupuesto
+                  </p>
+              </field>
+          </record>
+  
+  <!--menu del objetivo-->
+     <menuitem 
+     id="fiaes_objpoa_menu" 
+     parent="fiaes.presupuesto"
+     name="Reasignaciones/Refuerzos/Recortes"
+
+     action="presupuesto_action"
+     sequence="61"
+     /> 
+
+    </data>
+</odoo>

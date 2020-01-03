@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+<!--<menuitem id="menu_sub" name="Menu"
+                  parent="main_menu"/>-->
+
+<!--form del pei-->
+<record model="ir.ui.view" id="fiaes_pei_form">
+    <field name="name">fiaes_pei_form</field>
+    <field name="model">fiaes.pei</field>
+    <field name="arch" type="xml">
+        <form string="PEI">
+            <sheet>
+                <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name" required="1"/>
+                    </h1>
+                </div> 
+                <group>
+                    <field name="fechainicio" placeholder="Fecha"/>
+                    <field name="fechafinal" placeholder="Fecha"/>
+                    <field name="file_name" placeholder="Documento" invisible="1"/>
+                    <field name="document" widget="binary" filename="file_name" placeholder="Documento"/>
+                </group>
+                <h2><label for="objetivo_ids" string="Objetivos" /></h2>
+                <field name="objetivo_ids"  context="{'default_pei_id':active_id}"/>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+<!--tree del pei-->
+ <record model="ir.ui.view" id="fiaes_pei_tree">
+    <field name="name">fiaes_pei_tree</field>
+    <field name="model">fiaes.pei</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" placeholder="Documento"/>
+            <field name="fechainicio" placeholder="Fecha"/>
+            <field name="fechafinal" placeholder="Fecha"/>        
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del pei-->
+    <record model="ir.actions.act_window" id="pei_action">
+            <field name="name">PEI</field>
+            <field name="res_model">fiaes.pei</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">PEI
+                </p>
+            </field>
+        </record>
+
+<!--menu del pei-->
+   <menuitem 
+   id="fiaes_menu" 
+   parent="fiaes.pei"
+   name="PEI"
+   action="pei_action"
+   sequence="1"
+   /> 
+
+
+<!--form del objetivo-->
+<record model="ir.ui.view" id="fiaes_obj_form">
+    <field name="name">fiaes_obj_form</field>
+    <field name="model">fiaes.objetivo</field>
+    <field name="arch" type="xml">
+        <form string="Objetivo Estrategico">
+            <sheet>
+               <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name" required="1"/>
+                    </h1>
+                </div> 
+                <group>
+              
+                    <field name="pei_id" placeholder="pei"/>
+                    <field name="objetivorer_id" placeholder="Objetivo Padre" domain="[('pei_id','=',pei_id)]"/>
+                    <field name="Descripcion" placeholder="Descripcion"/>
+                </group>
+
+                <!--group>
+                    <field name="meta_lines" nolabel="1"  context="{'default_objetivo_id':active_id}">
+                        <tree create="true"> 
+                            <field name="codigo"/>
+                            <field name="name"/>
+                            <field name="descripcion"/>
+                        </tree>
+                    </field>
+                </group-->
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+<!--tree del objetivo-->
+ <record model="ir.ui.view" id="fiaes_obj_tree">
+    <field name="name">fiaes_obj_tree</field>
+    <field name="model">fiaes.objetivo</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="pei_id" placeholder="Objetivo"/>
+            <field name="name" placeholder="Objetivo"/>
+            <field name="Descripcion" placeholder="Descripcion"/>
+            <field name="objetivorer_id" placeholder="Objetivo Padre"/>
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del objetivo-->
+    <record model="ir.actions.act_window" id="objetivo_action">
+            <field name="name">Objetivo</field>
+            <field name="res_model">fiaes.objetivo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+               <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Objetivo Estrategico
+                </p>
+            </field>
+        </record>
+
+<!--menu del objetivo-->
+   <menuitem 
+   id="fiaes_obj_menu" 
+   parent="fiaes.pei"
+   name="Objetivo"
+   action="objetivo_action"
+   sequence="2"
+   /> 
+
+
+
+<!--form del indicador-->
+<record model="ir.ui.view" id="fiaes_indicador_form">
+    <field name="name">fiaes_indicador_form</field>
+    <field name="model">fiaes.indicador</field>
+    <field name="arch" type="xml">
+        <form string="Indicador">
+            <sheet>
+                 <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name" required="1"/>
+                    </h1>
+                </div> 
+                <group>
+                    <group String="Datos generales">
+                        <field name="codigo" placeholder="Codigo"/>
+                        <field name="nombre_corto"/>
+                        <field name="sequence"/>
+                        <field name="estructura"/>
+                        <field name="objetivo_id"/>
+                        <field name="fecha_actualizacion" />
+                        <field name="fecha_creacion" />
+                        <field name="conservacion_id" />
+                        <field name="mostrar_inversion" />
+                        <field name="mostrar_poa" />
+                        <field name="tipo"/>
+                        <field name="parent_id" domain="[('objetivo_id', '=', objetivo_id),('desagregaciones', '=', 'Indicador')]"/>
+                        <field name="desagregaciones"/>
+                        <field name="descripcion" placeholder="Descripcion"/>
+                    </group>
+                    <group string="Medicion">
+                        
+                        <field name="uom_id" placeholder="Unidad de medida"/>
+                        <field name="forma_calculo"/>
+                        <field name="valor" string="Meta"/>
+                        <field name="lineabase" placeholder="Linea base"/>
+                        <field name="interpretacion_ids" nolabel="1"  colspan="2">
+                            <tree editable="bottom">
+                                <field name="name" />
+                                <field name="calculo" />
+                            </tree>
+                        </field>
+                        <field name="observaciones" />
+                    </group>
+                    <group string="Caracteristicas">
+                        <field name="frecuencia" string="Frecuencia de medición"/>
+                        <field name="fuente"/>
+                        <field name="resmedios_id" placeholder="Responsable de los medios de verificacion" widget="many2many_tags"/>
+                        <field name="formas"/>
+                        <field name="usos" />
+                    </group>
+                    <group String="Mediciones programadas" attrs="{'invisible':[('desagregaciones', '!=', 'Fin')]}">
+                        <field name="validacion_lines" nolabel="1"   context="{'default_indicador_id':id}">
+                            <tree create="true"> 
+                                <field name="fecha"/>
+                                <field name="cantidad"/>
+                                <field name="territorio"/>
+                                <field name="resmedicion_id"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group String="Desagregaciones" nolabel="1"  attrs="{'invisible':[('desagregaciones', '!=', 'Indicador')]}">
+                        <field name="subindicador_ids"  context="{'default_parent_id':id}" >
+                            <tree create="true"> 
+                                <field name="codigo"/>
+                                <field name="name"/>
+                                <field name="descripcion"/>
+                                <field name="frecuencia" string="Frecuencia de medición"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group String="Variables" nolabel="1" >
+                        <field name="variable_ids" attrs="{'invisible':[('desagregaciones', '!=', 'Fin')]}" context="{'default_parent_id':id}" >
+                             <tree editable="bottom">
+                                <field name="name" />
+                                <field name="codigo" />
+                                <field name="comentario" />
+                            </tree>
+                        </field>
+                    </group>
+                </group>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+</record>
+
+
+<!--form del subindicador
+<record model="ir.ui.view" id="fiaes_subindicador_form">
+<field name="name">fiaes_subindicador_form</field>
+<field name="model">fiaes.subindicador</field>
+<field name="arch" type="xml">
+<form string="Sub Indicador">
+<sheet>
+<group>
+<field name="codigo" placeholder="Codigo"/>
+<field name="name" placeholder="Meta"/>
+<field name="uom_id" placeholder="Unidad de medida"/>
+<field name="descripcion" placeholder="Descripcion"/>
+<field name="lineabase" placeholder="Linea base"/>
+<field name="fechalimite" placeholder="Fecha limite"/>
+<field name="frecuencia" />
+<field name="resmedios_id" placeholder="Responsable de los medios de verificacion" widget="many2many_tags">
+<tree editable="bottom"> 
+<field name="name"/>
+</tree>
+</field>
+<field name="tipo"/>
+</group>
+</sheet>
+<div class="oe_chatter">
+<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+<field name="message_ids" widget="mail_thread"/>
+</div>
+</form>
+</field>
+</record>-->
+
+
+<!--tree del indicador-->
+<record model="ir.ui.view" id="fiaes_indicador_tree">
+<field name="name">fiaes_indicador_tree</field>
+<field name="model">fiaes.indicador</field>
+<field name="arch" type="xml">
+<tree>
+<field name="codigo" placeholder="Codigo"/>
+<field name="name" placeholder="Indicador"/>
+<field name="uom_id" placeholder="Unidad de medida"/>
+<field name="descripcion" placeholder="Descripcion"/>
+<field name="tipo"/>
+</tree>
+</field>
+</record>
+
+
+<!--action del indicador-->
+    <record model="ir.actions.act_window" id="indicador_action">
+            <field name="name">Indicador</field>
+            <field name="res_model">fiaes.indicador</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Indicador
+                </p>
+            </field>
+        </record>
+
+<!--action del subindicador
+    <record model="ir.actions.act_window" id="subindicador_action">
+            <field name="name">Sub Indicador</field>
+            <field name="res_model">fiaes.subindicador</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Sub Indicador
+                </p>
+            </field>
+        </record>-->
+
+<!--menu del indicador-->
+   <menuitem 
+   id="fiaes_indicador_menu" 
+   parent="fiaes.pei"
+   name="Indicador"
+   action="indicador_action"
+   sequence="4"
+   /> 
+
+
+<!--form del validacion-->
+<record model="ir.ui.view" id="fiaes_validacion_form">
+<field name="name">fiaes_validacion_form</field>
+<field name="model">fiaes.validacion</field>
+<field name="arch" type="xml">
+<form string="Validacion">
+<header>
+  <field name="state" widget="statusbar"/>
+   </header>
+<sheet>
+<group>
+<field name="indicador_id" placeholder="Indicador"/>
+<field name="name" placeholder="Descripcion"/>
+<field name="fecha" placeholder="Fecha"/>
+<field name="resmedicion_id" placeholder="Responsable de la medicion" widget="many2many_tags">
+<tree editable="bottom"> 
+<field name="name"/>
+</tree>
+</field>
+<field name="cantidad" placeholder="Cantidad"/>
+<field name="resvalidacion_id" placeholder="Responsable de la validacion" widget="many2many_tags">
+<tree editable="bottom"> 
+<field name="name"/>
+</tree>
+</field>
+<field name="ubicacion" placeholder="Ubicacion"/>
+<field name="territorio" placeholder="Territorio"/>
+</group>
+<group>
+<field name="respaldo_lines" nolabel="1">
+ <tree create="true"> 
+<field name="code"/>
+<field name="name"/>
+<field name="Descrip"/>
+</tree>
+</field>
+</group>   
+</sheet>
+<div class="oe_chatter">
+<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+<field name="message_ids" widget="mail_thread"/>
+</div>
+</form>
+</field>
+</record>
+
+
+<!--tree del validacion-->
+<record model="ir.ui.view" id="fiaes_validacion_tree">
+<field name="name">fiaes_validacion_tree</field>
+<field name="model">fiaes.validacion</field>
+<field name="arch" type="xml">
+<tree>
+<field name="fecha" placeholder="Fecha"/>
+
+<field name="cantidad" placeholder="Cantidad"/>
+<field name="ubicacion" placeholder="Ubicacion"/>
+</tree>
+</field>
+</record>
+
+
+<!--action del validacion-->
+    <record model="ir.actions.act_window" id="validacion_action">
+            <field name="name">Validacion</field>
+            <field name="res_model">fiaes.validacion</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Validacion
+                </p>
+            </field>
+        </record>
+
+<!--menu del validacion
+   <menuitem 
+   id="fiaes_validacion_menu" 
+   parent="fiaes.pei"
+   name="Validacion"
+   action="validacion_action"
+   sequence="5"
+   /> -->
+
+
+
+
+
+<!--form del respaldo-->
+<record model="ir.ui.view" id="fiaes_respaldo_form">
+<field name="name">fiaes_respaldo_form</field>
+<field name="model">fiaes.respaldo</field>
+<field name="arch" type="xml">
+<form string="Respaldo">
+
+<sheet>
+<group>
+<field name="code" placeholder="Codigo"/>
+<field name="name" placeholder="Nombre"/>
+<field name="Descrip" placeholder="Descripcion del medio"/>
+
+</group>
+</sheet>
+</form>
+</field>
+</record>
+
+<!--action del respaldo-->
+    <record model="ir.actions.act_window" id="respaldo_action">
+            <field name="name">Respaldo</field>
+            <field name="res_model">fiaes.respaldo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Respaldo
+                </p>
+            </field>
+        </record>
+
+
+
+
+<!--form del INR-->
+<record model="ir.ui.view" id="fiaes_inr_form">
+<field name="name">fiaes_inr_form</field>
+<field name="model">fiaes.inr</field>
+<field name="arch" type="xml">
+<form string="INR">
+<sheet>
+<group>
+<field name="proyecto" readonly="1"/>
+<field name="unidad"  readonly="1"/>
+<field name="descripcion" placeholder="Decripcion"/>
+
+</group>
+<group>
+<field name="lines_id" nolabel="1">
+<tree editable="bottom" create="false"> 
+<field name="unidad" readonly="True"/>
+<field name="objetivopoa_id" readonly="True"/>
+<field name="actividad_id" readonly="True"/>
+    <field name="name"  readonly="True"/>
+    <field name="categoria" readonly="True"/>
+    <field name="preciouni" readonly="True"/>
+    <field name="cantidad" readonly="True"/>
+    <field name="total" readonly="True"/>
+    <field name="mes" readonly="True"/>
+    <field name="anio" readonly="True"/>
+    <field name="fuente"  groups="fiaes.autoriza_proyectos"/>
+    <field name="cuenta_id"  groups="fiaes.autoriza_proyectos"/>
+</tree>
+</field>
+</group>  
+</sheet>
+<div class="oe_chatter">
+<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+<field name="message_ids" widget="mail_thread"/>
+</div>
+</form>
+</field>
+</record>
+
+
+<!--tree del INR-->
+<record model="ir.ui.view" id="fiaes_inr_tree">
+<field name="name">fiaes_inr_tree</field>
+<field name="model">fiaes.inr</field>
+<field name="arch" type="xml">
+<tree>
+<field name="poa_id" />
+<field name="proyecto"/>
+<field name="unidad" />
+<field name="descripcion" placeholder="Decripcion"/>
+ </tree>
+</field>
+</record>
+
+
+<!--action del INR-->
+    <record model="ir.actions.act_window" id="inr_action">
+            <field name="name">INR</field>
+            <field name="res_model">fiaes.inr</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">INR
+                </p>
+            </field>
+        </record>
+
+<!--menu del INR-->
+   <menuitem 
+   id="fiaes_inr_menu" 
+   parent="fiaes.planificacion_tecnico"
+   name="INR"
+   action="inr_action"
+   sequence="30"
+   /> 
+
+   
+<!--form del NDC-->
+<record model="ir.ui.view" id="fiaes_dnc_form">
+<field name="name">fiaes_dnc_form</field>
+<field name="model">fiaes.dnc</field>
+<field name="arch" type="xml">
+<form string="DNC">
+<header>
+          <button name="aprobar" states="Borrador" string="Aprobar" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+          <button name="cancelar" states="Borrador" string="Cancelar" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+          <button name="regresar" states="Aprobado,Cancelado" string="Regresar a borrador" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+<sheet>
+
+<group>
+<field name="name" placeholder="Capacitacion solicitada"/>
+<field name="unidad" />
+<field name="planunidad_id" domain="[('unidad','=',unidad)]"/>
+<field name="objetivopoa_id"  domain="[('planunidad_id','=',planunidad_id)]"/>
+<field name="actividad_id" domain="[('objetivopoa_id','=',objetivopoa_id)]"/>
+<field name="proyecto" />
+<field name="dirigido" />
+<field name="objetivo" />
+<field name="fuente_id" />
+<field name="proveedor" placeholder="Proveedor"/>
+<field name="costo" placeholder="Costo"/>
+<field name="participante"/>
+<field name="mes" placeholder="Mes"/>
+</group>
+</sheet>
+<div class="oe_chatter">
+<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+<field name="message_ids" widget="mail_thread"/>
+</div>
+</form>
+</field>
+</record>
+
+
+<!--tree del NCD-->
+<record model="ir.ui.view" id="fiaes_dnc_tree">
+<field name="name">fiaes_dnc_tree</field>
+<field name="model">fiaes.dnc</field>
+<field name="arch" type="xml">
+<tree>
+<field name="name" placeholder="Capacitacion solicitada"/>
+<field name="objetivo" placeholder="Objetivo"/>
+<field name="proveedor" placeholder="Proveedor"/>
+<field name="costo" placeholder="Costo"/>
+<field name="participante" placeholder="Paticipantes"/>
+<field name="mes" placeholder="Mes"/>
+</tree>
+</field>
+</record>
+
+
+<!--action del NDC-->
+    <record model="ir.actions.act_window" id="dnc_action">
+            <field name="name">DNC</field>
+            <field name="res_model">fiaes.dnc</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">DNC
+                </p>
+            </field>
+        </record>
+
+<!--menu del NDC-->
+   <menuitem 
+   id="fiaes_dnc_menu" 
+   parent="fiaes.planificacion_tecnico"
+   name="DNC"
+   action="dnc_action"
+   sequence="40"
+   /> 
+
+<!--form del irnlines-->
+<record model="ir.ui.view" id="fiaes_inrlines_form">
+<field name="name">fiaes_inrlines_form</field>
+<field name="model">fiaes.inrline</field>
+<field name="arch" type="xml">
+<form string="INR">
+<sheet>
+<group>
+<field name="recurso" placeholder="Recurso"/>
+<field name="monto" placeholder="Monto"/>
+<field name="mes" placeholder="Mes"/>
+<field name="cuenta" placeholder="Cuenta" />
+</group>
+</sheet>
+</form>
+</field>
+</record>
+
+
+<!--action del inrline-->
+    <record model="ir.actions.act_window" id="inrline_action">
+            <field name="name">Inrline</field>
+            <field name="res_model">fiaes.inrline</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">INR
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

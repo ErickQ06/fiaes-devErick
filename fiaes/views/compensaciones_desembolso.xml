@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<record model="ir.ui.view" id="fiaes_desembolso_plan_form">
+    <field name="name">fiaes_desembolso_plan_form</field>
+    <field name="model">fiaes.compensacion.desembolso.plan</field>
+    <field name="arch" type="xml">
+        <form string="Plan">
+            <header>
+                <button name="callall"  string="Generar alertas"  type="object" class="oe_highlight"/>
+            </header>
+            <sheet>
+                <group>
+                    <field name="projecto_id" />
+                    <field name="monto" />
+                    <field name="state" invisible="1"/>
+                </group>
+                <notebook>
+                    <page string="Fases">
+                        <field name="fase_ids" context="{'default_projecto_id':active_id}">
+                            <tree >
+                                <field name="name" />
+                                <field name="plazo" />
+                                <field name="frecuencia" />
+                                <field name="fecha1" />
+                                <field name="monto" />
+                                <field name="monto1" />
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Desembolsos"  attrs="{'invisible':[('state', '!=', 'Aprobado')]}">
+                        <group>
+                            <group>
+                                <field name="anio" />
+                            </group>
+                            <group>
+                                <button name="convertir_cxc"  string="Crear CXC"  type="object" class="oe_highlight"/>
+                            </group>
+                        </group>
+                        <field name="desembolso_ids" readonly="1" context="{'default_projecto_id':active_id}">
+                            <tree >
+                                <field name="name" />
+                                <field name="fecha" />
+                                <field name="fechapago" />
+                                <field name="monto" />
+                                <field name="state" />
+                                <field name="fianza_monto" />
+                                <field name="fianza_plazo" />
+                                <field name="fianza_vencimiento" />
+                                <field name="invoice_id" />
+                                <field name="corto_move_id" />
+                                <field name="largo_move_id" />
+                            </tree>
+                        </field>
+                    </page>
+
+
+                </notebook>
+
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+
+ <record model="ir.ui.view" id="fiaes_desembolso_fase_form">
+    <field name="name">fiaes_desembolso_fase_form</field>
+    <field name="model">fiaes.compensacion.desembolso.fase</field>
+    <field name="arch" type="xml">
+        <form string="Plan">
+            <header>
+                <button name="calculofechas"  string="Generar pagos"  type="object" class="oe_highlight"/>
+            </header>
+            <sheet>
+            <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                </div>
+                <group>
+                    <field name="plan_id" readonly="1"/>
+                    <field name="plazo" />
+                    <field name="frecuencia" />
+                    <field name="fecha1" />
+                    <field name="monto" />
+                    <field name="monto1" />
+                </group>
+                <field name="desembolso_ids">
+                    <tree nocreate="1" editable="bottom">
+                        <field name="name" />
+                        <field name="fecha" />
+                        <field name="fechapago" />
+                        <field name="monto" />
+                        <field name="state" />
+                        <field name="fianza_monto" />
+                        <field name="fianza_plazo" />
+                        <field name="fianza_vencimiento" />
+                        <!--button name="create_corto"  string="corto plazo"  type="object" class="oe_highlight"/-->
+                    </tree>
+                </field>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+
+<!--tree del -->
+ <record model="ir.ui.view" id="fiaes_proyectodesembolso_tree">
+    <field name="name">fiaes_proyectodesembolso_tree</field>
+    <field name="model">fiaes.compensacion.desembolso.plan</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="projecto_id" />
+            <field name="monto" /> 
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del -->
+    <record model="ir.actions.act_window" id="fiaes_proyectodesembolso_action">
+            <field name="name">Proyecto desembolso</field>
+            <field name="res_model">fiaes.compensacion.desembolso.plan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Proyecto desembolso
+                </p>
+            </field>
+        </record>
+
+<!--menu del -->
+   <menuitem 
+   id="fiaes_proyecto_desembolso" 
+   parent="fiaes.compensacion_compensacion"
+   name="Plan desembolso"
+   action="fiaes_proyectodesembolso_action"
+   sequence="40"
+   /> 
+
+
+
+
+
+<!-- CONVERSION DE PAGOS -->
+<record model="ir.ui.view" id="fiaes_compensacion_conversion_form">
+    <field name="name">fiaes_compensacion_conversion_form</field>
+    <field name="model">fiaes.compensacion.conversion</field>
+    <field name="arch" type="xml">
+        <form string="Conversion de pagos">
+            <header>
+                <button name="calcular_cxc"  string="Calcular CXC" states="Borrador" type="object" class="oe_highlight"/>
+                <button name="convertir_cxc"  string="Convertir CXC"  states="Calculado"  type="object" class="oe_highlight"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+            <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                </div>
+                <group>
+                    <field name="anio" />
+                    <field name="monto_total"/>
+                </group>
+                <notebook>
+                    <page string="Desembolsos">
+                        <field name="desembolso_ids"  >
+                            <tree >
+                                <field name="name" />
+                                <field name="fecha" />
+                                <field name="fechapago" />
+                                <field name="monto" />
+                                <field name="state" />
+                                <field name="invoice_id" />
+                                <field name="corto_move_id" />
+                                <field name="largo_move_id" />
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+
+
+
+<!--tree del -->
+ <record model="ir.ui.view" id="fiaes_conversion_tree">
+    <field name="name">fiaes_conversion_tree</field>
+    <field name="model">fiaes.compensacion.conversion</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" />
+            <field name="anio" />
+            <field name="monto_total" /> 
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del -->
+    <record model="ir.actions.act_window" id="fiaes_conversion_action">
+            <field name="name">Reclasificacion de CXC</field>
+            <field name="res_model">fiaes.compensacion.conversion</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Reclasificacion de CXC
+                </p>
+            </field>
+        </record>
+
+<!--menu del -->
+   <menuitem 
+   id="fiaes_compensacion_conversion" 
+   parent="fiaes.compensacion_compensacion"
+   name="Reclasificacion de CXC"
+   action="fiaes_conversion_action"
+   sequence="60"
+   /> 
+
+
+
+
+
+
+<!-- CONVERSION DE porcentajes -->
+<record model="ir.ui.view" id="fiaes_compensacion_porcentaje_form">
+    <field name="name">fiaes_compensacion_porcentaje_form</field>
+    <field name="model">fiaes.compensacion.calculo</field>
+    <field name="arch" type="xml">
+        <form string="Ajuste de Porcentajes de gastos">
+            <header>
+                <button name="calcular"  string="Determinar proyectos" states="Borrador" type="object" class="oe_highlight"/>
+                <button name="calcular_packs"  string="Calcular packs " states="Selecionados" type="object" class="oe_highlight"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+            <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                </div>
+                <group>
+                    <field name="anio" />
+                    <group string="Gastos administrativos">
+                        <field name="total_poa_administrativo"/>
+                        <field name="total_administrativo"/>
+                    </group>
+                    <group string="Gastos operativos">
+                        <field name="total_poa_operativo"/>
+                        <field name="total_operativo"/>
+                    </group>
+                    
+                </group>
+                <notebook>
+                    <page string="Desembolsos">
+                        <field name="desembolso_ids" >
+                            <tree  editable="bottom">
+                                <field name="titular_id" readonly="1"/>
+                                <field name="projecto_id"  readonly="1"/>
+                                <field name="total_disponible_sg"  readonly="1"/>
+                                <field name="total_disponible_cg"  readonly="1"/>
+                                <field name="total_proyectado"  readonly="1"/>
+                                <field name="porcentaje_administrativo" attrs="{'readonly':[('total_disponible_cg', '=', 0),('total_proyectado', '=', 0)]}"/>
+                                <field name="porcentaje_operativo"  attrs="{'readonly':[('total_disponible_cg', '=', 0),('total_proyectado', '=', 0)]}"/>
+                                <field name="total_administrativo" />
+                                <field name="total_operativo" />
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Paquetes">
+                        <field name="pack_ids" >
+                            <tree  editable="bottom">
+                                <field name="titular_id" readonly="1"/>
+                                <field name="projecto_id"  readonly="1"/>
+                                <field name="name"  readonly="1"/>
+                                <field name="monto"  readonly="1"/>
+                                <field name="monto_ejecutora"  readonly="1"/>
+                                <field name="monto_administrativo"  readonly="1"/>
+                                <field name="monto_operativo"  readonly="1"/>
+                                <field name="fecha_disponibilidad"  readonly="1"/>
+                                <field name="disponible_ejecutora"  readonly="1"/>
+                                <field name="disponible_administrativo"  readonly="1"/>
+                                <field name="disponible_operativo"  readonly="1"/>
+                            </tree>
+                            <form>
+                                <sheet>
+                                    <group>
+                                        <field name="titular_id" readonly="1"/>
+                                        <field name="projecto_id"  readonly="1"/>
+                                        <field name="name"  readonly="1"/>
+                                        <field name="monto"  readonly="1"/>
+                                        <field name="monto_ejecutora"  readonly="1"/>
+                                        <field name="monto_administrativo"  readonly="1"/>
+                                        <field name="monto_operativo"  readonly="1"/>
+                                        <field name="fecha_disponibilidad"  readonly="1"/>
+                                        <field name="disponible_ejecutora"  readonly="1"/>
+                                        <field name="disponible_administrativo"  readonly="1"/>
+                                        <field name="disponible_operativo"  readonly="1"/>
+                                    </group>
+                                    <group string="Programación por Proyecto">
+                                        <field name="line_ids" colspan="2" nolabel="1">
+                                            <tree readonly="1">
+                                                <field name="name" /> 
+                                                <field name="titular_id" /> 
+                                                <field name="projecto_compensacion_id" />
+                                                <field name="projecto_ejecutora_id" />
+                                                <field name="fecha_disponibilidad" />
+                                                <field name="monto_ejecutora" />
+                                                <field name="monto_administrativo" />
+                                                <field name="monto_operativo" />
+                                            </tree>
+                                        </field>
+                                    </group>
+                                    <group string="Programación por desembolso">
+                                        <field name="subline_ids" colspan="2" nolabel="1">
+                                            <tree readonly="1">
+                                                <field name="name" /> 
+                                                <field name="titular_id" /> 
+                                                <field name="projecto_compensacion_id" />
+                                                <field name="projecto_ejecutora_id" />
+                                                <field name="fecha_desembolso" />
+                                                <field name="monto_ejecutora" />
+                                                <field name="monto_administrativo" />
+                                                <field name="monto_operativo" />
+                                            </tree>
+                                        </field>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+
+
+
+<!--tree del -->
+ <record model="ir.ui.view" id="fiaes_porcentaje_tree">
+    <field name="name">fiaes_porcentaje_tree</field>
+    <field name="model">fiaes.compensacion.calculo</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" />
+            <field name="anio" />
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del -->
+    <record model="ir.actions.act_window" id="fiaes_porcentaje_action">
+            <field name="name">Reclasificacion Gastos</field>
+            <field name="res_model">fiaes.compensacion.calculo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Reclasificacion de Gastos
+                </p>
+            </field>
+        </record>
+
+<!--menu del -->
+   <menuitem 
+   id="fiaes_compensacion_porcentaje" 
+   parent="fiaes.compensacion_compensacion"
+   name="Reclasificacion de Gastos"
+   action="fiaes_porcentaje_action"
+   sequence="70"
+   /> 
+
+
+
+
+
+
+<!-- TRANSFERENCIA DE GASTOS ADMINISTRATIVOS -->
+<record model="ir.ui.view" id="fiaes_compensacion_transferencia_form">
+    <field name="name">fiaes_compensacion_transferencia_form</field>
+    <field name="model">fiaes.compensacion.transferencia</field>
+    <field name="arch" type="xml">
+        <form string="Transferencia de gastos administrativos/operativos">
+            <header>
+                <button name="calcular"  string="Calcular" states="Borrador" type="object" class="oe_highlight"/>
+                <button name="aplicar"  string="Aplicar" states="Borrador" type="object" class="oe_highlight"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+                <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                </div>
+                <group>
+                    <field name="tipo_gasto" />
+                    <field name="anio" />
+                    <field name="monto" />
+                    <field name="monto_financiado" />
+                    <field name="fecha" />
+                    <field name="move_id" />
+                </group>
+                <group>
+                    <field name="administrativo_desembolso_ids" nolabel="1" colspan="2" attrs="{'invisible':[('tipo_gasto', '!=', 'Administrativo')]}" >
+                            <tree  >
+                                <field name="name" readonly="1"/>
+                                <field name="titular_id" readonly="1"/>
+                                <field name="projecto_compensacion_id"  readonly="1"/>
+                                <field name="projecto_ejecutora_id"  readonly="1"/>
+                                <field name="fecha_desembolso" />
+                                <field name="monto_administrativo" total="monto_administrativo"/>
+                            </tree>
+                        </field>
+                        <field name="operativo_desembolso_ids" nolabel="1" colspan="2" attrs="{'invisible':[('tipo_gasto', '!=', 'Operativo')]}" >
+                            <tree  >
+                                <field name="name" readonly="1"/>
+                                <field name="titular_id" readonly="1"/>
+                                <field name="projecto_compensacion_id"  readonly="1"/>
+                                <field name="projecto_ejecutora_id"  readonly="1"/>
+                                <field name="fecha_desembolso"/>
+                                <field name="monto_operativo" total="monto_operativo"/>
+                            </tree>
+                        </field>
+                </group>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+
+
+
+<!--tree del -->
+ <record model="ir.ui.view" id="fiaes_transferencia_tree">
+    <field name="name">fiaes_transferencia_tree</field>
+    <field name="model">fiaes.compensacion.transferencia</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" />
+            <field name="tipo_gasto" />
+            <field name="anio" />
+            <field name="monto" />
+            <field name="monto_financiado" />
+            <field name="fecha" readonly="1"/>
+            <field name="move_id" readonly="1"/>
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del -->
+    <record model="ir.actions.act_window" id="fiaes_transferencia_action">
+            <field name="name">Transferencia Gastos Administrativos</field>
+            <field name="res_model">fiaes.compensacion.transferencia</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Transferencia de Gastos Administrativos
+                </p>
+            </field>
+        </record>
+
+<!--menu del -->
+   <menuitem 
+   id="fiaes_compensacion_transferencia" 
+   parent="fiaes.compensacion_compensacion"
+   name="Transferencia de Gastos Administrativos"
+   action="fiaes_transferencia_action"
+   sequence="100"
+   /> 
+
+
+
+
+
+
+
+
+    </data>
+</odoo>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <report
+    id="report_convenio"
+    model="fiaes.compensacion.proceso"
+    string="convenio"
+    report_type="qweb-pdf"
+    name="fiaes.report_template_convenio" 
+    file="fiaes.report_template_convenio" 
+/>
+
+ <template id ="report_template_convenio" >
+   <t t-call= "web.basic_layout">
+    <t t-foreach="docs" t-as="doc">
+        <t t-call="fiaes.report_template_convenio_document" t-lang="lang"/>
+ 
+     </t>
+     </t>
+    
+  </template>
+
+     </data>
+</odoo>
+
+

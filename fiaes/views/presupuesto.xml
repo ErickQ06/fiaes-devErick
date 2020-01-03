@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+<!--<menuitem id="menu_sub" name="Menu"
+                  parent="main_menu"/>-->
+
+<!--form del pei-->
+<record model="ir.ui.view" id="fiaes_presupuesto_form">
+    <field name="name">fiaes_presupuesto_form</field>
+    <field name="model">fiaes.presupuesto</field>
+    <field name="arch" type="xml">
+        <form string="Presupuesto">
+            <header>
+                <button name="calcular" states="Borrador" string="Calcular" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+                <button name="calcular_planilla" states="Borrador" string="Calcular planilla" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+                <button name="aprobar" states="Borrador" string="Aprobar" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+                <button name="cancelar" states="Aprobado" string="Cancelar" groups="fiaes.autoriza_proyectos" type="object" class="oe_highlight"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+                <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name" required="1"/>
+                    </h1>
+                </div> 
+                <group>
+                    <field name="anio" />
+                    <field name="comentario" placeholder="Fecha"/>
+                    <field name="planilla_plan" />
+                </group>
+                <h2><label for="line_ids" string="Detalles" /></h2>
+                <field name="line_ids" readonly="1" context="{'default_presupuesto_id':active_id}">
+                    <tree>
+                        <field name="planunidad_id" />
+                        <field name="proyecto_id" />
+                        <field name="fuente_id" />
+                        <field name="actividad_id" />
+                        <field name="account_id" />
+                        <field name="mes" />
+                        <field name="monto_presupuestado" />
+                        <field name="monto_ejecutado" />
+                    </tree>
+                </field>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+ </record>
+
+
+<!--tree del pei-->
+ <record model="ir.ui.view" id="fiaes_presupuesto_tree">
+    <field name="name">fiaes_presupuesto_tree</field>
+    <field name="model">fiaes.presupuesto</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" />
+            <field name="anio" />
+            <field name="state"/> 
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del pei-->
+    <record model="ir.actions.act_window" id="fiaes_presupuesto_action">
+            <field name="name">Presupuesto</field>
+            <field name="res_model">fiaes.presupuesto</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Presupuesto
+                </p>
+            </field>
+        </record>
+
+<!--menu del pei-->
+   <menuitem 
+   id="fiaes_menu_presupuesto_plan" 
+   parent="fiaes.presupuesto"
+   name="Presupuestos Calculados"
+   action="fiaes_presupuesto_action"
+   sequence="1"
+   /> 
+
+
+
+
+
+<record model="ir.ui.view" id="purchase_fiaes_form">
+<field name="name">purchase_fiaes_form</field>
+<field name="model">purchase.order</field>
+<field name="inherit_id" ref="purchase.purchase_order_form" />
+<field name="arch" type="xml">
+  <xpath expr="//field[@name='product_id']" position="after">
+      <field name="actividad_id" />
+      <field name="insumo_id" domain="[('actividad_id','=',actividad_id),('ejecutado','=',False)]" />
+    </xpath>
+    
+ </field>
+ </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  TABLAS DE PRORRATEO -->
+<record model="ir.ui.view" id="fiaes_prorrateo_form">
+    <field name="name">fiaes_prorrateo_form</field>
+    <field name="model">fiaes.prorrateo</field>
+    <field name="arch" type="xml">
+        <form string="Prorrateo">
+            <header>
+            
+            </header>
+            <sheet>
+                <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name" required="1"/>
+                    </h1>
+                </div> 
+                <group>
+                    <field name="comentario" placeholder="Fecha"/>
+                </group>
+                <h2><label for="line_ids" string="Detalles" /></h2>
+                <field name="line_ids" context="{'default_prorrateo_id':active_id}">
+                    <tree editable="bottom">
+                        <field name="fuente_id" />
+                        <field name="proyecto_id" />
+                        <field name="porcentaje" />
+                    </tree>
+                </field>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+
+<!--tree del pei-->
+ <record model="ir.ui.view" id="fiaes_prorrateo_tree">
+    <field name="name">fiaes_prorrateo_tree</field>
+    <field name="model">fiaes.prorrateo</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" />
+            <field name="comentario" />
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del pei-->
+    <record model="ir.actions.act_window" id="fiaes_prorrateo_action">
+            <field name="name">Prorrateo</field>
+            <field name="res_model">fiaes.prorrateo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Tabla de prorrateo
+                </p>
+            </field>
+        </record>
+
+<!--menu del pei-->
+   <menuitem 
+   id="fiaes_menu_prorrateo" 
+   parent="fiaes.configuracion"
+   name="Tabla de prorrateo"
+   action="fiaes_prorrateo_action"
+   sequence="10"
+   /> 
+
+
+
+
+
+
+<!--  TABLAS DE PRORRATEO perfil-->
+<record model="ir.ui.view" id="fiaes_prorrateo_perfil_form">
+    <field name="name">fiaes_prorrateo_perfil_form</field>
+    <field name="model">fiaes.prorrateo.perfil</field>
+    <field name="arch" type="xml">
+        <form string="Perfil Prorrateo">
+            <header>
+            
+            </header>
+            <sheet>
+                <div class="oe_title oe_inline">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name" required="1"/>
+                    </h1>
+                </div> 
+                <group>
+                    <field name="comentario" placeholder="Fecha"/>
+                </group>
+                <h2><label for="line_ids" string="Detalles" /></h2>
+                <field name="line_ids" context="{'default_perfil_id':active_id}">
+                    <tree editable="bottom">
+                        <field name="tipo_id" />
+                        <field name="prorrateo_id" />
+                        <field name="cuenta_id" />
+                    </tree>
+                </field>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+
+<!--tree del pei-->
+ <record model="ir.ui.view" id="fiaes_prorrateo_perfil_tree">
+    <field name="name">fiaes_prorrateo_perfil_tree</field>
+    <field name="model">fiaes.prorrateo.perfil</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" />
+            <field name="comentario" />
+        </tree>
+    </field>
+ </record>
+
+
+<!--action del pei-->
+    <record model="ir.actions.act_window" id="fiaes_prorrateo_perfil_action">
+            <field name="name">Perfil Prorrateo</field>
+            <field name="res_model">fiaes.prorrateo.perfil</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Perfil de prorrateo
+                </p>
+            </field>
+        </record>
+
+<!--menu del pei-->
+   <menuitem 
+   id="fiaes_menu_prorrateo_perfil" 
+   parent="fiaes.configuracion"
+   name="Perfil de prorrateo"
+   action="fiaes_prorrateo_perfil_action"
+   sequence="11"
+   /> 
+
+
+
+
+    </data>
+</odoo>
