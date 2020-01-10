@@ -218,3 +218,5 @@ fiaes_asignacion_disponible,fiaes_asignacion_disponible,model_fiaes_asignacion_d
 
 fiaes_access_reporteavancesk,fiaes_access_reporteavancesk,model_fiaes_reporte_avance,base.group_user,1,1,1,1
 fiaes_access_reporteresultadok,fiaes_access_reporteresultadok,model_fiaes_reporte_actividad,base.group_user,1,1,1,1
+fiaes_access_reporteobjetivos,fiaes_access_reporteobjetivos,model_fiaes_reporte_objetivos,base.group_user,1,1,1,1
+fiaes_access_reintegro,fiaes_access_reintegro,model_fiaes_reintegro,base.group_user,1,1,1,1

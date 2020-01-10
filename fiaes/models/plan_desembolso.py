@@ -353,7 +353,10 @@ class compensacion_porcentajes(models.Model):
     total_operativo=fields.Float("Total administrativo",compute='sumar')
     desembolso_ids=fields.One2many('fiaes.compensacion.calculo.porcentaje','calculo_id',string='Desembolsos')
     pack_ids=fields.One2many('fiaes.compensacion.calculo.pack','calculo_id',string='Paquetes')
-    
+    porcentaje_gral_adtvo = fields.Float("% general administrativo")
+    porcentaje_gral_op = fields.Float("% general operativo")
+
+
     @api.multi
     def calcular_packs(self):
         for r in self:
@@ -397,7 +400,24 @@ class compensacion_porcentajes(models.Model):
                         dic['fecha_disponibilidad']=d.fecha
                         dic['calculo_id']=r.id
                         self.env['fiaes.compensacion.calculo.pack'].create(dic)
+
+
+    @api.multi
+    def calcular_admin_general(self):
+        gastos = 0.0
+        for r in self:
+            for p in r.desembolso_ids:
+                p.porcentaje_administrativo=r.porcentaje_gral_adtvo
+                
+    @api.multi
+    def calcular_op_general(self): 
+        for r in self:
+            for p in r.desembolso_ids:
+                p.porcentaje_operativo = r.porcentaje_gral_op
     
+
+
+
     
     @api.one
     @api.depends('desembolso_ids')
@@ -463,13 +483,25 @@ class compoensacion_porcentajes(models.Model):
     total_administrativo=fields.Float("Gastos administrativo",compute='compute_total')
     total_operativo=fields.Float("Gastos operativos",compute='compute_total')
     calculo_id=fields.Many2one(comodel_name='fiaes.compensacion.calculo',string="Conversion",ondelete='cascade')
-    
+
+
+###################################################################################################
+
+    @api.one
+
+
     @api.one
     @api.depends('total_disponible_sg','total_proyectado','porcentaje_administrativo','porcentaje_operativo')
     def compute_total(self):
         for r in self:
             r.total_administrativo=(r.total_disponible_sg+r.total_proyectado)*(r.porcentaje_administrativo)/100
             r.total_operativo=(r.total_disponible_sg+r.total_proyectado)*(r.porcentaje_operativo)/100
+
+
+####################################################################################################
+
+
+
 
 
 class fiaesmoneypack(models.Model):

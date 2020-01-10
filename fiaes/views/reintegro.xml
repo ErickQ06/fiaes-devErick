@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="fiaes_reintegro_form">
+            <field name="name">fiaes_reintegro_</field>
+            <field name="model">fiaes.reintegro</field>
+            <field name="arch" type="xml">
+                <form name="Reintegros">
+                    <header>
+                        <button name="aplicar"  string="Aplicar" states="Borrador" type="object" class="oe_highlight"/>
+                        <button name="iniciar_reintegro"  string="Reintegro" states="Aplicado" type="object" class="oe_highlight"/>
+                        <button name="revertir"  string="Reintegrar" states="Reintegro" type="object" class="oe_highlight"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="projecto_id" placeholder="Proyecto" />
+                            <field name="monto" placeholder="monto de reintegro" />
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <!-- Action de los reintegros-->
+        <record model="ir.actions.act_window" id="reintegro_action">
+            <field name="name">Reintegro</field>
+            <field name="res_model">fiaes.reintegro</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p claa="oe_view_nocontent_create">
+                    Reintegros de proyectos
+                </p>
+            </field>
+        </record>
+        <!-- Menu de los reintegros -->
+        <menuitem
+        id="fiaes_reintegros"
+        parent="fiaes.compensacion"
+        name="Asignacion de reintegros"
+        action="reintegro_action"
+        sequence="90"
+        />
+    </data>
+</odoo>

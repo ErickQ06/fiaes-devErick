@@ -119,9 +119,10 @@
                         <field name="ingresos_compensaciones" context="{'default_poa_id':active_id}">
                             <tree  editable="bottom">
                               <field name="mes" />
-                              <field name="firmado" sum="Total compensaciones firmadas" readonly="1" />
-                              <field name="nuevas"  sum="Total nuevas"/>
                               <field name="firmadocalculado"  sum="Total" readonly="1"/>
+                              <!--<field name="firmado" sum="Total compensaciones firmadas" readonly="1" />-->
+                              <field name="nuevas"  sum="Total nuevas"/>
+                              
                               <field name="total"  sum="Total"/>
                             </tree>
                         </field>

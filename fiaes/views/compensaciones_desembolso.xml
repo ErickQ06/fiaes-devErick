@@ -257,12 +257,19 @@
                     <group string="Gastos administrativos">
                         <field name="total_poa_administrativo"/>
                         <field name="total_administrativo"/>
+                    </group>                    
+                    <group string="Porcentaje de gastos generales">
+                        <field name="porcentaje_gral_adtvo" />
+                        <button name="calcular_admin_general" string="Aplicar" type="object" class="btn btn-warning"/>
+                        <field name="porcentaje_gral_op" />
+                        <button name="calcular_op_general" string="Aplicar" type="object" class="btn btn-warning"/>
                     </group>
+                    
                     <group string="Gastos operativos">
                         <field name="total_poa_operativo"/>
                         <field name="total_operativo"/>
                     </group>
-                    
+
                 </group>
                 <notebook>
                     <page string="Desembolsos">

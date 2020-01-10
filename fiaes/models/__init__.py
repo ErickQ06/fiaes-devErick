@@ -24,3 +24,4 @@ from . import contrato
 from . import asignacion
 from . import reasignacion
 from . import report_avance
+from . import reintegro

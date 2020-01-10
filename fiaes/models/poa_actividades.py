@@ -33,8 +33,11 @@ class Actividadpoa(models.Model):
     fecha_inicial=fields.Date("Fecha de inicio")
     fecha_final=fields.Date("Fecha de finalizacion")
     ejecutado=fields.Float("Monto ejecutado",compute="calcular_ejecutado",store=False)
+    report_line=fields.One2many(comodel_name='fiaes.reporte.actividad', inverse_name='name_actividad')
     peso = fields.Float("Peso de la actividad")
     porcentaje = fields.Float(string="Porcentaje avance")
+    porcentajeAvance = fields.Float(string="Porcentaje de avance",  related = 'reporte.porcentaje', store=False)
+    reporte = fields.Many2one(comodel_name='fiaes.reporte.actividad')
 
     @api.one
     @api.depends('unidad','unidad_planilla')

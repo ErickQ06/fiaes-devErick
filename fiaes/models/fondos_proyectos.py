@@ -51,6 +51,8 @@ class fondosproyectofiaes(models.Model):
                 financiado=financiado+p.monto_ejecutora
             r.total_financiar=financiar
             r.total_financiado=financiado
+            # cuales proyectos tienen esta afectacion
+            #agregar boton para gastos admin y op
     
     @api.multi
     def calcular_disponible(self):

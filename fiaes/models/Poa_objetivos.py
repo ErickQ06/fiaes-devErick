@@ -23,7 +23,10 @@ class Objetivopoa(models.Model):
                                     ,('Aprobado', 'Aprobado')
                                     ,('Cancelado', 'Cancelado')]
                                     , string='Estado',required=True,default='Borrador',related='planunidad_id.state',track_visibility=True)
-    
+    pesoTotal = fields.Float(string="Peso", compute="peso_total" )
+    porcentajeTotal = fields.Float(string="porcentaje", compute="porcentaje_total" )
+    objetivo_line = fields.One2many(comodel_name='fiaes.reporte.actividad', inverse_name='objetivopoa_id')
+
     @api.one
     @api.depends('actividad_line')
     def cant_total(self):
@@ -32,6 +35,23 @@ class Objetivopoa(models.Model):
             for a in r.actividad_line:
                 total=total+a.total
             r.total=total
+
+    @api.one
+    @api.depends('actividad_line')
+    def peso_total(self):
+        pesoObjetivo = 0.0
+        for r in self:
+            for p in r.actividad_line:
+                pesoObjetivo = pesoObjetivo + p.peso
+            r.pesoTotal = pesoObjetivo
+
+    @api.one
+    def porcentaje_total(self):
+        porcentajeAvanceT = 0.0
+        for r in self:
+            for l in r.actividad_line:
+                porcentajeAvanceT = porcentajeAvanceT + l.porcentajeAvance
+            r.porcentajeTotal = porcentajeAvanceT
     
 
 class Objetivopoa_indicador(models.Model):

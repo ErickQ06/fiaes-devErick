@@ -108,9 +108,9 @@
                             <t t-set="totalPeso" t-value="float(0.00)"/>
                             <t t-set="progreso" t-value="float(0.00)"/>
                             <t t-set="objetivo" t-value="null"/>
-                            <t t-set="totalPesoObj" t-value="float(0.00)"/>
-                            <t t-set="totalPesoObjPro" t-value="float(0.00)"/>
-                            <t t-set="porcentajeObj" t-value="float(0.00)"/>
+                            <t t-set="pesoObjetivos" t-value="float(0.00)"/>
+                            <t t-set="porcentaje" t-value="float(0.00)"/>
+                            <t t-set="proporcion" t-value="float(0.00)"/>
                             <!-- fin de las declaraciones -->
 
                             <h1 style="text-align: center;">
@@ -137,8 +137,9 @@
                                         <td class="center-middle-o">Peso del progreso</td>
                                     </tr>
                                     <t t-foreach="o.actividad_ids" t-as="a">
+                                    
 
-                                        <!-- calculos de totales-->
+                                        <!-- calculos de totales pesos de actividades-->
                                         <t t-set="calculo" t-value="calculo + ((a.porcentaje/(100.00))*(a.peso))"/>
                                         <t t-set="calculoInd" t-value=" ((a.porcentaje/(100.00))*(a.peso))"/>
                                         <t t-set="totalPeso" t-value="totalPeso + a.peso"/>
@@ -157,9 +158,10 @@
                                     </tr>
 
 
+                                    
                                     </t>
                                 </table>
-                                <!--<br></br>
+                                <br></br>
                                 <br></br>
 
                                <div style="width:100%;border-bottom:thin solid black">
@@ -173,17 +175,27 @@
                                         <td class="center-middle-o">Objetivo</td>
                                         <td class="center-middle-o">Peso total del objetivo</td>
                                         <td class="center-middle-o">Peso del progreso</td>
-                                        <td class="center-middle-o">Porcentaje de progreso (%)</td>
+                                        <td class="center-middle-o">Porcentaje de avance (%)</td>
                                     </tr>
-                                    <t t-foreach="o.actividad_ids" t-as="b">
+                                    <t t-foreach="o.objetivos_ids" t-as="b">
+                                        <!-- calculos de pesos segun objetivos -->
+
+                                        <t t-set="pesoObjetivos" t-value="b.name_objetivo.pesoTotal"/>
+                                        <t t-set="porcentaje" t-value="b.porcentajeTotal"/>
+                                        <t t-set="proporcion" t-value="(porcentaje)/(pesoObjetivos)"/>
+
+
+
                                     <tr class="text-align:right;vertical-align:middle;height: auto;width: 100%;padding: 0px;border-collapse:collapse;">
-                                        <td class="center-middle-o"><span t-esc="b.objetivopoa_id.name"/> </td>
-                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(totalPeso)"/></td>
-                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(calculo)"/></td>
-                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(progreso)"/></td>
+                                        <td class="center-middle-o"><span t-esc="b.name_objetivo.name"/> </td>
+                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(pesoObjetivos)"/></td>
+                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(porcentaje)"/></td>
+                                        <td class="center-middle-o"><span t-esc="'{0:.2f}'.format(proporcion*100.00)"/></td>
                                     </tr>
                                     </t>
-                                </table> -->
+                                </table>
+                                <br></br>
+                                <br></br>
                                <div style="width:100%;border-bottom:thin solid black">
                                     <h3 style="text-align: left;">Resumen de operaciones por plan de unidad</h3>
                                 </div>  

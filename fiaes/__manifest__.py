@@ -39,6 +39,7 @@
         ,'views/report_presupuesto.xml'
         ,'views/report_avance.xml'
         ,'views/fiaes_avance_report.xml'
+        ,'views/reintegro.xml'
         ,'security/ir.model.access.csv'
         
     ],
