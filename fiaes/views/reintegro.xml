@@ -7,15 +7,29 @@
             <field name="arch" type="xml">
                 <form name="Reintegros">
                     <header>
-                        <button name="aplicar"  string="Aplicar" states="Borrador" type="object" class="oe_highlight"/>
-                        <button name="iniciar_reintegro"  string="Reintegro" states="Aplicado" type="object" class="oe_highlight"/>
-                        <button name="revertir"  string="Reintegrar" states="Reintegro" type="object" class="oe_highlight"/>
-                        <field name="state" widget="statusbar"/>
+                        <button name="generar_items"  string="Generar" states="Borrador" type="object" class="btn btn-warning"/>
+                        <button name="iniciar_reintegro"  string="Reintegrar" states="Borrador" type="object" class="oe_highlight"/>
+                        
+                        <button name="revertir"  string="Revertir" states="Reintegro" type="object" class="oe_highlight"/>
+                        <field name="state" widget="statusbar"/> 
                     </header>
                     <sheet>
                         <group>
-                            <field name="projecto_id" placeholder="Proyecto" />
+                            <field name="proyect_id" placeholder="Proyecto" />
                             <field name="monto" placeholder="monto de reintegro" />
+                            <field name="fecha" placeholder="Ingrese una fecha"/>
+                        </group>
+                        <group string="Desembolsos a aplicar">
+                             <field name="hijo_ids" colspan="2" nolabel="1"  attrs="{'readonly':[('state', 'in', ('Aplicado','Reintegrado'))]}">
+                                <tree editable="bottom">
+                                    <field name="name" readonly="1"/>
+                                    <field name="proyect_id" readonly="1"/> 
+                                    <field name="fecha_aplicacion" readonly="1"/> 
+                                    <field name="total_financiado" readonly="1" />
+                                    <field name="monto_reintegro" readonly="1"/>
+                                    <!--<field name="monto_reintegrado" attrs="{'invisible':[('state_desembolso', 'in', ('Borrador','Aplicado'))]}"/> -->
+                                </tree>
+                            </field>
                         </group>
                     </sheet>
                     <div class="oe_chatter">

@@ -629,7 +629,7 @@ class fiaesmoneypack_proyecto_desembolso(models.Model):
     fecha_desembolso=fields.Date("Fecha",related='desembolso_id.fechafiaes',store=True)
     operativo_transferencia_id=fields.Many2one(comodel_name='fiaes.compensacion.transferencia', string='Transferencia gastos operativo')
     administrativo_transferencia_id=fields.Many2one(comodel_name='fiaes.compensacion.transferencia', string='Transferencia gastos administrativo')
-    
+
     @api.constrains('monto_ejecutora','monto_reintegrado')
     def check_montos(self):
         for r in self:

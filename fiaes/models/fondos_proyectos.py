@@ -149,8 +149,9 @@ class fondosdesmbolsosfiaes(models.Model):
                                         ,('Convocatoria', 'Convocatoria')]
                                         , string='Tipo de Activo',default='Especial',related='proyect_id.tipoproyecto')
     total_reintegrado=fields.Float("Monto reintegrado",compute='calcular_financiado')
-    
-    
+    reintegro_id = fields.One2many(comodel_name='fiaes.reintegro', inverse_name='pack_desembolso_id')
+
+
     @api.one
     @api.depends('pack_includes_ids')
     def calcular_financiado(self):
@@ -293,7 +294,8 @@ class fondo_disponible(models.Model):
     disponible_administrativo=fields.Float("Monto disponible de gastos administrativo",related="pack_id.disponible_administrativo",store=True)
     disponible_operativo=fields.Float("Monto disponible de gastos operativos",related="pack_id.disponible_operativo",store=True)
     disponible_ejecutora=fields.Float("Monto disponible de inversion",related="pack_id.disponible_ejecutora",store=True)
-    
+    reintegro_id=fields.Many2one(comodel_name='fiaes.reintegro')
+
     @api.one
     def addionar_pack(self):
         for r in self:
