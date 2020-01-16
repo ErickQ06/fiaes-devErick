@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="fiaes_reporte_insumos_desha">
+            <field name="name">fiaes_reporte_insumos_view_</field>
+            <field name="model">fiaes.reporte.insumos</field>
+            <field name="arch" type="xml">
+                <form name="Reporte de insumos">
+                    <header>
+                        <button name="generar_items"  string="Generar" type="object" class="btn btn-warning"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="planunidad_id" placeholder="Plan de unidad"/>
+                            <field name="fecha" placeholder="Fecha"/>
+                        </group>
+                        <group string="Insumos">  
+                            <field name="hijo_id" >
+                                <tree editable="bottom">
+                                    <field name="name" readonly="1"/>
+                                    <field name="categoria" readonly="1"/> 
+                                    <field name="preciouni" readonly="1"/> 
+                                    <field name="cantidad" readonly="1" />
+                                    <field name="total" readonly="1"/>
+                                    <field name="deshabili" readonly="1"/>
+                                    <field name="extemp" readonly="1"/>                                           
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- Action fiaes_reporte_insumos-->
+        <record model="ir.actions.act_window" id="reporte_insumos_action">
+            <field name="name">Reporte de insumos</field>
+            <field name="res_model">fiaes.reporte.insumos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Reporte insumos
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+        id="fiaes_reporte_insumos"
+        parent="fiaes.presupuesto"
+        name="Reporte Insumos"
+        action="reporte_insumos_action"
+        sequence="90"/>
+    </data>
+</odoo>

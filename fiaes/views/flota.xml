@@ -754,7 +754,7 @@ groups="base.group_user"/>
   </field>
 </record>
 
-<record id="view_form_odometers" model="ir.ui.view">
+<!-- <record id="view_form_odometers" model="ir.ui.view">
   <field name="model">fleet.vehicle.odometer</field>
     <field name="inherit_id" ref="fleet.fleet_vehicle_odometer_view_form" />
     <field name="arch" type="xml">
@@ -772,7 +772,7 @@ groups="base.group_user"/>
       <xpath expr="//field[@name='date']" position="replace">
       </xpath>
   </field>
-</record>
+</record>-->
 
 
 

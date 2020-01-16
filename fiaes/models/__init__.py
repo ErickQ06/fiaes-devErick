@@ -25,3 +25,4 @@ from . import asignacion
 from . import reasignacion
 from . import report_avance
 from . import reintegro
+from . import insumos_report

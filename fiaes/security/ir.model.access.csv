@@ -221,3 +221,6 @@ fiaes_access_reporteresultadok,fiaes_access_reporteresultadok,model_fiaes_report
 fiaes_access_reporteobjetivos,fiaes_access_reporteobjetivos,model_fiaes_reporte_objetivos,base.group_user,1,1,1,1
 fiaes_access_reintegro,fiaes_access_reintegro,model_fiaes_reintegro,base.group_user,1,1,1,1
 fiaes_access_hijoreintegro, fiaes_access_hijoreintegro,model_fiaes_desembolso_reintegro,base.group_user,1,1,1,1
+fiaes_access_reporte_insumos,fiaes_access_reporte_insumos,model_fiaes_reporte_insumos,base.group_user,1,1,1,1
+fiaes_access_insumos_hijo,fiaes_access_insumos_hijo,model_actividad_reporte,base.group_user,1,1,1,1
+fiaes_access_copy_reporte,fiaes_acccess_copy_reporte,model_fiaes_insumo_copy_reporte,base.group_user,1,1,1,1

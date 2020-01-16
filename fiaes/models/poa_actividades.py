@@ -171,6 +171,7 @@ class insumo(models.Model):
     extemp = fields.Boolean(string="Extemporaneo")
     deshabili = fields.Boolean(string="Habilitado") 
     ejecutado=fields.Boolean(string="Ejecutado")
+    report_id=fields.Many2one(string="Reporte de insumos")
     
     
 #    @api.one

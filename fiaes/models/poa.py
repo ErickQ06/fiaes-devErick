@@ -41,8 +41,7 @@ class plaunidad(models.Model):
     reporte_ids = fields.One2many(comodel_name='fiaes.reporteplanunidad',inverse_name='planunidad_id', string='Reporte')
     reporte_proyecto_ids = fields.One2many(comodel_name='fiaes.reporteproyecto', inverse_name='planunidad_id', string='ReporteProyecto')
     reporte_actividad_ids = fields.One2many(comodel_name='fiaes.reporteactividad',inverse_name='planunidad_id', string="ReporteActividad")
-    
-    
+    insumo_copy_line = fields.One2many(comodel_name='fiaes.poaactividad.copy', inverse_name='insumo_id')
     
     @api.one
     @api.depends('unidad')

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="report_insumo">
+            <field name="name">reporte_insumos</field>
+            <field name="model">fiaes.reporte.insumos</field>
+            <field name="arch" type="xml">
+                <form string="Reporte de insumos">
+                    <header>
+                        <button name="generate_items" string="Generar" type="object" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="planunidad_id" placeholder="PLan de unidad"/>
+                            <field name="fecha" placeholder="Fecha del reporte"/>
+                        </group>
+                        <notebook>
+                            <page string="Insumos relacionados">
+                                <field editable="bottom" name="hijo_id">
+                                    <tree editable="bottom" create="0">
+                                        <field name="name" readonly="1" type="row"/>
+                                        <field name="descripcion" readonly="1" type="row"/>
+                                        <field name="proyecto" readonly="1" type="row"/>
+                                        <field name="planunidad_id" readonly="1" type="row"/>
+                                        <field name="fecha_inicial" readonly="1" type="row"/>
+                                        <field name="fecha_final" readonly="1" type="row"/>
+                                        <field name="deshabili" readonly="1" type="row"/>
+                                        <field name="extemp" readonly="1" type="row"/>
+                                    </tree>
+                                    <form string="Insumos">
+                                        <header>
+                                            <button  string="Reporte insumos" type="object" class="oe_highlight"/>
+                                        </header>
+                                        <sheet>
+                                            <group>
+                                                <field name="name" />
+                                                <field name="descripcion"/>
+                                                <field name="proyecto" />
+                                                <field name="planunidad_id" />
+                                                <field name="fecha_inicial" />
+                                                <field name="fecha_final" />
+                                                <field name="deshabili" />
+                                                <field name="extemp" />
+                                            </group>
+                                            <field name="insumo_id">
+                                                <tree>
+                                                    <field name="name"/>
+                                                    <field name="categoria"/>
+                                                    <field name="actividad_line"/>
+                                                    <field name="preciouni"/>
+                                                    <field name="cantidad"/>
+                                                    <field name="total"/>
+                                                    <field name="extemp"/>
+                                                    <field name="deshabili"/>
+                                                </tree>
+                                            </field>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>   
+            </field>
+        </record>
+
+
+        <!-- Action fiaes_reporte_insumos-->
+        <record model="ir.actions.act_window" id="insumos_action">
+            <field name="name">Reporte de insumos</field>
+            <field name="res_model">fiaes.reporte.insumos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Reporte insumos
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+        id="fiaesinsumo_reporte"
+        parent="fiaes.presupuesto"
+        name="Reporte Insumos"
+        action="insumos_action"
+        sequence="120"/>
+    </data>
+</odoo>

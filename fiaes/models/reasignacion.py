@@ -215,7 +215,8 @@ class Actividadpoa(models.Model):
                                         ,('Validar', 'Validar')]
                                         , string='Estado',default='Borrador',related='reasignacion_id.state',track_visibility=True)
     original_id = fields.Integer(string="id original")
-    
+    insumo_id = fields.Many2many(comodel_name='fiaes.planunidad', string="Insumos")
+
     @api.one
     def habilitar(self):
         for r in self:
