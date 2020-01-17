@@ -29,51 +29,54 @@ class ReporteInsumos(models.Model):
 
     @api.multi
     def generate_items(self):
-        _logger.info('se cumplio la condicion del plan al inicio')
         for r in self:
-            _logger.info('se cumplio la condicion del plan del R in self')
+            _logger.info('R in self')
             for c in r.planunidad_id.objetivo_line:
+                if c.actividad_line:
+                    _logger.info('Condicion del c'+ str(c.actividad_line))
                 for actividad in c.actividad_line:
-                    _logger.info('se cumplio la condicion del plan', str(1))
-                    x = 0
-                    for insumo in actividad.insumo_line:
-                        if insumo.extemp or insumo.deshabili:
-                            x=1
-                    _logger.info('se cumplio la condicion', str(x))
-                    if x==1:
-                        dic={}
-                        dic["name"]=a.name
-                        dic["descripcion"]=a.descripcion
-                        dic["proyecto"] = a.proyecto.id
-                        dic["planunidad_id"] = a.planunidad_id.id
-                        dic["fecha_inicial"] = a.fecha_inicial
-                        dic["fecha_final"] = a.fecha_final
-                        dic["deshabili"] = a.deshabili
-                        dic["extemp"] = a.extemp
-                        dic["papa_id"] = r.id
-                        self.env['actividad.reporte'].create(dic)
-                        for insumo in actividad.insumo_line:
-                            if insumo.extemp or insumo.deshabili:                    
-                                _logger.info('se cumplio la condicion' +str(a.id) + str(line2.id))
-                                dics={}
-                                dics['name']=insumo.name
-                                dics['categoria']=insumo.categoria.id
-                                dics['actividad_id']=a.id
-                                dics['preciouni']=insumo.preciouni
-                                dics['cantidad']=insumo.cantidad
-                                dics['extemp']=insumo.extemp
-                                dics['deshabili']=insumo.deshabili
-                                dics['actividad_line']=a.id
-                                self.env['fiaes.insumo.copy.reporte'].create(dics)
-
-
+                    _logger.info('condicion de la actividad'+str(actividad))
+                    line = self.env['fiaes.insumo'].search([('planunidad_id','=',r.planunidad_id.id),('actividad_id','=',actividad.id)],limit=1)
+                    _logger.info('Se cumplio la condicion del insumo'+str(line))
+                    if line:
+                    #if actividad.insumo_line:
+                    #    _logger.info('Se cumplio la condicion del insumo')
+                    #_logger.info('se cumplio la condicion del plan', str(1))
+                        x=0
+                        for insumo in line:
+                            _logger.info('Se cumplio la condicion del insumo')
+                            if insumo.extemp or insumo.deshabili:
+                                _logger.info('Ultima condicion del insumo')
+                                x=1
+                        if x==1:
+                            dic={}
+                            dic["name"]=c.name
+                            dic["descripcion"]=c.descripcion
+                            dic["proyecto"]=c.proyecto.id
+                            dic["planunidad_id"]=c.planunidad_id.id
+                            dic["fecha_inicial"]=c.fecha_inicial
+                            dic["fecha_final"]=c.fecha_final
+                            dic["deshabili"]=c.deshabili
+                            dic["extemp"]=c.extemp
+                            dic["papa_id"]=r.id
+                            self.env['actividad.reporte'].create(dic)
+                            for insumo in actividad.insumo_line:
+                                if insumo.extemp or insumo.deshabili:
+                                    dic2={}
+                                    dic2['actividad_id']=c.id.id
+                                    dic2['preciouni']=insumo.preciouni
+                                    dic2['cantidad']=insumo.cantidad
+                                    dic2['extemp']=insumo.extemp
+                                    dic2['deshabili']=insumo.deshabili
+                                    dic2['actividad_line']=c.id
+                                    self.env['fiaes.insumo.copy.reporte'].create(dic2)
 
 class InsumosPlanUnidad(models.Model):
     _name='actividad.reporte'
     _inherit=['mail.thread']
     name =  fields.Char(string="Actividad",track_visibility=True)
-    descripcion = fields.Text(string="Descripcion",track_visibility=True)   
-    proyecto = fields.Many2one(comodel_name='project.project', string="Proyecto")  
+    descripcion = fields.Text(string="Descripcion",track_visibility=True)
+    proyecto = fields.Many2one(comodel_name='project.project', string="Proyecto")
     planunidad_id = fields.Many2one(comodel_name='fiaes.planunidad', string="Plan unidad",store=True)
     fecha_inicial=fields.Date("Fecha de inicio")
     fecha_final=fields.Date("Fecha de finalizacion")
@@ -82,9 +85,6 @@ class InsumosPlanUnidad(models.Model):
     reasignacion_id = fields.Many2one(comodel_name='fiaes.reporte.insumos')
     papa_id = fields.Many2one(comodel_name='fiaes.reporte.insumos')
     insumo_id = fields.One2many(comodel_name='fiaes.insumo.copy.reporte', inverse_name='actividad_line')
-
-
-            
 
 class insumo(models.Model):
     _name = 'fiaes.insumo.copy.reporte'
