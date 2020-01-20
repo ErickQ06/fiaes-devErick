@@ -27,7 +27,7 @@ class ReporteInsumos(models.Model):
                 if r.fecha:
                     r.name=r.planunidad_id.name+' '+r.fecha.strftime("%m/%d/%Y")
 
-    @api.multi
+    @api.one
     def generate_items(self):
         _logger.info('se cumplio la condicion del plan al inicio')
         for r in self:
